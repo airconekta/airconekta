@@ -1,0 +1,51 @@
+#EXTM3U
+#EXTINF:-1,A&E
+http://10.100.100.2:9981/stream/channel/187ea57aea8f8628cdde71e8b42e6231?ticket=261071773fdab8a3106c208fe089fa63e06f2cb0
+#EXTINF:-1,ADN40
+http://10.100.100.2:9981/stream/channel/0b9ef985bb4c4fba101ab8957afde8de?ticket=5414874e34b314122ac8e5f3a5e971c25795fc55
+#EXTINF:-1,Animal Planet
+http://10.100.100.2:9981/stream/channel/c8a83de3902cc5561fe83d6878e3ec50?ticket=556c9c73a1183dfb466991b739a5cfea2183a4bd
+#EXTINF:-1,Azteca 7
+http://10.100.100.2:9981/stream/channel/2f8d7e1953da8f4333bb6e92be4af15a?ticket=65f807fb8cea3bf66e578f8ef86eea7493bbd2fe
+#EXTINF:-1,Azteca Uno
+http://10.100.100.2:9981/stream/channel/7a829baa93a002e36fc2267bf8b8e472?ticket=e088032e98c5af7a225fbc8ff8fb9abd7a981891
+#EXTINF:-1,Bandamax
+http://10.100.100.2:9981/stream/channel/04ef82350ea22c539dfee86bb52b34bf?ticket=04e46d5925022223c7603c199897e09f1ce02e46
+#EXTINF:-1,Canal 5
+http://10.100.100.2:9981/stream/channel/77095062b5ab031b0e6db797e3c9f57c?ticket=d4847e8b4c1bc881e03b65a0ea535bea7813ef1b
+#EXTINF:-1,Cartoon Network
+http://10.100.100.2:9981/stream/channel/5550df4a67848f9f6157f176608eaf1c?ticket=3cfc56b42b5a6adb726c250390f5a77c2da679fd
+#EXTINF:-1,Comedy Central
+http://10.100.100.2:9981/stream/channel/3440df3c4cf3b413df9bd9d570d962ed?ticket=5c1a2650f92e572dd265acd684e48a8ee1a6df73
+#EXTINF:-1,DePelicula Plus
+http://10.100.100.2:9981/stream/channel/dac39f8ddbb132db915a80e91f8decb5?ticket=b5e402cb304130ac191f031881c41d3758db9ab5
+#EXTINF:-1,Discovery Kids
+http://10.100.100.2:9981/stream/channel/e34de9e2d4011e44ddb24cfcd9600941?ticket=8c7443a99bc46b5ea781d461e2cf70cc6e526678
+#EXTINF:-1,Discovery Turbo
+http://10.100.100.2:9981/stream/channel/914d4bb7090eeda549ad592d092c8929?ticket=b56ad9a763eeb6fc5cc0e136196d677416ba5c7e
+#EXTINF:-1,Disney Jr
+http://10.100.100.2:9981/stream/channel/0ba775f7c1bf37d59a1b64e1372e1456?ticket=0eb5849d01c7c8ef4c815b6fc0c1bcf50de31546
+#EXTINF:-1,Distrito Comedia
+http://10.100.100.2:9981/stream/channel/5d23b4cd67c7374e07857c8136b1129e?ticket=6c10b4c933fd40ff162d750739809ee100429b04
+#EXTINF:-1,Dreamworks
+http://10.100.100.2:9981/stream/channel/1beecbda89dc66e34a8c7c24d73b83cb?ticket=3577432b583d93e5391c87acabf11fd7ffa540cc
+#EXTINF:-1,ESPN
+http://10.100.100.2:9981/stream/channel/f907892a69188c202ab738c00c0ba645?ticket=b2e989c4d55c82c27a74a7a6fda6a44c9ccce53c
+#EXTINF:-1,Fox Sports Premium
+http://10.100.100.2:9981/stream/channel/3822cea62fdb12be4bfd7efbd60c621d?ticket=48a77ceef044c15f2fba1269ab6367c7c91cd1c9
+#EXTINF:-1,GOLDEN EDGE
+http://10.100.100.2:9981/stream/channel/a50e0266083e35b6c2092ddbd9b4979a?ticket=372a8cf93d1a3eb2a214d72ccd08b391c3a8f518
+#EXTINF:-1,History
+http://10.100.100.2:9981/stream/channel/3333ec542cea638a8f634f0ee852e4b2?ticket=afbe9e561a53c90a1366adfda952b2dce2aa637c
+#EXTINF:-1,HBO Plus
+http://10.100.100.2:9981/stream/channel/4c166526a43680ec6173aa6ca118f6b3?ticket=646e07666e14fc4cfcd94cad518c70d00710a10a
+#EXTINF:-1,Las Estrellas
+http://10.100.100.2:9981/stream/channel/3cb1d77266e5abd3558d46b01e807df6?ticket=74932ab401a370260b9cbb4e2419e08a17989861
+#EXTINF:-1,Natgeo
+http://10.100.100.2:9981/stream/channel/ccf9da458584e7de08aac7ab8cb01ea0?ticket=cc53e4edaa60a364bed13afe70f7797ae1664877
+#EXTINF:-1,Nick Jr
+http://10.100.100.2:9981/stream/channel/26fa211334fd2b27cf204a4531925bca?ticket=4d510da329732da6b84be9aa2e00cf05b177c1df
+#EXTINF:-1,TNT
+http://10.100.100.2:9981/stream/channel/d20a05b936990da1a9510b249d89496e?ticket=03c2f031b3a0676943177fc8d542cfc659e7401f
+#EXTINF:-1,TUDN
+http://10.100.100.2:9981/stream/channel/e968b4840e79c0ef0cf92e1f5682ed10?ticket=f44dc977f1498f57ddf10babbfc6990b04875e37
