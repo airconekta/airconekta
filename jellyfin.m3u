@@ -1,0 +1,51 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/bandamax.png",Bandamax P5 (FHD) **
+http://10.100.100.2:9001
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/distrito-comedia.png",Distrito Comedia P5 (HD) **
+http://10.100.100.2:9002
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/espn.png",ESPN
+http://10.100.100.2:9003
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/golden-edge.png",GOLDEN EDGE
+http://10.100.100.2:9004
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/tudn.png",TUDN P5 (FHD) **
+http://10.100.100.2:9005
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/depelicula-plus.png",DePelicula Plus P5 (FHD) **
+http://10.100.100.2:9006
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/hbo-plus.png",HBO Plus
+http://10.100.100.2:9007
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/ane.png",A&E P5 (FHD)
+http://10.100.100.2:9008
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/adn40.png",ADN40 P5 (FHD)
+http://10.100.100.2:9009
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/animal-planet..png",Animal Planet P5 (FHD)
+http://10.100.100.2:9010
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/Logo_Azteca_7_2011.svg.png",Azteca 7 P5 (FHD)
+http://10.100.100.2:9011
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/azteca-uno.png",Azteca Uno P5 (FHD)
+http://10.100.100.2:9012
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/canal5.png",Canal 5 P5 (FHD)
+http://10.100.100.2:9013
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/cartoon-network.png",Cartoon Network P5 (FHD)
+http://10.100.100.2:9014
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/comedy-central.png",Comedy Central P5 (FHD)
+http://10.100.100.2:9015
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/discovery-kids.png",Discovery Kids P5 (FHD)
+http://10.100.100.2:9016
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/disney-jr.png",Disney Jr P5 (FHD)
+http://10.100.100.2:9017
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/discovery-turbo.png",Discovery Turbo P5 (FHD)
+http://10.100.100.2:9018
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/dreamworks.png",Dreamworks P5 (FHD)
+http://10.100.100.2:9019
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/fox-sports-premium.png",Fox Sports Premium P5 (FHD)
+http://10.100.100.2:9020
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/las-estrellas.png",Las Estrellas P5 (FHD)
+http://10.100.100.2:9021
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/nick-jr.png",Nick Jr P5 (FHD)
+http://10.100.100.2:9022
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/tnt.png",TNT P5 (FHD)
+http://10.100.100.2:9023
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/history.png",History P5 (FHD)
+http://10.100.100.2:9024
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/natgeo.png",Natgeo P5 (FHD)
+http://10.100.100.2:9025
