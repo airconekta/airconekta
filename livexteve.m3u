@@ -1,0 +1,51 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/bandamax.png", 
+http://10.100.100.2:34400/stream/c9c835ec46e047a705e772cef32ea2ae
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/distrito-comedia.png", 
+http://10.100.100.2:34400/stream/4a87c747e2efae8a08b995dbb8a79a9f
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/espn.png", 
+http://10.100.100.2:34400/stream/e50a25f523355298b4649e0732c85146
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/golden-edge.png", 
+http://10.100.100.2:34400/stream/d1965b56fb55c320fb7e6f72209cef10
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/tudn.png", 
+http://10.100.100.2:34400/stream/51b5c597e543b95aec2f37f982dcdd1d
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/depelicula-plus.png", 
+http://10.100.100.2:34400/stream/b8b3e0cffcdc52988fa51d8984197ab5
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/hbo-plus.png", 
+http://10.100.100.2:34400/stream/52bff1611855a622956278b3ec7d501f
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/ane.png", 
+http://10.100.100.2:34400/stream/354826634998a340f7df4d8d74be21cf
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/adn40.png", 
+http://10.100.100.2:34400/stream/140a7fec029a761c602efaf7a5cecc92
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/animal-planet..png", 
+http://10.100.100.2:34400/stream/afa905f253bbd42045d78b3816919622
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/Logo_Azteca_7_2011.svg.png", 
+http://10.100.100.2:34400/stream/afa905f253bbd42045d78b3816919622
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/azteca-uno.png", 
+http://10.100.100.2:34400/stream/38d2f745d652bf047d6e050cb51a79af
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/canal5.png", 
+http://10.100.100.2:34400/stream/84fed4115ff6b3074c21e718595a0653
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/cartoon-network.png", 
+http://10.100.100.2:34400/stream/1214b92caab8680007ff91482de0adf5
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/comedy-central.png", 
+http://10.100.100.2:34400/stream/86ef6098699efbff6aa075dd31688a19
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/discovery-kids.png", 
+http://10.100.100.2:34400/stream/71200bf65454d7fdae477ba2c6b07383
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/disney-jr.png", 
+http://10.100.100.2:34400/stream/6acfcf337bb6d3545e06178794f795c1
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/discovery-turbo.png", 
+http://10.100.100.2:34400/stream/3d40fe34dacca6e8c92732c370d2122b
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/dreamworks.png", 
+http://10.100.100.2:34400/stream/ba702acaabf7baab2ddf47449c0aed68
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/fox-sports-premium.png", 
+http://10.100.100.2:34400/stream/7579ac80b115ca1817abcfd05578162b
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/las-estrellas.png", 
+http://10.100.100.2:34400/stream/889fbd020d128d0f25e15d0962c95f4d
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/nick-jr.png", 
+http://10.100.100.2:34400/stream/ef05cf49dbcdaf1910586fcdc2573ab9
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/tnt.png", 
+http://10.100.100.2:34400/stream/294d151ca2702ac4dee978971c1b10ff
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/history.png", 
+http://10.100.100.2:34400/stream/238ebaf66cff78da49b801ac7647ee03
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/natgeo.png", 
+http://10.100.100.2:34400/stream/afa905f253bbd42045d78b3816919622
