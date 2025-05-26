@@ -1,0 +1,3 @@
+#EXTM3U
+#EXTINF:-1 tvg-logo="https://raw.githubusercontent.com/airconekta/airconekta/main/bandamax.png",Bandamax P5 (FHD) **
+http://10.100.100.2:8080/bandamax.ts
