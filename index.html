@@ -1,107 +1,108 @@
 <!doctype html>
-<html lang="es" data-theme>
+<html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Airconekta · Solicitar Instalación</title>
-  <meta name="theme-color" content="#0d122a" />
-  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="color-scheme" content="light">
   <meta name="description" content="Formulario profesional para solicitar instalación y enviar datos vía WhatsApp.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%230d122a'/%3E%3Cpath fill='%23ffffff' d='M192 76a8 8 0 0 1 8 8v88a8 8 0 0 1-8 8H64a8 8 0 0 1-8-8V84a8 8 0 0 1 8-8h128zm-16 24H80v72h96V100zM92 72h72a4 4 0 0 1 0 8H92a4 4 0 1 1 0-8z'/%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%23ffffff'/%3E%3Cpath fill='%23246bff' d='M192 76a8 8 0 0 1 8 8v88a8 8 0 0 1-8 8H64a8 8 0 0 1-8-8V84a8 8 0 0 1 8-8h128zm-16 24H80v72h96V100zM92 72h72a4 4 0 0 1 0 8H92a4 4 0 1 1 0-8z'/%3E%3C/svg%3E" />
   <style>
-    :root {
-      --bg: #0b1220;            /* fondo base */
-      --bg-2: #0e1a34;          /* fondo secundario */
-      --panel: rgba(255,255,255,.06);
-      --panel-2: rgba(255,255,255,.09);
-      --ink: #eaf2ff;           /* texto principal */
-      --muted: #9fb1d0;         /* texto secundario */
-      --accent: #5aa8ff;        /* acento UI */
-      --ok: #34c759;            /* éxito */
-      --warn: #ffb020;          /* advertencia */
-      --err: #ff5a65;           /* error */
-      --radius: 18px;           /* radio de borde base */
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    :root{
+      --bg: #ffffff;         /* fondo base blanco */
+      --bg-2: #ffffff;       /* panel blanco */
+      --ink: #0f1a2e;        /* texto principal oscuro */
+      --muted: #5b6b86;      /* texto secundario */
+      --accent: #246bff;     /* azul de acento */
+      --border: #cfe0ff;     /* azul claro para marcos */
+      --ok: #1f9d55;         /* éxito discreto */
+      --radius: 18px;
+      --shadow: 0 10px 26px rgba(16,48,96,.10);
     }
 
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #f6f8fc;
-        --bg-2: #ffffff;
-        --panel: rgba(0,0,0,.06);
-        --panel-2: rgba(0,0,0,.08);
-        --ink: #0f1a2e;
-        --muted: #5b6b86;
-        --accent: #246bff;
-        --shadow: 0 10px 26px rgba(16,48,96,.15);
-      }
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background:#fff;            /* SIN degradados ni fondos oscuros */
+      color:var(--ink);
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font: 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-      background: radial-gradient(1200px 800px at 10% -10%, rgba(90,168,255,.18), transparent 60%),
-                  radial-gradient(1000px 700px at 100% 0%, rgba(52,199,89,.10), transparent 55%),
-                  linear-gradient(180deg, var(--bg), #060b18 70%);
-      color: var(--ink);
+    .shell{ max-width:920px; margin:0 auto; padding:24px; }
+
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:16px 18px; border-radius:var(--radius);
+      background:var(--bg-2);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      position:sticky; top:12px; backdrop-filter:saturate(110%);
+    }
+    .brand{ display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.2px; color:var(--ink); }
+    .brand .logo{ width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:#fff; border:1px solid var(--border); color:var(--accent); }
+    .brand .logo span{ font-size:18px; }
+
+    .card{
+      margin-top:24px; padding:22px; border-radius:22px;
+      background:var(--bg-2);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
     }
 
-    .shell { max-width: 920px; margin: 0 auto; padding: 24px; }
+    h1{ font-size:1.5rem; margin:0 0 6px; color:var(--ink); }
+    .lead{ color:var(--muted); margin:0 0 16px; }
 
-    .nav {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding: 16px 18px; border-radius: var(--radius);
-      background: linear-gradient(180deg, var(--panel-2), transparent);
-      border: 1px solid var(--panel);
-      box-shadow: var(--shadow);
-      position: sticky; top: 12px; backdrop-filter: blur(8px);
+    form{ display:grid; grid-template-columns:repeat(12,1fr); gap:14px; }
+    .col-12{ grid-column:span 12; }
+    .col-6{ grid-column:span 6; }
+    .col-4{ grid-column:span 4; }
+    @media (max-width:860px){ .col-6,.col-4{ grid-column:span 12; } }
+
+    label{ display:block; font-size:.92rem; color:var(--muted); margin:4px 0 6px; }
+    input,select{
+      width:100%; padding:12px 14px; border-radius:14px;
+      border:1px solid var(--border); background:#fff; color:var(--ink);
+      outline:none; transition:border .15s ease, box-shadow .15s ease, transform .06s ease;
     }
-    .brand { display: flex; gap: 12px; align-items: center; font-weight: 800; letter-spacing: .2px; }
-    .brand .logo { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: var(--bg-2); border: 1px solid var(--panel); }
-    .brand .logo span { font-size: 18px; }
+    input:focus,select:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px rgba(36,107,255,.12);
+      background:#fff;
+    }
+    input:active,select:active{ transform:translateY(.5px); }
 
-    .card {
-      margin-top: 24px; padding: 22px; border-radius: 22px;
-      background: linear-gradient(180deg, var(--bg-2), rgba(255,255,255,.02));
-      border: 1px solid var(--panel);
-      box-shadow: var(--shadow);
+    .inline{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+
+    .btn{
+      appearance:none; cursor:pointer; user-select:none;
+      border:1px solid var(--accent); color:var(--accent);
+      background:#fff;
+      padding:12px 16px; border-radius:14px; font-weight:700; letter-spacing:.2px;
+      transition: background .15s ease, color .15s ease, box-shadow .15s ease, transform .06s ease;
+    }
+    .btn:hover{ background:rgba(36,107,255,.06); box-shadow:0 0 0 3px rgba(36,107,255,.12); }
+    .btn:active{ transform:translateY(1px); }
+
+    .btn-primary{
+      background:var(--accent); color:#fff; border-color:var(--accent);
+    }
+    .btn-primary:hover{ box-shadow:0 0 0 3px rgba(36,107,255,.20); }
+
+    .status{ font-size:.9rem; color:var(--muted); }
+
+    .footer{
+      margin:20px 0 0; color:var(--muted); font-size:.9rem;
+      display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
     }
 
-    h1 { font-size: 1.5rem; margin: 0 0 6px; }
-    .lead { color: var(--muted); margin: 0 0 16px; }
-
-    form { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
-    .col-12 { grid-column: span 12; }
-    .col-6 { grid-column: span 6; }
-    .col-4 { grid-column: span 4; }
-
-    @media (max-width: 860px) { .col-6, .col-4 { grid-column: span 12; } }
-
-    label { display:block; font-size: .92rem; color: var(--muted); margin: 4px 0 6px; }
-    input, select { width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--panel); background: rgba(255,255,255,.04); color: var(--ink);
-      outline: none; transition: border .15s ease, background .15s ease, transform .06s ease; }
-    input:focus, select:focus { border-color: var(--accent); background: rgba(90,168,255,.08); }
-    input:active, select:active { transform: translateY(.5px); }
-
-    .inline { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-
-    .btn { appearance: none; cursor: pointer; user-select: none; border: 1px solid var(--panel); color: var(--ink);
-      background: linear-gradient(180deg, rgba(90,168,255,.22), rgba(90,168,255,.12));
-      padding: 12px 16px; border-radius: 14px; font-weight: 700; letter-spacing: .2px; }
-    .btn:hover { border-color: var(--accent); }
-    .btn:active { transform: translateY(1px); }
-
-    .btn-primary { background: linear-gradient(180deg, rgba(52,199,89,.3), rgba(52,199,89,.16)); }
-
-    .status { font-size: .9rem; color: var(--muted); }
-
-    .footer { margin: 20px 0 0; color: var(--muted); font-size: .9rem; display:flex; justify-content: space-between; align-items:center; flex-wrap: wrap; gap:10px; }
-
-    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(16px); opacity: 0; pointer-events: none;
-      background: rgba(0,0,0,.75); color: white; padding: 10px 14px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,.35); transition: .18s ease; }
-    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast{
+      position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(16px); opacity:0; pointer-events:none;
+      background:#fff; color:var(--ink); padding:10px 14px; border-radius:12px;
+      border:1px solid var(--accent); box-shadow:0 8px 20px rgba(16,48,96,.10); transition:.18s ease;
+    }
+    .toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
   </style>
 </head>
 <body>
@@ -188,7 +189,6 @@
     const NUMERO_DESTINO = "5213222439782"; // fijo
 
     const $ = sel => document.querySelector(sel);
-    const $$ = sel => document.querySelectorAll(sel);
     const toast = (msg) => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); };
 
     // Año dinámico
@@ -210,9 +210,7 @@
 
     function validarFormulario() {
       const form = $('#form');
-      // HTML5 validity
       if (!form.checkValidity()) { form.reportValidity(); return false; }
-      // Validación adicional por si acaso
       const telefono = $('#telefono').value.replace(/\D+/g, '');
       if (telefono.length !== 10) { toast('El teléfono debe tener 10 dígitos'); $('#telefono').focus(); return false; }
       return true;
@@ -260,16 +258,15 @@
       }
     });
 
-    // ——— PWA: manifest + service worker (todo en un archivo) ———
-    // Manifest dinámico
+    // ——— PWA: manifest + service worker en claro ———
     const manifest = {
       name: 'Airconekta Instalaciones',
       short_name: 'Airconekta',
       description: 'Formulario PWA para solicitar instalación y enviar datos por WhatsApp.',
       start_url: '.',
       display: 'standalone',
-      background_color: '#0d122a',
-      theme_color: '#0d122a',
+      background_color: '#ffffff',
+      theme_color: '#ffffff',
       icons: [
         { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAACENn8fAAAAI0lEQVQYV2NkYGD4z0AEMGGgAQZGBgYGBhA1FIwJQ3EAAEw4AABf1g4p2n3Y3wAAAABJRU5ErkJggg==', sizes: '48x48', type: 'image/png' },
         { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAAB8Hs0fAAAAKUlEQVQ4y2NkoBAwUqifAWEGQwYGBgYwQ2oYg0EwGg0Go0GgYHxGAgA8m0g0pAKg5wAAAABJRU5ErkJggg==', sizes: '72x72', type: 'image/png' }
@@ -279,20 +276,38 @@
     const manURL = URL.createObjectURL(manBlob);
     const link = document.createElement('link'); link.rel = 'manifest'; link.href = manURL; document.head.appendChild(link);
 
-    // Service Worker minimalista para cachear esta misma página y funcionar offline (básico)
+    // Service Worker (cache básico)
     if ('serviceWorker' in navigator) {
-      const swCode = `\n        const CACHE = 'airconekta-v1';\n        self.addEventListener('install', e => {\n          e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.registration.scope])));\n          self.skipWaiting();\n        });\n        self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });\n        self.addEventListener('fetch', e => {\n          const req = e.request;\n          if (req.method !== 'GET') return;\n          e.respondWith(\n            caches.match(req).then(r => r || fetch(req).then(res => {\n              const copy = res.clone();\n              caches.open(CACHE).then(c => c.put(req, copy));\n              return res;\n            }).catch(() => caches.match(self.registration.scope)))\n          );\n        });\n      `;
+      const swCode = `
+        const CACHE = 'airconekta-v1';
+        self.addEventListener('install', e => {
+          e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.registration.scope])));
+          self.skipWaiting();
+        });
+        self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+        self.addEventListener('fetch', e => {
+          const req = e.request;
+          if (req.method !== 'GET') return;
+          e.respondWith(
+            caches.match(req).then(r => r || fetch(req).then(res => {
+              const copy = res.clone();
+              caches.open(CACHE).then(c => c.put(req, copy));
+              return res;
+            }).catch(() => caches.match(self.registration.scope)))
+          );
+        });
+      `;
       const swBlob = new Blob([swCode], { type: 'text/javascript' });
       const swURL = URL.createObjectURL(swBlob);
       navigator.serviceWorker.register(swURL).catch(()=>{});
     }
 
-    // Botón instalar (beforeinstallprompt)
+    // Botón instalar (PWA)
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      const btn = $('#installBtn');
+      const btn = document.getElementById('installBtn');
       btn.style.display = 'inline-flex';
       btn.onclick = async () => {
         btn.disabled = true;
