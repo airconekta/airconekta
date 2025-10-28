@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="es" data-theme>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Airconekta · Solicitar Instalación</title>
+  <meta name="theme-color" content="#0d122a" />
+  <meta name="color-scheme" content="dark light">
+  <meta name="description" content="Formulario profesional para solicitar instalación y enviar datos vía WhatsApp.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%230d122a'/%3E%3Cpath fill='%23ffffff' d='M192 76a8 8 0 0 1 8 8v88a8 8 0 0 1-8 8H64a8 8 0 0 1-8-8V84a8 8 0 0 1 8-8h128zm-16 24H80v72h96V100zM92 72h72a4 4 0 0 1 0 8H92a4 4 0 1 1 0-8z'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #0b1220;            /* fondo base */
+      --bg-2: #0e1a34;          /* fondo secundario */
+      --panel: rgba(255,255,255,.06);
+      --panel-2: rgba(255,255,255,.09);
+      --ink: #eaf2ff;           /* texto principal */
+      --muted: #9fb1d0;         /* texto secundario */
+      --accent: #5aa8ff;        /* acento UI */
+      --ok: #34c759;            /* éxito */
+      --warn: #ffb020;          /* advertencia */
+      --err: #ff5a65;           /* error */
+      --radius: 18px;           /* radio de borde base */
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f6f8fc;
+        --bg-2: #ffffff;
+        --panel: rgba(0,0,0,.06);
+        --panel-2: rgba(0,0,0,.08);
+        --ink: #0f1a2e;
+        --muted: #5b6b86;
+        --accent: #246bff;
+        --shadow: 0 10px 26px rgba(16,48,96,.15);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font: 16px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 10% -10%, rgba(90,168,255,.18), transparent 60%),
+                  radial-gradient(1000px 700px at 100% 0%, rgba(52,199,89,.10), transparent 55%),
+                  linear-gradient(180deg, var(--bg), #060b18 70%);
+      color: var(--ink);
+    }
+
+    .shell { max-width: 920px; margin: 0 auto; padding: 24px; }
+
+    .nav {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 16px 18px; border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--panel-2), transparent);
+      border: 1px solid var(--panel);
+      box-shadow: var(--shadow);
+      position: sticky; top: 12px; backdrop-filter: blur(8px);
+    }
+    .brand { display: flex; gap: 12px; align-items: center; font-weight: 800; letter-spacing: .2px; }
+    .brand .logo { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; background: var(--bg-2); border: 1px solid var(--panel); }
+    .brand .logo span { font-size: 18px; }
+
+    .card {
+      margin-top: 24px; padding: 22px; border-radius: 22px;
+      background: linear-gradient(180deg, var(--bg-2), rgba(255,255,255,.02));
+      border: 1px solid var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    h1 { font-size: 1.5rem; margin: 0 0 6px; }
+    .lead { color: var(--muted); margin: 0 0 16px; }
+
+    form { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .col-12 { grid-column: span 12; }
+    .col-6 { grid-column: span 6; }
+    .col-4 { grid-column: span 4; }
+
+    @media (max-width: 860px) { .col-6, .col-4 { grid-column: span 12; } }
+
+    label { display:block; font-size: .92rem; color: var(--muted); margin: 4px 0 6px; }
+    input, select { width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--panel); background: rgba(255,255,255,.04); color: var(--ink);
+      outline: none; transition: border .15s ease, background .15s ease, transform .06s ease; }
+    input:focus, select:focus { border-color: var(--accent); background: rgba(90,168,255,.08); }
+    input:active, select:active { transform: translateY(.5px); }
+
+    .inline { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .btn { appearance: none; cursor: pointer; user-select: none; border: 1px solid var(--panel); color: var(--ink);
+      background: linear-gradient(180deg, rgba(90,168,255,.22), rgba(90,168,255,.12));
+      padding: 12px 16px; border-radius: 14px; font-weight: 700; letter-spacing: .2px; }
+    .btn:hover { border-color: var(--accent); }
+    .btn:active { transform: translateY(1px); }
+
+    .btn-primary { background: linear-gradient(180deg, rgba(52,199,89,.3), rgba(52,199,89,.16)); }
+
+    .status { font-size: .9rem; color: var(--muted); }
+
+    .footer { margin: 20px 0 0; color: var(--muted); font-size: .9rem; display:flex; justify-content: space-between; align-items:center; flex-wrap: wrap; gap:10px; }
+
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(16px); opacity: 0; pointer-events: none;
+      background: rgba(0,0,0,.75); color: white; padding: 10px 14px; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,.35); transition: .18s ease; }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo"><span>⚡</span></div>
+        <div>Airconekta <span style="opacity:.65;font-weight:600">Instalaciones</span></div>
+      </div>
+      <div class="inline">
+        <button id="installBtn" class="btn" style="display:none">➕ Instalar</button>
+        <a class="btn" href="#" id="shareBtn" title="Compartir app">⇪ Compartir</a>
+      </div>
+    </nav>
+
+    <section class="card">
+      <h1>Solicitar instalación</h1>
+      <p class="lead">Completa tus datos. La ubicación es <strong>opcional</strong>. Al final se abrirá WhatsApp con tu información formateada.</p>
+      <form id="form" novalidate>
+        <div class="col-6">
+          <label for="nombre">Nombre completo</label>
+          <input id="nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
+        </div>
+        <div class="col-6">
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" name="telefono" inputmode="numeric" autocomplete="tel" placeholder="10 dígitos" pattern="[0-9]{10}" title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
+        </div>
+
+        <div class="col-12">
+          <label for="direccion">Dirección</label>
+          <input id="direccion" name="direccion" placeholder="Calle, número, colonia, ciudad, CP" required autocomplete="street-address" />
+        </div>
+
+        <div class="col-6">
+          <label for="correo">Correo</label>
+          <input id="correo" name="correo" type="email" placeholder="correo@ejemplo.com" required autocomplete="email" />
+        </div>
+
+        <div class="col-6">
+          <label for="metodo">Método de contacto</label>
+          <select id="metodo" name="metodo" required>
+            <option value="" disabled selected>Selecciona una opción</option>
+            <option>Internet</option>
+            <option>Volantes</option>
+            <option>Recomendación</option>
+          </select>
+        </div>
+
+        <div class="col-6">
+          <label for="plan">Plan deseado</label>
+          <select id="plan" name="plan" required>
+            <option value="" disabled selected>Selecciona un plan</option>
+            <option value="Plan 300 — 15 Mbps">Plan 300 — 15 Mbps</option>
+            <option value="Plan 400 — 20 Mbps">Plan 400 — 20 Mbps</option>
+            <option value="Plan 500 — 25 Mbps">Plan 500 — 25 Mbps</option>
+          </select>
+        </div>
+
+        <div class="col-6">
+          <label>Ubicación (GPS)</label>
+          <div class="inline">
+            <button type="button" class="btn" id="geoBtn">📍 Obtener ubicación</button>
+            <span id="geoStatus" class="status">Sin ubicación</span>
+          </div>
+          <input type="hidden" id="lat" name="lat" />
+          <input type="hidden" id="lng" name="lng" />
+        </div>
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary" id="sendBtn">📨 Enviar información</button>
+        </div>
+      </form>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </section>
+
+    <div class="footer">
+      <span>© <span id="year"></span> Airconekta</span>
+      <span style="opacity:.75">Hecho con ❤️ para clientes felices</span>
+    </div>
+  </div>
+
+  <script>
+    // Configuración
+    const NUMERO_DESTINO = "5213222439782"; // fijo
+
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => document.querySelectorAll(sel);
+    const toast = (msg) => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); };
+
+    // Año dinámico
+    $('#year').textContent = new Date().getFullYear();
+
+    // Geolocalización
+    $('#geoBtn').addEventListener('click', () => {
+      const s = $('#geoStatus');
+      if (!('geolocation' in navigator)) { s.textContent = 'Geolocalización no soportada'; toast('Tu navegador no soporta ubicación'); return; }
+      s.textContent = 'Obteniendo ubicación…';
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const { latitude, longitude } = pos.coords;
+        $('#lat').value = latitude.toFixed(6);
+        $('#lng').value = longitude.toFixed(6);
+        s.textContent = `Lat ${$('#lat').value}, Lng ${$('#lng').value}`;
+        toast('Ubicación lista ✅');
+      }, (err) => { console.warn(err); s.textContent = 'No se pudo obtener ubicación'; toast('No se pudo obtener ubicación'); }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 });
+    });
+
+    function validarFormulario() {
+      const form = $('#form');
+      // HTML5 validity
+      if (!form.checkValidity()) { form.reportValidity(); return false; }
+      // Validación adicional por si acaso
+      const telefono = $('#telefono').value.replace(/\D+/g, '');
+      if (telefono.length !== 10) { toast('El teléfono debe tener 10 dígitos'); $('#telefono').focus(); return false; }
+      return true;
+    }
+
+    function construirMensaje() {
+      const nombre = $('#nombre').value.trim();
+      const direccion = $('#direccion').value.trim();
+      const plan = $('#plan').value;
+      const tel = $('#telefono').value.trim();
+      const correo = $('#correo').value.trim();
+      const metodo = $('#metodo').value;
+      const lat = $('#lat').value; const lng = $('#lng').value;
+
+      let msg = `Hola 👋\nMe gustaría hablar sobre la contratación de servicio.\n\n`;
+      msg += `*Nombre:* ${nombre}\n`;
+      msg += `*Dirección:* ${direccion}\n`;
+      msg += `*Plan deseado:* ${plan}\n`;
+      msg += `*Teléfono:* ${tel}\n`;
+      msg += `*Correo:* ${correo}\n`;
+      msg += `*Método de contacto:* ${metodo}\n`;
+      if (lat && lng) msg += `*Ubicación:* https://www.google.com/maps?q=${lat},${lng}\n`;
+      return msg;
+    }
+
+    function enviarWhatsApp() {
+      if (!validarFormulario()) return;
+      const mensaje = construirMensaje();
+      const url = `https://api.whatsapp.com/send?phone=${NUMERO_DESTINO}&text=${encodeURIComponent(mensaje)}&type=phone_number&app_absent=0`;
+      window.open(url, '_blank');
+      toast('Abriendo WhatsApp…');
+    }
+
+    $('#form').addEventListener('submit', (e) => { e.preventDefault(); enviarWhatsApp(); });
+
+    // Compartir app (Web Share API)
+    $('#shareBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (navigator.share) {
+        try { await navigator.share({ title: 'Airconekta Instalaciones', text: 'Solicita tu instalación en 1 minuto', url: location.href }); }
+        catch (err) { /* cancelado */ }
+      } else {
+        navigator.clipboard?.writeText(location.href);
+        toast('Enlace copiado');
+      }
+    });
+
+    // ——— PWA: manifest + service worker (todo en un archivo) ———
+    // Manifest dinámico
+    const manifest = {
+      name: 'Airconekta Instalaciones',
+      short_name: 'Airconekta',
+      description: 'Formulario PWA para solicitar instalación y enviar datos por WhatsApp.',
+      start_url: '.',
+      display: 'standalone',
+      background_color: '#0d122a',
+      theme_color: '#0d122a',
+      icons: [
+        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAACENn8fAAAAI0lEQVQYV2NkYGD4z0AEMGGgAQZGBgYGBhA1FIwJQ3EAAEw4AABf1g4p2n3Y3wAAAABJRU5ErkJggg==', sizes: '48x48', type: 'image/png' },
+        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAAB8Hs0fAAAAKUlEQVQ4y2NkoBAwUqifAWEGQwYGBgYwQ2oYg0EwGg0Go0GgYHxGAgA8m0g0pAKg5wAAAABJRU5ErkJggg==', sizes: '72x72', type: 'image/png' }
+      ]
+    };
+    const manBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const manURL = URL.createObjectURL(manBlob);
+    const link = document.createElement('link'); link.rel = 'manifest'; link.href = manURL; document.head.appendChild(link);
+
+    // Service Worker minimalista para cachear esta misma página y funcionar offline (básico)
+    if ('serviceWorker' in navigator) {
+      const swCode = `\n        const CACHE = 'airconekta-v1';\n        self.addEventListener('install', e => {\n          e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.registration.scope])));\n          self.skipWaiting();\n        });\n        self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });\n        self.addEventListener('fetch', e => {\n          const req = e.request;\n          if (req.method !== 'GET') return;\n          e.respondWith(\n            caches.match(req).then(r => r || fetch(req).then(res => {\n              const copy = res.clone();\n              caches.open(CACHE).then(c => c.put(req, copy));\n              return res;\n            }).catch(() => caches.match(self.registration.scope)))\n          );\n        });\n      `;
+      const swBlob = new Blob([swCode], { type: 'text/javascript' });
+      const swURL = URL.createObjectURL(swBlob);
+      navigator.serviceWorker.register(swURL).catch(()=>{});
+    }
+
+    // Botón instalar (beforeinstallprompt)
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = $('#installBtn');
+      btn.style.display = 'inline-flex';
+      btn.onclick = async () => {
+        btn.disabled = true;
+        try { await deferredPrompt.prompt(); await deferredPrompt.userChoice; }
+        finally { deferredPrompt = null; btn.style.display = 'none'; }
+      };
+    });
+  </script>
+</body>
+</html>
