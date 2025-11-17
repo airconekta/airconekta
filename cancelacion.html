@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Airconekta · Solicitar Cancelación</title>
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Formulario para solicitar cancelación de servicio y enviar datos vía WhatsApp.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%23ffffff'/%3E%3Cpath fill='%23246bff' d='M192 76a8 8 0 0 1 8 8v88a8 8 0 0 1-8 8H64a8 8 0 0 1-8-8V84a8 8 0 0 1 8-8h128zm-16 24H80v72h96V100zM92 72h72a4 4 0 0 1 0 8H92a4 4 0 1 1 0-8z'/%3E%3C/svg%3E" />
+  <style>
+    :root{
+      --bg: #ffffff;
+      --bg-2: #ffffff;
+      --ink: #0f1a2e;
+      --muted: #5b6b86;
+      --accent: #246bff;
+      --border: #cfe0ff;
+      --ok: #1f9d55;
+      --radius: 18px;
+      --shadow: 0 10px 26px rgba(16,48,96,.10);
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background:#fff;
+      color:var(--ink);
+    }
+
+    .shell{ max-width:920px; margin:0 auto; padding:24px; }
+
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:16px 18px; border-radius:var(--radius);
+      background:var(--bg-2);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+      position:sticky; top:12px; backdrop-filter:saturate(110%);
+    }
+    .brand{ display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.2px; color:var(--ink); }
+    .brand .logo{ width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:#fff; border:1px solid var(--border); color:var(--accent); }
+    .brand .logo span{ font-size:18px; }
+
+    .card{
+      margin-top:24px; padding:22px; border-radius:22px;
+      background:var(--bg-2);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow);
+    }
+
+    h1{ font-size:1.5rem; margin:0 0 6px; color:var(--ink); }
+    .lead{ color:var(--muted); margin:0 0 16px; }
+
+    form{ display:grid; grid-template-columns:repeat(12,1fr); gap:14px; }
+    .col-12{ grid-column:span 12; }
+    .col-6{ grid-column:span 6; }
+    @media (max-width:860px){ .col-6{ grid-column:span 12; } }
+
+    label{ display:block; font-size:.92rem; color:var(--muted); margin:4px 0 6px; }
+    input,textarea{
+      width:100%; padding:12px 14px; border-radius:14px;
+      border:1px solid var(--border); background:#fff; color:var(--ink);
+      outline:none; transition:border .15s ease, box-shadow .15s ease, transform .06s ease;
+      font-family:inherit; font-size:1rem;
+      resize:vertical;
+    }
+    input:focus,textarea:focus{
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px rgba(36,107,255,.12);
+      background:#fff;
+    }
+    input:active,textarea:active{ transform:translateY(.5px); }
+
+    .inline{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+
+    .btn{
+      appearance:none; cursor:pointer; user-select:none;
+      border:1px solid var(--accent); color:var(--accent);
+      background:#fff;
+      padding:12px 16px; border-radius:14px; font-weight:700; letter-spacing:.2px;
+      transition: background .15s ease, color .15s ease, box-shadow .15s ease, transform .06s ease;
+      text-decoration:none;
+      display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    }
+    .btn:hover{ background:rgba(36,107,255,.06); box-shadow:0 0 0 3px rgba(36,107,255,.12); }
+    .btn:active{ transform:translateY(1px); }
+
+    .btn-primary{
+      background:var(--accent); color:#fff; border-color:var(--accent);
+    }
+    .btn-primary:hover{ box-shadow:0 0 0 3px rgba(36,107,255,.20); }
+
+    .status{ font-size:.9rem; color:var(--muted); }
+
+    .footer{
+      margin:20px 0 0; color:var(--muted); font-size:.9rem;
+      display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+    }
+
+    .toast{
+      position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(16px); opacity:0; pointer-events:none;
+      background:#fff; color:var(--ink); padding:10px 14px; border-radius:12px;
+      border:1px solid var(--accent); box-shadow:0 8px 20px rgba(16,48,96,.10); transition:.18s ease;
+      z-index:20;
+    }
+    .toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo"><span>⚡</span></div>
+        <div>Airconekta <span style="opacity:.65;font-weight:600">Cancelación</span></div>
+      </div>
+      <div class="inline">
+        <button id="installBtn" class="btn" style="display:none">➕ Instalar</button>
+        <a class="btn" href="#" id="shareBtn" title="Compartir app">⇪ Compartir</a>
+      </div>
+    </nav>
+
+    <section class="card">
+      <h1>Solicitar cancelación</h1>
+      <p class="lead">
+        Llena los datos para solicitar la cancelación de tu servicio. Al finalizar se abrirá WhatsApp con tu información lista para enviar.
+      </p>
+
+      <form id="form" novalidate>
+        <div class="col-12">
+          <label for="nombre">Nombre completo</label>
+          <input id="nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
+        </div>
+
+        <div class="col-6">
+          <label for="telefono">Teléfono de contacto</label>
+          <input id="telefono" name="telefono" inputmode="numeric" autocomplete="tel"
+                 placeholder="10 dígitos" pattern="[0-9]{10}"
+                 title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
+        </div>
+
+        <div class="col-6">
+          <label for="fecha">Fecha en la que nos puede recibir</label>
+          <input id="fecha" name="fecha" type="date" required />
+        </div>
+
+        <div class="col-6">
+          <label for="hora">Hora en la que nos puede recibir</label>
+          <input id="hora" name="hora" type="time" required />
+        </div>
+
+        <div class="col-12">
+          <label for="domicilio">Domicilio completo del servicio</label>
+          <textarea id="domicilio" name="domicilio" rows="3"
+                    placeholder="Calle, número, colonia, ciudad, CP"
+                    required></textarea>
+        </div>
+
+        <div class="col-12">
+          <label for="motivo">Motivo de cancelación (opcional)</label>
+          <textarea id="motivo" name="motivo" rows="3"
+                    placeholder="Cuéntanos brevemente el motivo (opcional)"></textarea>
+        </div>
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary" id="sendBtn">📨 Enviar solicitud por WhatsApp</button>
+        </div>
+      </form>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </section>
+
+    <div class="footer">
+      <span>© <span id="year"></span> Airconekta</span>
+      <span style="opacity:.75">Hecho con ❤️ para clientes felices</span>
+    </div>
+  </div>
+
+  <script>
+    // Configuración
+    const NUMERO_DESTINO = "5213222108817"; // mismo número
+
+    const $ = sel => document.querySelector(sel);
+    const toast = (msg) => {
+      const t = $('#toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(()=>t.classList.remove('show'), 1800);
+    };
+
+    // Año dinámico
+    $('#year').textContent = new Date().getFullYear();
+
+    function validarFormulario() {
+      const form = $('#form');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return false;
+      }
+      const telefono = $('#telefono').value.replace(/\D+/g, '');
+      if (telefono.length !== 10) {
+        toast('El teléfono debe tener 10 dígitos');
+        $('#telefono').focus();
+        return false;
+      }
+      return true;
+    }
+
+    function construirMensaje() {
+      const nombre = $('#nombre').value.trim();
+      const telefono = $('#telefono').value.trim();
+      const fecha = $('#fecha').value;
+      const hora = $('#hora').value;
+      const domicilio = $('#domicilio').value.trim();
+      const motivo = $('#motivo').value.trim();
+
+      let msg = `Hola 👋\nMe gustaría solicitar la *cancelación* de mi servicio.\n\n`;
+      msg += `*Nombre:* ${nombre}\n`;
+      msg += `*Teléfono de contacto:* ${telefono}\n`;
+      msg += `*Domicilio completo del servicio:*\n${domicilio}\n`;
+      msg += `*Fecha en la que me pueden recibir:* ${fecha || 'No especificada'}\n`;
+      msg += `*Hora en la que me pueden recibir:* ${hora || 'No especificada'}\n`;
+      if (motivo) {
+        msg += `*Motivo de cancelación:*\n${motivo}\n`;
+      }
+      return msg;
+    }
+
+    function enviarWhatsApp() {
+      if (!validarFormulario()) return;
+      const mensaje = construirMensaje();
+      const url = `https://api.whatsapp.com/send?phone=${NUMERO_DESTINO}&text=${encodeURIComponent(mensaje)}&type=phone_number&app_absent=0`;
+      window.open(url, '_blank');
+      toast('Abriendo WhatsApp…');
+    }
+
+    $('#form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      enviarWhatsApp();
+    });
+
+    // Compartir app
+    $('#shareBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Airconekta Cancelación',
+            text: 'Formulario para solicitar cancelación de servicio',
+            url: location.href
+          });
+        } catch (err) {/* cancelado */}
+      } else {
+        navigator.clipboard?.writeText(location.href);
+        toast('Enlace copiado');
+      }
+    });
+
+    // PWA: manifest + service worker
+    const manifest = {
+      name: 'Airconekta Cancelación',
+      short_name: 'Cancelación',
+      description: 'Formulario PWA para solicitar cancelación de servicio y enviar datos por WhatsApp.',
+      start_url: './cancelacion.html',
+      display: 'standalone',
+      background_color: '#ffffff',
+      theme_color: '#ffffff',
+      icons: [
+        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAACENn8fAAAAI0lEQVQYV2NkYGD4z0AEMGGgAQZGBgYGBhA1FIwJQ3EAAEw4AABf1g4p2n3Y3wAAAABJRU5ErkJggg==', sizes: '48x48', type: 'image/png' },
+        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAAB8Hs0fAAAAKUlEQVQ4y2NkoBAwUqifAWEGQwYGBgYwQ2oYg0EwGg0Go0GgYHxGAgA8m0g0pAKg5wAAAABJRU5ErkJggg==', sizes: '72x72', type: 'image/png' }
+      ]
+    };
+    const manBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const manURL = URL.createObjectURL(manBlob);
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manURL;
+    document.head.appendChild(link);
+
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        const CACHE = 'airconekta-cancelacion-v1';
+        self.addEventListener('install', e => {
+          e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.registration.scope])));
+          self.skipWaiting();
+        });
+        self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+        self.addEventListener('fetch', e => {
+          const req = e.request;
+          if (req.method !== 'GET') return;
+          e.respondWith(
+            caches.match(req).then(r => r || fetch(req).then(res => {
+              const copy = res.clone();
+              caches.open(CACHE).then(c => c.put(req, copy));
+              return res;
+            }).catch(() => caches.match(self.registration.scope)))
+          );
+        });
+      `;
+      const swBlob = new Blob([swCode], { type: 'text/javascript' });
+      const swURL = URL.createObjectURL(swBlob);
+      navigator.serviceWorker.register(swURL).catch(()=>{});
+    }
+
+    // Botón instalar PWA
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById('installBtn');
+      btn.style.display = 'inline-flex';
+      btn.onclick = async () => {
+        btn.disabled = true;
+        try {
+          await deferredPrompt.prompt();
+          await deferredPrompt.userChoice;
+        } finally {
+          deferredPrompt = null;
+          btn.style.display = 'none';
+        }
+      };
+    });
+  </script>
+</body>
+</html>
