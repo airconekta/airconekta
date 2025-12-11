@@ -1,0 +1,215 @@
+<script>
+  // Configuración
+  const NUMERO_DESTINO = "5213222108817";
+
+  const $ = sel => document.querySelector(sel);
+  const toast = (msg) => {
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1800);
+  };
+
+  // Año dinámico
+  $('#year').textContent = new Date().getFullYear();
+
+  function validarFormulario() {
+    const form = $('#form');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return false;
+    }
+    const telefono = $('#telefono').value.replace(/\D+/g, '');
+    if (telefono.length !== 10) {
+      toast('El teléfono debe tener 10 dígitos');
+      $('#telefono').focus();
+      return false;
+    }
+    const fecha = $('#fecha').value;
+    const hora = $('#hora').value;
+    if (!fecha) {
+      toast('Selecciona una fecha');
+      $('#fecha').focus();
+      return false;
+    }
+    if (!hora) {
+      toast('Selecciona una hora disponible');
+      $('#hora').focus();
+      return false;
+    }
+    return true;
+  }
+
+  // 🔗 URL del WebApp de Google Apps Script (CÁMBIALA POR LA TUYA)
+  const CALENDAR_API_URL = "https://script.google.com/macros/s/AKfycbyv9vI_FygymYYbNw_jy-W7-O9eRto85-Vf-vgGNsejf3czO9kEuaaFdylCH9QytcQF/exec";
+
+  async function cargarHorasDisponibles() {
+    const fechaInput = $('#fecha');
+    const horaSelect = $('#hora');
+    const help = $('#horaHelp');
+
+    const date = fechaInput.value;
+    if (!date) {
+      horaSelect.innerHTML = '<option value="">Selecciona una fecha primero</option>';
+      help.textContent = '';
+      return;
+    }
+
+    // Limpia el select mientras carga
+    horaSelect.innerHTML = '<option value="">Cargando horas disponibles…</option>';
+    help.textContent = '';
+
+    try {
+      const res = await fetch(`${CALENDAR_API_URL}?date=${encodeURIComponent(date)}`);
+      const data = await res.json();
+
+      const slots = data.slots || [];
+
+      if (!slots.length) {
+        horaSelect.innerHTML = '<option value="">Sin horarios disponibles</option>';
+        help.textContent = 'No hay horarios disponibles para esa fecha (domingos u horarios ocupados).';
+        return;
+      }
+
+      // Rellena el select con las horas disponibles
+      horaSelect.innerHTML = '<option value="">Selecciona una hora</option>';
+      slots.forEach(h => {
+        const opt = document.createElement('option');
+        opt.value = h;
+        opt.textContent = h;
+        horaSelect.appendChild(opt);
+      });
+
+      help.textContent = 'Solo se muestran horarios disponibles entre 12:00 y 17:00 (sin 14:00).';
+    } catch (err) {
+      console.error(err);
+      horaSelect.innerHTML = '<option value="">Error al cargar horarios</option>';
+      help.textContent = 'No se pudo consultar la disponibilidad. Intenta de nuevo.';
+    }
+  }
+
+  // Cuando cambie la fecha, recargamos horas
+  $('#fecha').addEventListener('change', cargarHorasDisponibles);
+
+  // Opcional: si ya hay fecha al cargar, intenta cargar horas
+  if ($('#fecha').value) {
+    cargarHorasDisponibles();
+  }
+
+  function construirMensaje() {
+    const nombre = $('#nombre').value.trim();
+    const telefono = $('#telefono').value.trim();
+    const fecha = $('#fecha').value;
+    const hora = $('#hora').value; // ahora viene del <select>
+    const domicilioActual = $('#domicilioActual').value.trim();
+    const domicilioNuevo = $('#domicilioNuevo').value.trim();
+    const comentarios = $('#comentarios').value.trim();
+
+    let msg = `Hola 👋\nMe gustaría solicitar un *cambio de domicilio* de mi servicio.\n\n`;
+    msg += `*Nombre:* ${nombre}\n`;
+    msg += `*Teléfono de contacto:* ${telefono}\n`;
+    msg += `*Domicilio actual:*\n${domicilioActual}\n`;
+    msg += `*Nuevo domicilio:*\n${domicilioNuevo}\n`;
+    msg += `*Fecha en la que me pueden recibir:* ${fecha || 'No especificada'}\n`;
+    msg += `*Hora en la que me pueden recibir:* ${hora || 'No especificada'}\n`;
+    if (comentarios) {
+      msg += `*Comentarios adicionales:*\n${comentarios}\n`;
+    }
+    return msg;
+  }
+
+  function enviarWhatsApp() {
+    if (!validarFormulario()) return;
+    const mensaje = construirMensaje();
+    const url = `https://api.whatsapp.com/send?phone=${NUMERO_DESTINO}&text=${encodeURIComponent(mensaje)}&type=phone_number&app_absent=0`;
+    window.open(url, '_blank');
+    toast('Abriendo WhatsApp…');
+  }
+
+  $('#form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    enviarWhatsApp();
+  });
+
+  // Compartir app
+  $('#shareBtn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Airconekta Cambio de domicilio',
+          text: 'Formulario para solicitar cambio de domicilio de servicio',
+          url: location.href
+        });
+      } catch (err) { /* cancelado */ }
+    } else {
+      navigator.clipboard?.writeText(location.href);
+      toast('Enlace copiado');
+    }
+  });
+
+  // PWA: manifest + service worker
+  const manifest = {
+    name: 'Airconekta Cambio',
+    short_name: 'Cambio',
+    description: 'Formulario PWA para solicitar cambio de domicilio del servicio y enviar datos por WhatsApp.',
+    start_url: './cambio.html',
+    display: 'standalone',
+    background_color: '#ffffff',
+    theme_color: '#ffffff',
+    icons: [
+      { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAACENn8fAAAAI0lEQVQYV2NkYGD4z0AEMGGgAQZGBgYGBhA1FIwJQ3EAAEw4AABf1g4p2n3Y3wAAAABJRU5ErkJggg==', sizes: '48x48', type: 'image/png' },
+      { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAAB8Hs0fAAAAKUlEQVQ4y2NkoBAwUqifAWEGQwYGBgYwQ2oYg0EwGg0Go0GgYHxGAgA8m0g0pAKg5wAAAABJRU5ErkJggg==', sizes: '72x72', type: 'image/png' }
+    ]
+  };
+  const manBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+  const manURL = URL.createObjectURL(manBlob);
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = manURL;
+  document.head.appendChild(link);
+
+  if ('serviceWorker' in navigator) {
+    const swCode = `
+      const CACHE = 'airconekta-cambio-v1';
+      self.addEventListener('install', e => {
+        e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.registration.scope])));
+        self.skipWaiting();
+      });
+      self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
+      self.addEventListener('fetch', e => {
+        const req = e.request;
+        if (req.method !== 'GET') return;
+        e.respondWith(
+          caches.match(req).then(r => r || fetch(req).then(res => {
+            const copy = res.clone();
+            caches.open(CACHE).then(c => c.put(req, copy));
+            return res;
+          }).catch(() => caches.match(self.registration.scope)))
+        );
+      });
+    `;
+    const swBlob = new Blob([swCode], { type: 'text/javascript' });
+    const swURL = URL.createObjectURL(swBlob);
+    navigator.serviceWorker.register(swURL).catch(() => {});
+  }
+
+  // Botón instalar PWA
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const btn = document.getElementById('installBtn');
+    btn.style.display = 'inline-flex';
+    btn.onclick = async () => {
+      btn.disabled = true;
+      try {
+        await deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+      } finally {
+        deferredPrompt = null;
+        btn.style.display = 'none';
+      }
+    };
+  });
+</script>
