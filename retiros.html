@@ -1,183 +1,120 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Airconekta · Retiros (3+ adeudos)</title>
-  <meta name="theme-color" content="#ffffff" />
-  <style>
-    :root{
-      --bg:#fff; --ink:#0f1a2e; --muted:#5b6b86; --accent:#246bff; --border:#cfe0ff;
-      --radius:18px; --shadow:0 10px 26px rgba(16,48,96,.10);
-    }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0; font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; background:#fff; color:var(--ink)}
-    .shell{max-width:1200px; margin:0 auto; padding:24px}
-    .nav{
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-      padding:14px 16px; border-radius:var(--radius); background:#fff;
-      border:1px solid var(--border); box-shadow:var(--shadow);
-      position:sticky; top:12px; z-index:10;
-    }
-    .brand{display:flex; gap:12px; align-items:center; font-weight:900}
-    .logo{width:36px; height:36px; border-radius:12px; display:grid; place-items:center; border:1px solid var(--border); color:var(--accent)}
-    .card{margin-top:18px; padding:18px; border-radius:22px; background:#fff; border:1px solid var(--border); box-shadow:var(--shadow)}
-    .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-    input[type="search"]{
-      flex:1 1 360px; padding:12px 14px; border-radius:14px; border:1px solid var(--border);
-      outline:none;
-    }
-    input[type="search"]:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(36,107,255,.12)}
-    .pill{padding:8px 10px; border:1px solid var(--border); border-radius:999px; color:var(--muted); font-size:.9rem}
-    .btn{
-      appearance:none; cursor:pointer; user-select:none;
-      border:1px solid var(--accent); color:var(--accent); background:#fff;
-      padding:10px 12px; border-radius:12px; font-weight:900;
-    }
-    .btn:disabled{opacity:.55; cursor:not-allowed}
-    .ok{color:#1f9d55; font-weight:900}
-    .muted{color:var(--muted)}
-    .tableWrap{overflow:auto; border:1px solid var(--border); border-radius:16px}
-    table{width:100%; border-collapse:separate; border-spacing:0}
-    th,td{padding:12px 10px; border-bottom:1px solid #eef3ff; vertical-align:top; text-align:left; font-size:.95rem; white-space:nowrap}
-    th{color:var(--muted); font-weight:800; background:#fbfcff; position:sticky; top:0}
-    td.addr{white-space:normal; min-width:280px}
-    .toast{
-      position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(16px);
-      opacity:0; pointer-events:none; background:#fff; color:var(--ink);
-      padding:10px 14px; border-radius:12px; border:1px solid var(--accent);
-      box-shadow:0 8px 20px rgba(16,48,96,.10); transition:.18s ease;
-    }
-    .toast.show{transform:translateX(-50%) translateY(0); opacity:1}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Airconekta · Retiros (3+)</title>
+
+<style>
+:root{
+  --ink:#0f1a2e;--muted:#5b6b86;--accent:#246bff;--border:#cfe0ff;
+}
+body{margin:0;font:16px system-ui;background:#fff;color:var(--ink)}
+.wrap{max-width:1200px;margin:auto;padding:20px}
+.top{position:sticky;top:0;background:#fff;padding-bottom:10px}
+input{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{border-bottom:1px solid #eef3ff;padding:10px;text-align:left}
+th{color:var(--muted)}
+button{border:1px solid var(--accent);background:#fff;color:var(--accent);
+padding:6px 10px;border-radius:10px;font-weight:800;cursor:pointer}
+button:disabled{opacity:.5}
+.ok{color:#1f9d55;font-weight:800}
+.muted{color:var(--muted)}
+</style>
 </head>
+
 <body>
-  <div class="shell">
-    <nav class="nav">
-      <div class="brand">
-        <div class="logo">📡</div>
-        <div>Airconekta <span class="muted" style="font-weight:800">Retiros (3+)</span></div>
-      </div>
-      <div class="pill" id="status">Cargando…</div>
-    </nav>
-
-    <section class="card">
-      <div class="row" style="margin-bottom:12px">
-        <input id="q" type="search" placeholder="Buscar por dirección, teléfono, plan…" />
-        <span class="pill">Escribe: 322 | Premium | data</span>
-      </div>
-
-      <div class="tableWrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Dirección</th>
-              <th>Plan Internet</th>
-              <th>Teléfono</th>
-              <th>Plan Precio</th>
-              <th>Pagos Pendientes</th>
-              <th>Adeudos</th>
-              <th>Comentario</th>
-              <th>Acción</th>
-            </tr>
-          </thead>
-          <tbody id="tb"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div class="wrap">
+  <div class="top">
+    <h2>📡 Airconekta – Retiros (3+)</h2>
+    <input id="q" placeholder="Buscar por dirección, teléfono, plan…">
+    <div id="status" class="muted">Cargando…</div>
   </div>
 
+  <table>
+    <thead>
+      <tr>
+        <th>Dirección</th>
+        <th>Plan Internet</th>
+        <th>Telefono</th>
+        <th>Plan Precio</th>
+        <th>Pagos Pendientes</th>
+        <th>Adeudos</th>
+        <th>Comentario</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="tb"></tbody>
+  </table>
+</div>
+
 <script>
-  // ✅ TU API (ya pegada)
-  const API_URL = "https://script.google.com/macros/s/AKfycby8qc5AgT41fPAZptqAoJXlDQWrFrkqU759QE8lOMQ2gle3x4LqdPORzr8BziR-Z1mF/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxdjU-AkaRFJxx3vveFzQ9G30cgjEzSFm4ARCb9S0kP9U9eGTx23lVlNITYfmqlYyNS/exec";
+const API_KEY = "retiros2025x"; // ⚠️ MISMA CLAVE QUE APPS SCRIPT
 
-  // ⚠️ PON AQUÍ LA MISMA CLAVE QUE PUSISTE EN APPS SCRIPT
-  const API_KEY = "retiros2025x";
+const tb = document.getElementById("tb");
+const q  = document.getElementById("q");
+const statusEl = document.getElementById("status");
 
-  const $ = s => document.querySelector(s);
-  const tb = $("#tb");
-  const toast = (msg) => { const t=$("#toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"), 1600); };
+let rows = [];
 
-  let allRows = [];
+const norm = v => String(v ?? "").toLowerCase();
 
-  const COLS = ["Dirección","Plan Internet","Telefono","Plan Precio","Pagos Pendientes","Adeudos","Comentario"];
+async function load(){
+  statusEl.textContent = "Cargando…";
+  const r = await fetch(API_URL + "?key=" + API_KEY);
+  const j = await r.json();
+  if(!j.ok) throw j;
+  rows = j.rows || [];
+  render();
+}
 
-  const norm = v => String(v ?? "").toLowerCase().trim();
-  const esc  = s => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function render(){
+  const f = norm(q.value);
+  const data = !f ? rows : rows.filter(r =>
+    norm(r["Dirección"]).includes(f) ||
+    norm(r["Telefono"]).includes(f) ||
+    norm(r["Plan Internet"]).includes(f)
+  );
 
-  async function load(){
-    $("#status").textContent = "Cargando…";
-    const res = await fetch(API_URL + "?key=" + encodeURIComponent(API_KEY));
-    const data = await res.json();
-    if(!data.ok) throw new Error(data.error || "error");
+  statusEl.textContent = `Mostrando ${data.length} de ${rows.length}`;
 
-    allRows = data.rows || [];
-    render();
-  }
+  tb.innerHTML = data.map(r=>{
+    const c = String(r["Comentario"]||"").trim();
+    const marked = c.length>0;
 
-  function render(){
-    const q = norm($("#q").value);
-    const rows = !q ? allRows : allRows.filter(r => {
-      // busca en las columnas principales
-      return COLS.some(c => norm(r[c]).includes(q));
-    });
+    return `
+    <tr>
+      <td>${r["Dirección"]||""}</td>
+      <td>${r["Plan Internet"]||""}</td>
+      <td>${r["Telefono"]||""}</td>
+      <td>${r["Plan Precio"]||""}</td>
+      <td>${r["Pagos Pendientes"]||""}</td>
+      <td><b>${r["Adeudos"]||""}</b></td>
+      <td>${marked?`<span class="ok">${c}</span>`:`<span class="muted">—</span>`}</td>
+      <td>
+        <button ${marked?"disabled":""}
+          onclick="mark(${r._row})">
+          ${marked?"Listo":"RETIRADO"}
+        </button>
+      </td>
+    </tr>`;
+  }).join("");
+}
 
-    $("#status").textContent = `Mostrando: ${rows.length} / ${allRows.length}`;
-
-    tb.innerHTML = rows.map(r => {
-      const comentario = String(r["Comentario"] ?? "").trim();
-      const marked = comentario.length > 0;
-
-      return `
-        <tr>
-          <td class="addr">${esc(r["Dirección"] ?? "")}</td>
-          <td>${esc(r["Plan Internet"] ?? "")}</td>
-          <td>${esc(String(r["Telefono"] ?? ""))}</td>
-          <td>${esc(String(r["Plan Precio"] ?? ""))}</td>
-          <td>${esc(String(r["Pagos Pendientes"] ?? ""))}</td>
-          <td><b>${esc(String(r["Adeudos"] ?? ""))}</b></td>
-          <td>${marked ? `<span class="ok">${esc(comentario)}</span>` : `<span class="muted">—</span>`}</td>
-          <td>
-            <button class="btn" ${marked ? "disabled" : ""} onclick="markRetirado(${r._row})">
-              ${marked ? "Listo" : "Marcar RETIRADO"}
-            </button>
-          </td>
-        </tr>
-      `;
-    }).join("");
-  }
-
-  async function markRetirado(rowNum){
-    if(!confirm("¿Confirmas marcar como RETIRADO? (solo una vez)")) return;
-
-    const res = await fetch(API_URL, {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ key: API_KEY, row: rowNum, action: "RETIRADO" })
-    });
-
-    const data = await res.json();
-    if(!data.ok){
-      if(data.error === "already_marked") toast("Ya estaba marcado.");
-      else toast("Error: " + (data.error || "desconocido"));
-      await load();
-      return;
-    }
-
-    toast("RETIRADO ✅ guardado");
-    await load();
-  }
-  window.markRetirado = markRetirado;
-
-  $("#q").addEventListener("input", render);
-
-  load().catch(err => {
-    console.error(err);
-    $("#status").textContent = "Error al cargar";
-    toast("No cargó. Revisa API_KEY o permisos del deploy.");
+async function mark(row){
+  if(!confirm("¿Marcar como RETIRADO?")) return;
+  await fetch(API_URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({key:API_KEY,row,action:"RETIRADO"})
   });
+  load();
+}
+
+q.addEventListener("input",render);
+load().catch(()=>statusEl.textContent="ERROR: API_KEY o permisos");
 </script>
 </body>
 </html>
