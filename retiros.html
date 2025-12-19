@@ -14,8 +14,10 @@ body{margin:0;font:16px system-ui;background:#fff;color:var(--ink)}
 .top{position:sticky;top:0;background:#fff;padding-bottom:10px}
 input{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px}
 table{width:100%;border-collapse:collapse;margin-top:12px}
-th,td{border-bottom:1px solid #eef3ff;padding:10px;text-align:left}
-th{color:var(--muted)}
+th,td{border-bottom:1px solid #eef3ff;padding:10px;text-align:left;vertical-align:top}
+th{color:var(--muted); user-select:none; cursor:pointer; white-space:nowrap}
+th.sort-active{color:var(--ink)}
+th .arrow{font-size:.85em; margin-left:6px; opacity:.75}
 button{border:1px solid var(--accent);background:#fff;color:var(--accent);
 padding:6px 10px;border-radius:10px;font-weight:800;cursor:pointer}
 button:disabled{opacity:.5}
@@ -35,15 +37,15 @@ button:disabled{opacity:.5}
   <table>
     <thead>
       <tr>
-        <th>Dirección</th>
-        <th>Barrio/Localidad</th>
-        <th>Plan Internet</th>
-        <th>Telefono</th>
-        <th>Plan Precio</th>
-        <th>Pagos Pendientes</th>
-        <th>Adeudos</th>
-        <th>Comentario</th>
-        <th></th>
+        <th data-col="Dirección">Dirección <span class="arrow" id="a-Dirección"></span></th>
+        <th data-col="Barrio/Localidad">Barrio/Localidad <span class="arrow" id="a-Barrio/Localidad"></span></th>
+        <th data-col="Plan Internet">Plan Internet <span class="arrow" id="a-Plan Internet"></span></th>
+        <th data-col="Telefono">Telefono <span class="arrow" id="a-Telefono"></span></th>
+        <th data-col="Plan Precio">Plan Precio <span class="arrow" id="a-Plan Precio"></span></th>
+        <th data-col="Pagos Pendientes">Pagos Pendientes <span class="arrow" id="a-Pagos Pendientes"></span></th>
+        <th data-col="Adeudos">Adeudos <span class="arrow" id="a-Adeudos"></span></th>
+        <th data-col="Comentario">Comentario <span class="arrow" id="a-Comentario"></span></th>
+        <th>Acción</th>
       </tr>
     </thead>
     <tbody id="tb"></tbody>
@@ -52,34 +54,58 @@ button:disabled{opacity:.5}
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzyys9F3FAGxnJEBCkYXOMH16xMFaouuThHahpa7rjzfTp-YTpY4J95U-n7v0f7l2U4/exec";
-const API_KEY = "retiros2025x"; // ⚠️ MISMA CLAVE QUE APPS SCRIPT
+const API_KEY = "retiros2025x";
 
 const tb = document.getElementById("tb");
 const q  = document.getElementById("q");
 const statusEl = document.getElementById("status");
 
-let rows = [];
+let rows = [];          // data actual (con _row)
+let rowsOriginal = [];  // copia en orden original
+let sortState = { col: null, mode: 0 }; // 0=original, 1=asc, 2=desc
 
-const norm = v => String(v ?? "").toLowerCase();
+const norm = v => String(v ?? "").toLowerCase().trim();
+
+// Para ordenar números bien (precio, pagos, adeudos)
+function toNum(v){
+  if (typeof v === "number") return v;
+  const s = String(v ?? "");
+  const nums = s.replace(/,/g,' ').match(/\d+(?:\.\d+)?/g);
+  if(!nums || !nums.length) return 0;
+  return parseFloat(nums[nums.length-1]) || 0;
+}
 
 async function load(){
   statusEl.textContent = "Cargando…";
-  const r = await fetch(API_URL + "?key=" + API_KEY);
+  const r = await fetch(API_URL + "?key=" + encodeURIComponent(API_KEY));
   const j = await r.json();
   if(!j.ok) throw j;
-  rows = j.rows || [];
+
+  // Guardamos el orden original tal como viene del servidor
+  rows = (j.rows || []).map((x, i) => ({...x, _origIndex: i}));
+  rowsOriginal = rows.slice();
+
+  // reset sort a original cuando recargue
+  sortState = { col: null, mode: 0 };
+  updateArrows();
   render();
 }
 
-function render(){
+function getFiltered(){
   const f = norm(q.value);
-  const data = !f ? rows : rows.filter(r =>
+  if (!f) return rows.slice();
+
+  return rows.filter(r =>
     norm(r["Dirección"]).includes(f) ||
     norm(r["Barrio/Localidad"]).includes(f) ||
     norm(r["Telefono"]).includes(f) ||
-    norm(r["Plan Internet"]).includes(f)
+    norm(r["Plan Internet"]).includes(f) ||
+    norm(r["Comentario"]).includes(f)
   );
+}
 
+function render(){
+  const data = getFiltered();
   statusEl.textContent = `Mostrando ${data.length} de ${rows.length}`;
 
   tb.innerHTML = data.map(r=>{
@@ -106,6 +132,63 @@ function render(){
   }).join("");
 }
 
+function applySort(col, mode){
+  // mode: 0 original, 1 asc, 2 desc
+  if (mode === 0){
+    rows = rowsOriginal.slice();
+    return;
+  }
+
+  const numericCols = new Set(["Plan Precio","Pagos Pendientes","Adeudos"]);
+
+  rows.sort((a,b)=>{
+    let av = a[col], bv = b[col];
+
+    if (numericCols.has(col)){
+      av = toNum(av); bv = toNum(bv);
+      return mode === 1 ? (av - bv) : (bv - av);
+    }
+
+    av = norm(av); bv = norm(bv);
+    if (av < bv) return mode === 1 ? -1 : 1;
+    if (av > bv) return mode === 1 ? 1 : -1;
+    // desempate estable por orden original
+    return a._origIndex - b._origIndex;
+  });
+}
+
+function updateArrows(){
+  // limpia
+  document.querySelectorAll("th[data-col]").forEach(th=>{
+    th.classList.remove("sort-active");
+    const col = th.getAttribute("data-col");
+    const span = document.getElementById("a-" + col);
+    if (span) span.textContent = "";
+  });
+
+  if (!sortState.col || sortState.mode === 0) return;
+
+  const th = document.querySelector(`th[data-col="${CSS.escape(sortState.col)}"]`);
+  if (th) th.classList.add("sort-active");
+
+  const span = document.getElementById("a-" + sortState.col);
+  if (span) span.textContent = sortState.mode === 1 ? "▲" : "▼";
+}
+
+function cycleSort(col){
+  // si cambias de columna, inicia en asc
+  if (sortState.col !== col){
+    sortState = { col, mode: 1 };
+  } else {
+    // 1->2->0->1...
+    sortState.mode = (sortState.mode === 1) ? 2 : (sortState.mode === 2) ? 0 : 1;
+  }
+
+  applySort(sortState.col, sortState.mode);
+  updateArrows();
+  render();
+}
+
 async function mark(row){
   if(!confirm("¿Marcar como RETIRADO?")) return;
   await fetch(API_URL,{
@@ -116,8 +199,20 @@ async function mark(row){
   load();
 }
 
-q.addEventListener("input",render);
-load().catch(()=>statusEl.textContent="ERROR: API_KEY o permisos");
+q.addEventListener("input", render);
+
+// Click en headers para ordenar
+document.querySelectorAll("th[data-col]").forEach(th=>{
+  th.addEventListener("click", ()=>{
+    const col = th.getAttribute("data-col");
+    cycleSort(col);
+  });
+});
+
+load().catch((e)=>{
+  console.error(e);
+  statusEl.textContent="ERROR: API_KEY o permisos";
+});
 </script>
 </body>
 </html>
