@@ -28,7 +28,7 @@ button:disabled{opacity:.5}
 <div class="wrap">
   <div class="top">
     <h2>📡 Airconekta – Retiros (3+)</h2>
-    <input id="q" placeholder="Buscar por dirección, teléfono, plan…">
+    <input id="q" placeholder="Buscar por dirección, barrio, teléfono, plan…">
     <div id="status" class="muted">Cargando…</div>
   </div>
 
@@ -36,6 +36,7 @@ button:disabled{opacity:.5}
     <thead>
       <tr>
         <th>Dirección</th>
+        <th>Barrio/Localidad</th>
         <th>Plan Internet</th>
         <th>Telefono</th>
         <th>Plan Precio</th>
@@ -50,7 +51,7 @@ button:disabled{opacity:.5}
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzZOHrd8bliA4Ga19oiB1k6ntBw4GGjB1xqflKfLNjNkxzwCZgpjR_ZXzijB7CYnY4/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzyys9F3FAGxnJEBCkYXOMH16xMFaouuThHahpa7rjzfTp-YTpY4J95U-n7v0f7l2U4/exec";
 const API_KEY = "retiros2025x"; // ⚠️ MISMA CLAVE QUE APPS SCRIPT
 
 const tb = document.getElementById("tb");
@@ -74,6 +75,7 @@ function render(){
   const f = norm(q.value);
   const data = !f ? rows : rows.filter(r =>
     norm(r["Dirección"]).includes(f) ||
+    norm(r["Barrio/Localidad"]).includes(f) ||
     norm(r["Telefono"]).includes(f) ||
     norm(r["Plan Internet"]).includes(f)
   );
@@ -87,6 +89,7 @@ function render(){
     return `
     <tr>
       <td>${r["Dirección"]||""}</td>
+      <td>${r["Barrio/Localidad"]||""}</td>
       <td>${r["Plan Internet"]||""}</td>
       <td>${r["Telefono"]||""}</td>
       <td>${r["Plan Precio"]||""}</td>
