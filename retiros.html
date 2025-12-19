@@ -7,19 +7,50 @@
 
 <style>
 :root{
-  --ink:#0f1a2e;--muted:#5b6b86;--accent:#246bff;--border:#cfe0ff;
+  --ink:#0f1a2e; --muted:#5b6b86; --accent:#246bff; --border:#cfe0ff;
 }
 body{margin:0;font:16px system-ui;background:#fff;color:var(--ink)}
 .wrap{max-width:1200px;margin:auto;padding:20px}
-.top{position:sticky;top:0;background:#fff;padding-bottom:10px}
+.top{position:sticky;top:0;background:#fff;padding-bottom:10px;z-index:5}
 input{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px}
+
 table{width:100%;border-collapse:collapse;margin-top:12px}
 th,td{border-bottom:1px solid #eef3ff;padding:10px;text-align:left;vertical-align:top}
-th{color:var(--muted); user-select:none; cursor:pointer; white-space:nowrap}
-th.sort-active{color:var(--ink)}
-th .arrow{font-size:.85em; margin-left:6px; opacity:.75}
-button{border:1px solid var(--accent);background:#fff;color:var(--accent);
-padding:6px 10px;border-radius:10px;font-weight:800;cursor:pointer}
+th{
+  color:var(--muted);
+  user-select:none;
+  white-space:nowrap;
+  position:sticky; top:0; background:#fff; z-index:2;
+}
+
+/* ✅ estilo "botón" clickeable */
+th.sortable{
+  cursor:pointer;
+  touch-action:manipulation;
+}
+th.sortable:hover{
+  color:var(--ink);
+  background:rgba(36,107,255,.06);
+}
+th.sortable:active{
+  background:rgba(36,107,255,.12);
+}
+th.sort-active{
+  color:var(--ink);
+  background:rgba(36,107,255,.06);
+  border-bottom:2px solid rgba(36,107,255,.35);
+}
+
+th .arrow{
+  font-size:.85em;
+  margin-left:6px;
+  opacity:.85;
+}
+
+button{
+  border:1px solid var(--accent);background:#fff;color:var(--accent);
+  padding:6px 10px;border-radius:10px;font-weight:800;cursor:pointer
+}
 button:disabled{opacity:.5}
 .ok{color:#1f9d55;font-weight:800}
 .muted{color:var(--muted)}
@@ -37,14 +68,14 @@ button:disabled{opacity:.5}
   <table>
     <thead>
       <tr>
-        <th data-col="Dirección">Dirección <span class="arrow" id="a-Dirección"></span></th>
-        <th data-col="Barrio/Localidad">Barrio/Localidad <span class="arrow" id="a-Barrio/Localidad"></span></th>
-        <th data-col="Plan Internet">Plan Internet <span class="arrow" id="a-Plan Internet"></span></th>
-        <th data-col="Telefono">Telefono <span class="arrow" id="a-Telefono"></span></th>
-        <th data-col="Plan Precio">Plan Precio <span class="arrow" id="a-Plan Precio"></span></th>
-        <th data-col="Pagos Pendientes">Pagos Pendientes <span class="arrow" id="a-Pagos Pendientes"></span></th>
-        <th data-col="Adeudos">Adeudos <span class="arrow" id="a-Adeudos"></span></th>
-        <th data-col="Comentario">Comentario <span class="arrow" id="a-Comentario"></span></th>
+        <th class="sortable" data-col="Dirección">Dirección <span class="arrow" id="a-Dirección"></span></th>
+        <th class="sortable" data-col="Barrio/Localidad">Barrio/Localidad <span class="arrow" id="a-Barrio/Localidad"></span></th>
+        <th class="sortable" data-col="Plan Internet">Plan Internet <span class="arrow" id="a-Plan Internet"></span></th>
+        <th class="sortable" data-col="Telefono">Telefono <span class="arrow" id="a-Telefono"></span></th>
+        <th class="sortable" data-col="Plan Precio">Plan Precio <span class="arrow" id="a-Plan Precio"></span></th>
+        <th class="sortable" data-col="Pagos Pendientes">Pagos Pendientes <span class="arrow" id="a-Pagos Pendientes"></span></th>
+        <th class="sortable" data-col="Adeudos">Adeudos <span class="arrow" id="a-Adeudos"></span></th>
+        <th class="sortable" data-col="Comentario">Comentario <span class="arrow" id="a-Comentario"></span></th>
         <th>Acción</th>
       </tr>
     </thead>
@@ -60,13 +91,12 @@ const tb = document.getElementById("tb");
 const q  = document.getElementById("q");
 const statusEl = document.getElementById("status");
 
-let rows = [];          // data actual (con _row)
-let rowsOriginal = [];  // copia en orden original
-let sortState = { col: null, mode: 0 }; // 0=original, 1=asc, 2=desc
+let rows = [];
+let rowsOriginal = [];
+let sortState = { col: null, mode: 0 }; // 0 original, 1 asc, 2 desc
 
 const norm = v => String(v ?? "").toLowerCase().trim();
 
-// Para ordenar números bien (precio, pagos, adeudos)
 function toNum(v){
   if (typeof v === "number") return v;
   const s = String(v ?? "");
@@ -81,12 +111,10 @@ async function load(){
   const j = await r.json();
   if(!j.ok) throw j;
 
-  // Guardamos el orden original tal como viene del servidor
-  rows = (j.rows || []).map((x, i) => ({...x, _origIndex: i}));
+  rows = (j.rows || []).map((x,i)=> ({...x, _origIndex:i}));
   rowsOriginal = rows.slice();
 
-  // reset sort a original cuando recargue
-  sortState = { col: null, mode: 0 };
+  sortState = { col:null, mode:0 };
   updateArrows();
   render();
 }
@@ -94,7 +122,6 @@ async function load(){
 function getFiltered(){
   const f = norm(q.value);
   if (!f) return rows.slice();
-
   return rows.filter(r =>
     norm(r["Dirección"]).includes(f) ||
     norm(r["Barrio/Localidad"]).includes(f) ||
@@ -111,29 +138,27 @@ function render(){
   tb.innerHTML = data.map(r=>{
     const c = String(r["Comentario"]||"").trim();
     const marked = c.length>0;
-
     return `
-    <tr>
-      <td>${r["Dirección"]||""}</td>
-      <td>${r["Barrio/Localidad"]||""}</td>
-      <td>${r["Plan Internet"]||""}</td>
-      <td>${r["Telefono"]||""}</td>
-      <td>${r["Plan Precio"]||""}</td>
-      <td>${r["Pagos Pendientes"]||""}</td>
-      <td><b>${r["Adeudos"]||""}</b></td>
-      <td>${marked?`<span class="ok">${c}</span>`:`<span class="muted">—</span>`}</td>
-      <td>
-        <button ${marked?"disabled":""}
-          onclick="mark(${r._row})">
-          ${marked?"Listo":"RETIRADO"}
-        </button>
-      </td>
-    </tr>`;
+      <tr>
+        <td>${r["Dirección"]||""}</td>
+        <td>${r["Barrio/Localidad"]||""}</td>
+        <td>${r["Plan Internet"]||""}</td>
+        <td>${r["Telefono"]||""}</td>
+        <td>${r["Plan Precio"]||""}</td>
+        <td>${r["Pagos Pendientes"]||""}</td>
+        <td><b>${r["Adeudos"]||""}</b></td>
+        <td>${marked?`<span class="ok">${c}</span>`:`<span class="muted">—</span>`}</td>
+        <td>
+          <button ${marked?"disabled":""} onclick="mark(${r._row})">
+            ${marked?"Listo":"RETIRADO"}
+          </button>
+        </td>
+      </tr>
+    `;
   }).join("");
 }
 
 function applySort(col, mode){
-  // mode: 0 original, 1 asc, 2 desc
   if (mode === 0){
     rows = rowsOriginal.slice();
     return;
@@ -152,41 +177,42 @@ function applySort(col, mode){
     av = norm(av); bv = norm(bv);
     if (av < bv) return mode === 1 ? -1 : 1;
     if (av > bv) return mode === 1 ? 1 : -1;
-    // desempate estable por orden original
     return a._origIndex - b._origIndex;
   });
 }
 
 function updateArrows(){
-  // limpia
-  document.querySelectorAll("th[data-col]").forEach(th=>{
+  document.querySelectorAll("th.sortable").forEach(th=>{
     th.classList.remove("sort-active");
     const col = th.getAttribute("data-col");
     const span = document.getElementById("a-" + col);
     if (span) span.textContent = "";
   });
 
-  if (!sortState.col || sortState.mode === 0) return;
+  if (!sortState.col) return;
 
-  const th = document.querySelector(`th[data-col="${CSS.escape(sortState.col)}"]`);
+  const th = document.querySelector(`th.sortable[data-col="${CSS.escape(sortState.col)}"]`);
   if (th) th.classList.add("sort-active");
 
   const span = document.getElementById("a-" + sortState.col);
-  if (span) span.textContent = sortState.mode === 1 ? "▲" : "▼";
+  if (!span) return;
+
+  // 0 = original, 1 asc, 2 desc
+  span.textContent = sortState.mode === 1 ? "▲" : sortState.mode === 2 ? "▼" : "↺";
 }
 
 function cycleSort(col){
-  // si cambias de columna, inicia en asc
   if (sortState.col !== col){
     sortState = { col, mode: 1 };
   } else {
-    // 1->2->0->1...
     sortState.mode = (sortState.mode === 1) ? 2 : (sortState.mode === 2) ? 0 : 1;
   }
-
   applySort(sortState.col, sortState.mode);
   updateArrows();
   render();
+
+  // ✅ si quieres confirmar clicks, descomenta:
+  // console.log("sort:", sortState.col, sortState.mode);
 }
 
 async function mark(row){
@@ -201,8 +227,7 @@ async function mark(row){
 
 q.addEventListener("input", render);
 
-// Click en headers para ordenar
-document.querySelectorAll("th[data-col]").forEach(th=>{
+document.querySelectorAll("th.sortable").forEach(th=>{
   th.addEventListener("click", ()=>{
     const col = th.getAttribute("data-col");
     cycleSort(col);
