@@ -10,13 +10,13 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%23ffffff'/%3E%3Cpath fill='%23246bff' d='M192 76a8 8 0 0 1 8 8v88a8 8 0 0 1-8 8H64a8 8 0 0 1-8-8V84a8 8 0 0 1 8-8h128zm-16 24H80v72h96V100zM92 72h72a4 4 0 0 1 0 8H92a4 4 0 1 1 0-8z'/%3E%3C/svg%3E" />
   <style>
     :root{
-      --bg: #ffffff;         /* fondo base blanco */
-      --bg-2: #ffffff;       /* panel blanco */
-      --ink: #0f1a2e;        /* texto principal oscuro */
-      --muted: #5b6b86;      /* texto secundario */
-      --accent: #246bff;     /* azul de acento */
-      --border: #cfe0ff;     /* azul claro para marcos */
-      --ok: #1f9d55;         /* éxito discreto */
+      --bg: #ffffff;
+      --bg-2: #ffffff;
+      --ink: #0f1a2e;
+      --muted: #5b6b86;
+      --accent: #246bff;
+      --border: #cfe0ff;
+      --ok: #1f9d55;
       --radius: 18px;
       --shadow: 0 10px 26px rgba(16,48,96,.10);
     }
@@ -26,7 +26,7 @@
     body{
       margin:0;
       font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      background:#fff;            /* SIN degradados ni fondos oscuros */
+      background:#fff;
       color:var(--ink);
     }
 
@@ -81,6 +81,10 @@
       background:#fff;
       padding:12px 16px; border-radius:14px; font-weight:700; letter-spacing:.2px;
       transition: background .15s ease, color .15s ease, box-shadow .15s ease, transform .06s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
     }
     .btn:hover{ background:rgba(36,107,255,.06); box-shadow:0 0 0 3px rgba(36,107,255,.12); }
     .btn:active{ transform:translateY(1px); }
@@ -101,12 +105,110 @@
       position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(16px); opacity:0; pointer-events:none;
       background:#fff; color:var(--ink); padding:10px 14px; border-radius:12px;
       border:1px solid var(--accent); box-shadow:0 8px 20px rgba(16,48,96,.10); transition:.18s ease;
+      z-index:50;
     }
     .toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+
+    /* ===== Overlay selección de colonia ===== */
+    .overlay{
+      position:fixed; inset:0;
+      background:rgba(255,255,255,.92);
+      display:grid; place-items:center;
+      z-index:100;
+      padding:18px;
+    }
+    .overlay-card{
+      width:min(720px, 100%);
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    .overlay-top{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      margin-bottom:10px;
+    }
+    .overlay-title{
+      margin:0;
+      font-size:1.25rem;
+      line-height:1.2;
+    }
+    .overlay-sub{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .pill{
+      font-size:.82rem;
+      padding:6px 10px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      color:var(--muted);
+      background:#fff;
+      white-space:nowrap;
+    }
+    .col-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+    @media (max-width:680px){
+      .col-grid{ grid-template-columns:1fr; }
+    }
+    .col-btn{
+      text-align:left;
+      width:100%;
+      justify-content:flex-start;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--ink);
+      font-weight:800;
+    }
+    .col-btn small{
+      display:block;
+      font-weight:600;
+      color:var(--muted);
+      margin-top:2px;
+    }
+    .col-btn:hover{
+      background:rgba(36,107,255,.06);
+      box-shadow:0 0 0 3px rgba(36,107,255,.12);
+    }
+
+    /* Ocultar contenido hasta elegir colonia */
+    .hidden{ display:none !important; }
   </style>
 </head>
 <body>
-  <div class="shell">
+
+  <!-- Overlay colonia (se muestra primero) -->
+  <div id="coloniaOverlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="colTitle">
+    <div class="overlay-card">
+      <div class="overlay-top">
+        <div>
+          <h2 class="overlay-title" id="colTitle">Selecciona tu colonia</h2>
+          <p class="overlay-sub">Esto nos ayuda a atenderte más rápido. Luego llenas tus datos y se abre WhatsApp con el mensaje listo.</p>
+        </div>
+        <span class="pill">Airconekta ⚡</span>
+      </div>
+
+      <div class="col-grid" id="coloniaList">
+        <!-- Botones generados en JS -->
+      </div>
+
+      <div style="margin-top:14px; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <button type="button" class="btn" id="coloniaSkipBtn" title="No recomendado">⏭️ Continuar sin colonia</button>
+        <span class="status" id="coloniaStatus">Aún no has seleccionado colonia</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- App normal -->
+  <div class="shell" id="appShell" class="hidden">
     <nav class="nav">
       <div class="brand">
         <div class="logo"><span>⚡</span></div>
@@ -121,19 +223,24 @@
     <section class="card">
       <h1>Solicitar instalación</h1>
       <p class="lead">Completa tus datos. La ubicación es <strong>opcional</strong>. Al final se abrirá WhatsApp con tu información formateada.</p>
+
       <form id="form" novalidate>
+        <!-- colonia seleccionada (hidden) -->
+        <input type="hidden" id="colonia" name="colonia" />
+
         <div class="col-6">
           <label for="nombre">Nombre completo</label>
           <input id="nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
         </div>
+
         <div class="col-6">
           <label for="telefono">Teléfono</label>
           <input id="telefono" name="telefono" inputmode="numeric" autocomplete="tel" placeholder="10 dígitos" pattern="[0-9]{10}" title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
         </div>
 
         <div class="col-12">
-          <label for="direccion">Dirección</label>
-          <input id="direccion" name="direccion" placeholder="Calle, número, colonia, ciudad, CP" required autocomplete="street-address" />
+          <label for="direccion">Dirección (calle y número)</label>
+          <input id="direccion" name="direccion" placeholder="Ej: Calle Juárez 123" required autocomplete="street-address" />
         </div>
 
         <div class="col-6">
@@ -175,6 +282,7 @@
           <button type="submit" class="btn btn-primary" id="sendBtn">📨 Enviar información</button>
         </div>
       </form>
+
       <div id="toast" class="toast" role="status" aria-live="polite"></div>
     </section>
 
@@ -187,9 +295,84 @@
   <script>
     // Configuración
     const NUMERO_DESTINO = "5213222108817"; // fijo
-
     const $ = sel => document.querySelector(sel);
     const toast = (msg) => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); };
+
+    // Colonias (menú inicial)
+    const COLONIAS = [
+      "⚒️ El Canton, JAL",
+      "⚒️ Fracc. Ex Haciendas San Angel, NAY",
+      "⚒️ Fracc. La Joya / Los Mangos, NAY",
+      "⚒️ Fracc. La Mision, NAY",
+      "⚒️ Fracc. Jardin De Las Arboledas, NAY",
+      "⚒️ Fracc. Los Anhelos, NAY",
+      "⚒️ Fracc. Palma Real, NAY",
+      "⚒️ Fracc. Parque Central, NAY",
+      "⚒️ Fracc. Primavera Residencial, NAY",
+      "⚒️ Fracc. Valle Dorado, NAY",
+      "⚒️ Fracc. Valle Esmeralda, NAY",
+      "⚒️ Fracc. Valle Marlin, NAY",
+      "⚒️ Fracc. Zafiro Residencial, NAY"
+    ];
+
+    function mostrarApp() {
+      $('#coloniaOverlay').classList.add('hidden');
+      // ojo: tu shell originalmente ya está visible; aquí la hacemos visible si estaba oculta
+      const app = document.getElementById('appShell');
+      app.classList.remove('hidden');
+    }
+
+    function seleccionarColonia(col) {
+      $('#colonia').value = col;
+      try { localStorage.setItem('airconekta_colonia', col); } catch(e){}
+      toast('Colonia guardada ✅');
+      mostrarApp();
+    }
+
+    // Construir botones del overlay
+    (function initColoniaOverlay(){
+      const list = $('#coloniaList');
+      list.innerHTML = COLONIAS.map((c, i) => {
+        // separa icono+texto si quieres; aquí lo dejamos tal cual
+        return `
+          <button type="button" class="btn col-btn" data-colonia="${encodeURIComponent(c)}">
+            ${c}
+            <small>Seleccionar</small>
+          </button>
+        `;
+      }).join('');
+
+      list.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-colonia]');
+        if (!btn) return;
+        const col = decodeURIComponent(btn.getAttribute('data-colonia'));
+        seleccionarColonia(col);
+      });
+
+      // Botón "continuar sin colonia"
+      $('#coloniaSkipBtn').addEventListener('click', () => {
+        $('#colonia').value = ""; // sin colonia
+        try { localStorage.setItem('airconekta_colonia', ""); } catch(e){}
+        toast('Continuando sin colonia');
+        mostrarApp();
+      });
+
+      // Si ya había colonia guardada, saltar overlay
+      try {
+        const saved = localStorage.getItem('airconekta_colonia');
+        if (saved !== null && saved !== undefined) {
+          // si hay un valor guardado, lo aplicamos y entramos directo
+          $('#colonia').value = saved;
+          mostrarApp();
+        } else {
+          // la primera vez, ocultamos el app hasta que elijan
+          $('#appShell').classList.add('hidden');
+        }
+      } catch (e) {
+        // si falla localStorage, igual pedimos colonia
+        $('#appShell').classList.add('hidden');
+      }
+    })();
 
     // Año dinámico
     $('#year').textContent = new Date().getFullYear();
@@ -223,11 +406,13 @@
       const tel = $('#telefono').value.trim();
       const correo = $('#correo').value.trim();
       const metodo = $('#metodo').value;
+      const colonia = ($('#colonia').value || '').trim();
       const lat = $('#lat').value; const lng = $('#lng').value;
 
       let msg = `Hola 👋\nMe gustaría hablar sobre la contratación de servicio.\n\n`;
       msg += `*Nombre:* ${nombre}\n`;
-      msg += `*Dirección:* ${direccion}\n`;
+      // Dirección: calle y número + colonia al final
+      msg += `*Dirección:* ${direccion}${colonia ? `, ${colonia}` : ''}\n`;
       msg += `*Plan deseado:* ${plan}\n`;
       msg += `*Teléfono:* ${tel}\n`;
       msg += `*Correo:* ${correo}\n`;
@@ -318,4 +503,3 @@
   </script>
 </body>
 </html>
-
