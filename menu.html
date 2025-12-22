@@ -3,329 +3,435 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Airconekta · Solicitudes</title>
+  <title>Airconekta · Centro de Solicitudes</title>
   <meta name="theme-color" content="#ffffff" />
   <meta name="color-scheme" content="light">
-  <meta name="description" content="Airconekta: Instalación, cambio de domicilio o cancelación. Envía tu solicitud por WhatsApp en 1 minuto.">
+  <meta name="description" content="Centro de solicitudes Airconekta: Instalación, Cambio de domicilio y Cancelación. Envío por WhatsApp con formato listo." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%23ffffff'/%3E%3Cpath fill='%23246bff' d='M192 76a8 8 0 0 1 8 8v88a8 8 0 0 1-8 8H64a8 8 0 0 1-8-8V84a8 8 0 0 1 8-8h128zm-16 24H80v72h96V100zM92 72h72a4 4 0 0 1 0 8H92a4 4 0 1 1 0-8z'/%3E%3C/svg%3E" />
+
   <style>
     :root{
       --bg:#ffffff;
-      --bg-2:#ffffff;
+      --card:#ffffff;
       --ink:#0f1a2e;
       --muted:#5b6b86;
       --accent:#246bff;
+      --accent-2:#0b4ddb;
       --border:#cfe0ff;
       --ok:#1f9d55;
-      --warn:#f59e0b;
+      --warn:#b45309;
       --radius:18px;
       --shadow:0 10px 26px rgba(16,48,96,.10);
+      --shadow-2:0 14px 32px rgba(16,48,96,.12);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
       font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       background:var(--bg);
       color:var(--ink);
     }
-    .shell{max-width:980px;margin:0 auto;padding:24px}
+
+    .shell{ max-width:980px; margin:0 auto; padding:24px; }
+
     .nav{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:16px 18px;border-radius:var(--radius);
-      background:var(--bg-2);border:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:16px 18px;
+      border-radius:var(--radius);
+      background:var(--card);
+      border:1px solid var(--border);
       box-shadow:var(--shadow);
-      position:sticky;top:12px;backdrop-filter:saturate(110%);
+      position:sticky; top:12px;
+      backdrop-filter:saturate(110%);
       z-index:10;
     }
-    .brand{display:flex;gap:12px;align-items:center;font-weight:900;letter-spacing:.2px;color:var(--ink)}
-    .brand .logo{
-      width:36px;height:36px;border-radius:12px;display:grid;place-items:center;
-      background:#fff;border:1px solid var(--border);color:var(--accent);
-      flex:0 0 auto;
+    .brand{ display:flex; gap:12px; align-items:center; font-weight:900; letter-spacing:.2px; color:var(--ink); }
+    .logo{
+      width:36px; height:36px; border-radius:12px;
+      display:grid; place-items:center;
+      background:#fff; border:1px solid var(--border);
+      color:var(--accent);
     }
-    .brand .logo span{font-size:18px}
-    .inline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .btn{
-      appearance:none;cursor:pointer;user-select:none;
-      border:1px solid var(--accent);color:var(--accent);
-      background:#fff;
-      padding:12px 16px;border-radius:14px;font-weight:800;letter-spacing:.2px;
-      transition:background .15s ease,color .15s ease,box-shadow .15s ease,transform .06s ease;
-      text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    }
-    .btn:hover{background:rgba(36,107,255,.06);box-shadow:0 0 0 3px rgba(36,107,255,.12)}
-    .btn:active{transform:translateY(1px)}
-    .btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-    .btn-primary:hover{box-shadow:0 0 0 3px rgba(36,107,255,.20)}
-    .btn-soft{border-color:var(--border);color:var(--ink)}
-    .btn-soft:hover{background:rgba(15,26,46,.04);box-shadow:0 0 0 3px rgba(15,26,46,.06)}
+    .logo span{ font-size:18px; }
+    .brand small{ display:block; font-weight:700; color:var(--muted); letter-spacing:0; margin-top:2px; }
+    .inline{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+
     .card{
-      margin-top:24px;padding:22px;border-radius:22px;
-      background:var(--bg-2);border:1px solid var(--border);
+      margin-top:18px;
+      padding:22px;
+      border-radius:22px;
+      background:var(--card);
+      border:1px solid var(--border);
       box-shadow:var(--shadow);
     }
-    h1{font-size:1.55rem;margin:0 0 6px;color:var(--ink)}
-    .lead{color:var(--muted);margin:0 0 16px}
+
+    h1{ font-size:1.55rem; margin:0 0 6px; }
+    h2{ font-size:1.15rem; margin:0 0 10px; }
+    .lead{ color:var(--muted); margin:0 0 14px; }
+
+    .btn{
+      appearance:none;
+      cursor:pointer;
+      user-select:none;
+      border:1px solid var(--accent);
+      color:var(--accent);
+      background:#fff;
+      padding:12px 16px;
+      border-radius:14px;
+      font-weight:800;
+      letter-spacing:.2px;
+      transition: background .15s ease, color .15s ease, box-shadow .15s ease, transform .06s ease, border-color .15s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      line-height:1;
+    }
+    .btn:hover{ background:rgba(36,107,255,.06); box-shadow:0 0 0 3px rgba(36,107,255,.12); }
+    .btn:active{ transform:translateY(1px); }
+
+    .btn-primary{
+      background:var(--accent);
+      color:#fff;
+      border-color:var(--accent);
+    }
+    .btn-primary:hover{ box-shadow:0 0 0 3px rgba(36,107,255,.20); }
+
+    .btn-ghost{
+      border-color:var(--border);
+      color:var(--ink);
+      background:#fff;
+    }
+    .btn-ghost:hover{ box-shadow:0 0 0 3px rgba(207,224,255,.55); }
+
+    .status{ font-size:.92rem; color:var(--muted); }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.9rem;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--muted);
+    }
+
     .grid{
-      display:grid;grid-template-columns:repeat(12,1fr);gap:14px;
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:14px;
     }
-    .col-12{grid-column:span 12}
-    .col-6{grid-column:span 6}
-    .col-4{grid-column:span 4}
-    @media (max-width:860px){.col-6,.col-4{grid-column:span 12}}
-    label{display:block;font-size:.92rem;color:var(--muted);margin:4px 0 6px}
+    .col-12{ grid-column:span 12; }
+    .col-6{ grid-column:span 6; }
+    .col-4{ grid-column:span 4; }
+    @media (max-width:860px){
+      .col-6,.col-4{ grid-column:span 12; }
+      .shell{ padding:16px; }
+    }
+
+    label{ display:block; font-size:.92rem; color:var(--muted); margin:4px 0 6px; }
     input,select,textarea{
-      width:100%;padding:12px 14px;border-radius:14px;
-      border:1px solid var(--border);background:#fff;color:var(--ink);
-      outline:none;transition:border .15s ease,box-shadow .15s ease,transform .06s ease;
-      font-family:inherit;font-size:1rem;
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:var(--ink);
+      outline:none;
+      transition:border .15s ease, box-shadow .15s ease, transform .06s ease;
+      font:inherit;
+      resize:vertical;
     }
-    textarea{resize:vertical;min-height:92px}
     input:focus,select:focus,textarea:focus{
       border-color:var(--accent);
       box-shadow:0 0 0 3px rgba(36,107,255,.12);
     }
-    input:active,select:active,textarea:active{transform:translateY(.5px)}
-    .status{font-size:.9rem;color:var(--muted)}
-    .footer{
-      margin:20px 0 0;color:var(--muted);font-size:.9rem;
-      display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
-    }
-    .toast{
-      position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);opacity:0;pointer-events:none;
-      background:#fff;color:var(--ink);padding:10px 14px;border-radius:12px;
-      border:1px solid var(--accent);box-shadow:0 8px 20px rgba(16,48,96,.10);
-      transition:.18s ease;z-index:50;
-    }
-    .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+    input:active,select:active,textarea:active{ transform:translateY(.5px); }
 
-    /* Welcome screen */
-    .welcome{
-      position:fixed;inset:0;background:#fff;z-index:9999;
-      display:flex;flex-direction:column;
+    .divider{ height:1px; background:#eef3ff; margin:14px 0; }
+
+    .option-cards{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:12px;
+      margin-top:10px;
     }
-    .welcome-top{padding:18px 18px 10px;border-bottom:1px solid var(--border)}
-    .welcome-title{margin:0;font-size:1.35rem;color:var(--ink);font-weight:950}
-    .welcome-sub{margin:6px 0 0;color:var(--muted);font-size:.98rem}
-    .welcome-body{padding:14px 18px 18px;overflow:auto;-webkit-overflow-scrolling:touch}
-    .welcome-actions{
-      display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px;
+    @media (max-width:860px){
+      .option-cards{ grid-template-columns:1fr; }
     }
-    .choice{
-      width:100%;
+    .opt{
       border:1px solid var(--border);
       border-radius:18px;
-      padding:14px 14px;
+      padding:14px;
       background:#fff;
-      color:var(--ink);
-      text-align:left;
+      box-shadow:var(--shadow);
       cursor:pointer;
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      transition:box-shadow .15s ease, transform .06s ease, border-color .15s ease, background .15s ease;
+      text-align:left;
+      transition:transform .06s ease, box-shadow .15s ease, border-color .15s ease;
     }
-    .choice:hover{background:rgba(36,107,255,.03);box-shadow:0 0 0 3px rgba(36,107,255,.10)}
-    .choice:active{transform:translateY(1px)}
-    .choice .ico{
-      width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
-      border:1px solid var(--border);background:#fff;color:var(--accent);flex:0 0 auto;
-      font-size:18px;
-    }
-    .choice .txt{flex:1 1 auto}
-    .choice .txt strong{display:block;font-size:1.02rem}
-    .choice .txt span{display:block;color:var(--muted);font-size:.92rem;margin-top:2px}
+    .opt:hover{ box-shadow:var(--shadow-2); border-color:#b9d2ff; }
+    .opt:active{ transform:translateY(1px); }
+    .opt .title{ font-weight:900; font-size:1.05rem; margin:0; color:var(--ink); }
+    .opt .desc{ margin:6px 0 0; color:var(--muted); font-size:.95rem; }
 
     .info{
       margin-top:14px;
       border:1px solid var(--border);
       border-radius:18px;
       padding:14px;
-      background:linear-gradient(180deg, rgba(36,107,255,.05), rgba(36,107,255,0));
-    }
-    .info h3{
-      margin:0 0 10px;
-      font-size:1.05rem;
-      letter-spacing:.1px;
-    }
-    .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
-    .chip{
-      border:1px solid var(--border);
       background:#fff;
+    }
+    .info .headline{
+      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      margin-bottom:8px;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
       border-radius:999px;
-      padding:8px 10px;
-      font-weight:800;
-      font-size:.92rem;
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      color:var(--ink);
-      white-space:nowrap;
-    }
-    .chip b{color:var(--accent)}
-    .bullets{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px}
-    .bullets li{
-      display:flex;gap:10px;align-items:flex-start;
-      color:var(--ink);
-    }
-    .bullets .ok{
-      width:22px;height:22px;border-radius:8px;
-      display:grid;place-items:center;
-      border:1px solid rgba(31,157,85,.35);
-      color:var(--ok);
+      border:1px solid rgba(31,157,85,.25);
       background:rgba(31,157,85,.06);
-      flex:0 0 auto;
+      color:#0f5132;
       font-weight:900;
-    }
-    .bullets .note{
-      width:22px;height:22px;border-radius:8px;
-      display:grid;place-items:center;
-      border:1px solid rgba(245,158,11,.35);
-      color:var(--warn);
-      background:rgba(245,158,11,.06);
-      flex:0 0 auto;
-      font-weight:900;
-    }
-    .muted{color:var(--muted)}
-    .welcome-footer{
-      padding:12px 18px 18px;border-top:1px solid var(--border);
-      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
-    }
-
-    /* App hidden until welcome choice */
-    .app-hidden body{visibility:hidden}
-    .app-hidden #welcome{visibility:visible}
-
-    /* Forms */
-    .form-head{
-      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap
-    }
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      border:1px solid var(--border);
-      background:#fff;border-radius:999px;
-      padding:8px 10px;
-      font-weight:900;
-      color:var(--ink);
       font-size:.92rem;
-      white-space:nowrap;
     }
-    .hidden{display:none !important;}
+    .kpoints{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:10px;
+      margin-top:10px;
+    }
+    .k{ grid-column:span 6; border:1px solid #eef3ff; border-radius:16px; padding:12px; background:#fff; }
+    .k strong{ display:block; margin-bottom:4px; }
+    @media (max-width:860px){ .k{ grid-column:span 12; } }
+
+    .plans{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:8px;
+    }
+    @media (max-width:860px){ .plans{ grid-template-columns:1fr; } }
+    .plan{
+      border:1px solid #eef3ff;
+      border-radius:16px;
+      padding:12px;
+      background:#fff;
+    }
+    .plan .pname{ font-weight:900; margin:0; }
+    .plan .pdesc{ margin:6px 0 0; color:var(--muted); }
+    .plan .price{ margin-top:8px; font-weight:1000; color:var(--accent-2); font-size:1.1rem; }
+
+    .toast{
+      position:fixed; left:50%; bottom:24px;
+      transform:translateX(-50%) translateY(16px);
+      opacity:0; pointer-events:none;
+      background:#fff; color:var(--ink);
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid var(--accent);
+      box-shadow:0 8px 20px rgba(16,48,96,.10);
+      transition:.18s ease;
+      z-index:999;
+      max-width:min(92vw, 520px);
+      text-align:center;
+      font-weight:700;
+    }
+    .toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
+
+    .footer{
+      margin:16px 0 0;
+      color:var(--muted);
+      font-size:.9rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    /* vistas */
+    [data-view]{ display:none; }
+    [data-view].active{ display:block; }
+
+    .top-actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+
+    .mini-note{
+      border:1px dashed #cfe0ff;
+      background:#f7fbff;
+      border-radius:16px;
+      padding:12px;
+      color:var(--muted);
+      font-size:.95rem;
+    }
   </style>
 </head>
+
 <body>
-
-  <!-- Pantalla inicial -->
-  <section id="welcome" class="welcome" aria-label="Bienvenida">
-    <div class="welcome-top">
-      <h2 class="welcome-title">Bienvenidos a Airconekta</h2>
-      <p class="welcome-sub">¿Qué deseas hacer hoy? Elige una opción y te guiamos. Al final se abrirá WhatsApp con tu mensaje listo.</p>
-    </div>
-
-    <div class="welcome-body">
-      <div class="welcome-actions" role="list">
-        <button type="button" class="choice" id="chooseInstalacion" role="listitem">
-          <div class="ico">⚡</div>
-          <div class="txt">
-            <strong>Instalación</strong>
-            <span>Quiero contratar el servicio y agendar instalación.</span>
-          </div>
-        </button>
-
-        <button type="button" class="choice" id="chooseCambio" role="listitem">
-          <div class="ico">🏠</div>
-          <div class="txt">
-            <strong>Cambio de domicilio</strong>
-            <span>Me mudaré y quiero mover mi servicio.</span>
-          </div>
-        </button>
-
-        <button type="button" class="choice" id="chooseCancelacion" role="listitem">
-          <div class="ico">🧾</div>
-          <div class="txt">
-            <strong>Cancelación</strong>
-            <span>Quiero solicitar la cancelación de mi servicio.</span>
-          </div>
-        </button>
-      </div>
-
-      <!-- Info agradable debajo de la selección -->
-      <div class="info" aria-label="Información Airconekta">
-        <h3>📢 Refiere y gana</h3>
-        <div class="muted"><b>Gana $100 MXN</b> de saldo a favor por cada amigo que recomiendes y contrate. 🚀💰</div>
-
-        <div class="chips" aria-label="Planes y precios">
-          <div class="chip">⚡ <b>15 Mb</b> $300</div>
-          <div class="chip">⚡ <b>20 Mb</b> $400</div>
-          <div class="chip">⚡ <b>25 Mb</b> $600</div>
-        </div>
-
-        <ul class="bullets" aria-label="Beneficios">
-          <li><div class="ok">✓</div><div><b>Primer mes GRATIS</b> (promoción vigente al contratar).</div></li>
-          <li><div class="ok">✓</div><div><b>Sin contratos forzosos</b>: te quedas porque te gusta el servicio.</div></li>
-          <li><div class="ok">✓</div><div><b>Sin aumentos inesperados</b>: pagas siempre lo mismo.</div></li>
-          <li><div class="ok">✓</div><div><b>Internet ILIMITADO</b> y soporte técnico local y confiable.</div></li>
-          <li><div class="note">!</div><div><b>Instalación única:</b> $999 MXN (pago una sola vez).</div></li>
-          <li><div class="ok">✓</div><div><b>Empresa 100% local</b>: atención directa, sin call center y sin letras chiquitas.</div></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="welcome-footer">
-      <span class="status" id="welcomeStatus">Selecciona una opción para continuar</span>
-      <button type="button" class="btn btn-soft" id="skipWelcome">Ver opciones</button>
-    </div>
-  </section>
-
   <div class="shell">
     <nav class="nav">
       <div class="brand">
         <div class="logo"><span>⚡</span></div>
-        <div>Airconekta <span style="opacity:.65;font-weight:700">Solicitudes</span></div>
+        <div>
+          Airconekta
+          <small>Centro de solicitudes</small>
+        </div>
       </div>
+
       <div class="inline">
-        <button id="installBtn" class="btn" style="display:none">➕ Instalar</button>
-        <a class="btn" href="#" id="shareBtn" title="Compartir app">⇪ Compartir</a>
+        <!-- IMPORTANTE: este botón YA NO manda a instalación; solo abre el menú -->
+        <button class="btn btn-ghost" id="menuBtn" type="button">☰ Ver opciones</button>
+
+        <button id="installBtn" class="btn" style="display:none" type="button">➕ Instalar app</button>
+        <a class="btn" href="#" id="shareBtn" title="Compartir">⇪ Compartir</a>
       </div>
     </nav>
 
-    <!-- INSTALACIÓN -->
-    <section class="card hidden" id="cardInstalacion">
-      <div class="form-head">
+    <!-- ===== MENÚ PRINCIPAL ===== -->
+    <section class="card active" data-view="home" id="viewHome">
+      <div class="top-actions">
+        <div>
+          <h1>Bienvenidos a Airconekta</h1>
+          <p class="lead" style="margin-bottom:0">¿Qué desea?</p>
+        </div>
+        <span class="pill">📍 Empresa local · Atención directa</span>
+      </div>
+
+      <div class="option-cards" style="margin-top:14px">
+        <button class="opt" type="button" data-go="instalacion" aria-label="Ir a Instalación">
+          <p class="title">🛠️ Instalación</p>
+          <p class="desc">Solicita instalación nueva y envía tus datos por WhatsApp.</p>
+        </button>
+
+        <button class="opt" type="button" data-go="cambio" aria-label="Ir a Cambio de domicilio">
+          <p class="title">🏠 Cambio de Domicilio</p>
+          <p class="desc">Cambia tu servicio a un nuevo domicilio con fecha y hora.</p>
+        </button>
+
+        <button class="opt" type="button" data-go="cancelacion" aria-label="Ir a Cancelación">
+          <p class="title">🧾 Cancelación</p>
+          <p class="desc">Solicita cancelación y agenda la visita de retiro.</p>
+        </button>
+      </div>
+
+      <!-- ===== INFO COMERCIAL (agradable) ===== -->
+      <div class="info" aria-label="Puntos clave Airconekta">
+        <div class="headline">
+          <div class="badge">💸 Refiere y gana $100</div>
+          <div class="status">Por cada amigo que recomiendes y contrate</div>
+        </div>
+
+        <div class="mini-note">
+          🌐 <strong>AIRCONEKTA</strong> — Internet para tu hogar. <strong>Empresa 100% local</strong>, atención directa y <strong>sin letras chiquitas</strong>.
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 style="margin:0 0 8px">📶 Planes y precios (claros y sin sorpresas)</h2>
+        <div class="plans">
+          <div class="plan">
+            <p class="pname">Hasta 15 Mb</p>
+            <p class="pdesc">Ideal para hogar y uso diario.</p>
+            <div class="price">$300 MXN</div>
+          </div>
+          <div class="plan">
+            <p class="pname">Hasta 20 Mb</p>
+            <p class="pdesc">Más velocidad para varios equipos.</p>
+            <div class="price">$400 MXN</div>
+          </div>
+          <div class="plan">
+            <p class="pname">Hasta 25 Mb</p>
+            <p class="pdesc">Para quienes quieren extra rendimiento.</p>
+            <div class="price">$600 MXN</div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 style="margin:0 0 8px">🎁 Beneficios reales</h2>
+        <div class="kpoints">
+          <div class="k"><strong>✅ Primer mes GRATIS</strong><span class="status">Empieza a usar el servicio desde el primer día.</span></div>
+          <div class="k"><strong>✅ SIN contratos forzosos</strong><span class="status">Te quedas porque te gusta el servicio.</span></div>
+          <div class="k"><strong>✅ SIN aumentos inesperados</strong><span class="status">Pagas siempre lo mismo, sin sorpresas.</span></div>
+          <div class="k"><strong>✅ Internet ILIMITADO</strong><span class="status">Disfruta sin preocuparte por “topes”.</span></div>
+          <div class="k"><strong>✅ Soporte técnico local</strong><span class="status">Rápido, confiable y de frente.</span></div>
+          <div class="k"><strong>🔧 Instalación: $999 MXN</strong><span class="status">Pago único (una sola vez).</span></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="mini-note">
+          🤝 <strong>Somos una empresa local, no call center ni franquicia:</strong>
+          te atendemos directo, rápido y de frente.
+        </div>
+      </div>
+
+      <div class="footer">
+        <span>© <span id="year"></span> Airconekta</span>
+        <span style="opacity:.8">Hecho con ❤️ para clientes felices</span>
+      </div>
+    </section>
+
+    <!-- ===== INSTALACIÓN ===== -->
+    <section class="card" data-view="instalacion" id="viewInstalacion">
+      <div class="top-actions">
         <div>
           <h1>Solicitar instalación</h1>
           <p class="lead">Completa tus datos. La ubicación es <strong>opcional</strong>. Al final se abrirá WhatsApp con tu información formateada.</p>
         </div>
-        <div class="pill">⚡ Instalación</div>
+        <button class="btn btn-ghost" type="button" data-back>← Volver</button>
       </div>
 
       <form id="formInstalacion" class="grid" novalidate>
-        <input type="hidden" id="colonia" name="colonia" />
+        <input type="hidden" id="i_colonia" name="colonia" />
+
+        <div class="col-12">
+          <label for="i_coloniaSelect">Colonia (opcional)</label>
+          <select id="i_coloniaSelect" name="coloniaSelect">
+            <option value="" selected>Selecciona una colonia…</option>
+            <option>⚒️ El Canton, JAL</option>
+            <option>⚒️ Fracc. Ex Haciendas San Angel, NAY</option>
+            <option>⚒️ Fracc. La Joya / Los Mangos, NAY</option>
+            <option>⚒️ Fracc. La Mision, NAY</option>
+            <option>⚒️ Fracc. Jardin De Las Arboledas, NAY</option>
+            <option>⚒️ Fracc. Los Anhelos, NAY</option>
+            <option>⚒️ Fracc. Palma Real, NAY</option>
+            <option>⚒️ Fracc. Parque Central, NAY</option>
+            <option>⚒️ Fracc. Primavera Residencial, NAY</option>
+            <option>⚒️ Fracc. Valle Dorado, NAY</option>
+            <option>⚒️ Fracc. Valle Esmeralda, NAY</option>
+            <option>⚒️ Fracc. Valle Marlin, NAY</option>
+            <option>⚒️ Fracc. Zafiro Residencial, NAY</option>
+          </select>
+          <div class="status" id="i_coloniaStatus" style="margin-top:6px">Sin colonia seleccionada</div>
+        </div>
 
         <div class="col-6">
-          <label for="nombreI">Nombre completo</label>
-          <input id="nombreI" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
+          <label for="i_nombre">Nombre completo</label>
+          <input id="i_nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
         </div>
+
         <div class="col-6">
-          <label for="telefonoI">Teléfono</label>
-          <input id="telefonoI" name="telefono" inputmode="numeric" autocomplete="tel"
-                 placeholder="10 dígitos" pattern="[0-9]{10}" title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
+          <label for="i_telefono">Teléfono</label>
+          <input id="i_telefono" name="telefono" inputmode="numeric" autocomplete="tel"
+                 placeholder="10 dígitos" pattern="[0-9]{10}"
+                 title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
         </div>
 
         <div class="col-12">
-          <label for="direccionI">Dirección (calle y número)</label>
-          <input id="direccionI" name="direccion" placeholder="Ej: Calle Juárez 123" required autocomplete="street-address" />
+          <label for="i_direccion">Dirección (calle y número)</label>
+          <input id="i_direccion" name="direccion" placeholder="Ej: Calle Juárez 123" required autocomplete="street-address" />
         </div>
 
         <div class="col-6">
-          <label for="correoI">Correo</label>
-          <input id="correoI" name="correo" type="email" placeholder="correo@ejemplo.com" required autocomplete="email" />
+          <label for="i_correo">Correo</label>
+          <input id="i_correo" name="correo" type="email" placeholder="correo@ejemplo.com" required autocomplete="email" />
         </div>
 
         <div class="col-6">
-          <label for="metodoI">¿Cómo te enteraste?</label>
-          <select id="metodoI" name="metodo" required>
+          <label for="i_metodo">¿Cómo te enteraste?</label>
+          <select id="i_metodo" name="metodo" required>
             <option value="" disabled selected>Selecciona una opción</option>
             <option>Internet</option>
             <option>Volantes</option>
@@ -334,8 +440,8 @@
         </div>
 
         <div class="col-6">
-          <label for="planI">Plan deseado</label>
-          <select id="planI" name="plan" required>
+          <label for="i_plan">Plan deseado</label>
+          <select id="i_plan" name="plan" required>
             <option value="" disabled selected>Selecciona un plan</option>
             <option value="Plan 300 — 15 Mbps">Plan 300 — 15 Mbps</option>
             <option value="Plan 400 — 20 Mbps">Plan 400 — 20 Mbps</option>
@@ -346,231 +452,284 @@
         <div class="col-6">
           <label>Ubicación (GPS)</label>
           <div class="inline">
-            <button type="button" class="btn" id="geoBtn">📍 Obtener ubicación</button>
-            <span id="geoStatus" class="status">Sin ubicación</span>
+            <button type="button" class="btn" id="i_geoBtn">📍 Obtener ubicación</button>
+            <span id="i_geoStatus" class="status">Sin ubicación</span>
           </div>
-          <input type="hidden" id="lat" name="lat" />
-          <input type="hidden" id="lng" name="lng" />
+          <input type="hidden" id="i_lat" name="lat" />
+          <input type="hidden" id="i_lng" name="lng" />
         </div>
 
         <div class="col-12">
-          <button type="submit" class="btn btn-primary">📨 Enviar información</button>
+          <button type="submit" class="btn btn-primary" id="i_sendBtn">📨 Enviar información</button>
         </div>
       </form>
+
+      <div class="footer">
+        <span>© <span class="year"></span> Airconekta</span>
+        <span style="opacity:.8">Gracias por elegir un servicio local</span>
+      </div>
     </section>
 
-    <!-- CAMBIO -->
-    <section class="card hidden" id="cardCambio">
-      <div class="form-head">
+    <!-- ===== CAMBIO ===== -->
+    <section class="card" data-view="cambio" id="viewCambio">
+      <div class="top-actions">
         <div>
           <h1>Solicitar cambio de domicilio</h1>
-          <p class="lead">Llena los datos para solicitar el cambio de domicilio. Al finalizar se abrirá WhatsApp con tu información lista para enviar.</p>
+          <p class="lead">Al finalizar se abrirá WhatsApp con tu información lista para enviar.</p>
         </div>
-        <div class="pill">🏠 Cambio</div>
+        <button class="btn btn-ghost" type="button" data-back>← Volver</button>
       </div>
 
       <form id="formCambio" class="grid" novalidate>
         <div class="col-12">
-          <label for="nombreC">Nombre completo</label>
-          <input id="nombreC" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
+          <label for="c_nombre">Nombre completo</label>
+          <input id="c_nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
         </div>
 
         <div class="col-6">
-          <label for="telefonoC">Teléfono de contacto</label>
-          <input id="telefonoC" name="telefono" inputmode="numeric" autocomplete="tel"
-                 placeholder="10 dígitos" pattern="[0-9]{10}" title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
+          <label for="c_telefono">Teléfono de contacto</label>
+          <input id="c_telefono" name="telefono" inputmode="numeric" autocomplete="tel"
+                 placeholder="10 dígitos" pattern="[0-9]{10}"
+                 title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
         </div>
 
         <div class="col-6">
-          <label for="fechaC">Fecha en la que nos puede recibir</label>
-          <input id="fechaC" name="fecha" type="date" required />
+          <label for="c_fecha">Fecha en la que nos puede recibir</label>
+          <input id="c_fecha" name="fecha" type="date" required />
         </div>
 
         <div class="col-6">
-          <label for="horaC">Hora en la que nos puede recibir</label>
-          <input id="horaC" name="hora" type="time" required />
+          <label for="c_hora">Hora en la que nos puede recibir</label>
+          <input id="c_hora" name="hora" type="time" required />
         </div>
 
         <div class="col-12">
-          <label for="domicilioActualC">Domicilio actual completo</label>
-          <textarea id="domicilioActualC" name="domicilioActual" rows="3" placeholder="Calle, número, colonia, ciudad, CP" required></textarea>
+          <label for="c_domicilioActual">Domicilio actual completo</label>
+          <textarea id="c_domicilioActual" name="domicilioActual" rows="3"
+                    placeholder="Calle, número, colonia, ciudad, CP" required></textarea>
         </div>
 
         <div class="col-12">
-          <label for="domicilioNuevoC">Nuevo domicilio completo</label>
-          <textarea id="domicilioNuevoC" name="domicilioNuevo" rows="3" placeholder="Calle, número, colonia, ciudad, CP" required></textarea>
+          <label for="c_domicilioNuevo">Nuevo domicilio completo</label>
+          <textarea id="c_domicilioNuevo" name="domicilioNuevo" rows="3"
+                    placeholder="Calle, número, colonia, ciudad, CP" required></textarea>
         </div>
 
         <div class="col-12">
-          <label for="comentariosC">Comentarios adicionales (opcional)</label>
-          <textarea id="comentariosC" name="comentarios" rows="3" placeholder="Referencias, detalles de acceso, etc. (opcional)"></textarea>
+          <label for="c_comentarios">Comentarios adicionales (opcional)</label>
+          <textarea id="c_comentarios" name="comentarios" rows="3"
+                    placeholder="Referencias, detalles de acceso, etc. (opcional)"></textarea>
         </div>
 
         <div class="col-12">
           <button type="submit" class="btn btn-primary">📨 Enviar solicitud por WhatsApp</button>
         </div>
       </form>
+
+      <div class="footer">
+        <span>© <span class="year"></span> Airconekta</span>
+        <span style="opacity:.8">Atención local y directa</span>
+      </div>
     </section>
 
-    <!-- CANCELACIÓN -->
-    <section class="card hidden" id="cardCancelacion">
-      <div class="form-head">
+    <!-- ===== CANCELACIÓN ===== -->
+    <section class="card" data-view="cancelacion" id="viewCancelacion">
+      <div class="top-actions">
         <div>
           <h1>Solicitar cancelación</h1>
-          <p class="lead">Llena los datos para solicitar la cancelación. Al finalizar se abrirá WhatsApp con tu información lista para enviar.</p>
+          <p class="lead">Al finalizar se abrirá WhatsApp con tu información lista para enviar.</p>
         </div>
-        <div class="pill">🧾 Cancelación</div>
+        <button class="btn btn-ghost" type="button" data-back>← Volver</button>
       </div>
 
       <form id="formCancelacion" class="grid" novalidate>
         <div class="col-12">
-          <label for="nombreX">Nombre completo</label>
-          <input id="nombreX" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
+          <label for="x_nombre">Nombre completo</label>
+          <input id="x_nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
         </div>
 
         <div class="col-6">
-          <label for="telefonoX">Teléfono de contacto</label>
-          <input id="telefonoX" name="telefono" inputmode="numeric" autocomplete="tel"
-                 placeholder="10 dígitos" pattern="[0-9]{10}" title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
+          <label for="x_telefono">Teléfono de contacto</label>
+          <input id="x_telefono" name="telefono" inputmode="numeric" autocomplete="tel"
+                 placeholder="10 dígitos" pattern="[0-9]{10}"
+                 title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
         </div>
 
         <div class="col-6">
-          <label for="fechaX">Fecha en la que nos puede recibir</label>
-          <input id="fechaX" name="fecha" type="date" required />
+          <label for="x_fecha">Fecha en la que nos puede recibir</label>
+          <input id="x_fecha" name="fecha" type="date" required />
         </div>
 
         <div class="col-6">
-          <label for="horaX">Hora en la que nos puede recibir</label>
-          <input id="horaX" name="hora" type="time" required />
+          <label for="x_hora">Hora en la que nos puede recibir</label>
+          <input id="x_hora" name="hora" type="time" required />
         </div>
 
         <div class="col-12">
-          <label for="domicilioX">Domicilio completo del servicio</label>
-          <textarea id="domicilioX" name="domicilio" rows="3" placeholder="Calle, número, colonia, ciudad, CP" required></textarea>
+          <label for="x_domicilio">Domicilio completo del servicio</label>
+          <textarea id="x_domicilio" name="domicilio" rows="3"
+                    placeholder="Calle, número, colonia, ciudad, CP" required></textarea>
         </div>
 
         <div class="col-12">
-          <label for="motivoX">Motivo de cancelación (opcional)</label>
-          <textarea id="motivoX" name="motivo" rows="3" placeholder="Cuéntanos brevemente el motivo (opcional)"></textarea>
+          <label for="x_motivo">Motivo de cancelación (opcional)</label>
+          <textarea id="x_motivo" name="motivo" rows="3"
+                    placeholder="Cuéntanos brevemente el motivo (opcional)"></textarea>
         </div>
 
         <div class="col-12">
           <button type="submit" class="btn btn-primary">📨 Enviar solicitud por WhatsApp</button>
         </div>
       </form>
+
+      <div class="footer">
+        <span>© <span class="year"></span> Airconekta</span>
+        <span style="opacity:.8">Gracias por tu tiempo</span>
+      </div>
     </section>
 
-    <div class="footer">
-      <span>© <span id="year"></span> Airconekta</span>
-      <span style="opacity:.75">Empresa local · Atención directa</span>
-    </div>
   </div>
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
-    // ======================
-    // Configuración
-    // ======================
+    // =====================
+    // CONFIGURACIÓN
+    // =====================
     const NUMERO_DESTINO = "5213222108817";
 
     const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
     const toast = (msg) => {
       const t = $('#toast');
       t.textContent = msg;
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 1800);
+      setTimeout(()=>t.classList.remove('show'), 1800);
     };
 
     // Año
     $('#year').textContent = new Date().getFullYear();
+    $$('.year').forEach(el => el.textContent = new Date().getFullYear());
 
-    // Oculta la app hasta que elijan opción (welcome)
-    document.documentElement.classList.add('app-hidden');
+    // =====================
+    // NAVEGACIÓN DE VISTAS
+    // =====================
+    function showView(name){
+      $$('[data-view]').forEach(v => v.classList.remove('active'));
+      const view = document.querySelector(`[data-view="${name}"]`);
+      if (view) view.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
 
-    function enterApp(which){
-      // Oculta welcome
-      $('#welcome').style.display = 'none';
-      document.documentElement.classList.remove('app-hidden');
+    // Botón "Ver opciones" (NO debe redirigir a instalación)
+    $('#menuBtn').addEventListener('click', () => {
+      showView('home');
+      toast('Opciones listas ✅');
+    });
 
-      // Muestra tarjeta elegida
-      const cards = ['#cardInstalacion','#cardCambio','#cardCancelacion'];
-      cards.forEach(id => $(id).classList.add('hidden'));
+    // Botones del menú
+    $$('[data-go]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const v = btn.getAttribute('data-go');
+        showView(v);
+        // enfoque amigable
+        setTimeout(() => {
+          const firstInput = document.querySelector(`[data-view="${v}"] input, [data-view="${v}"] select, [data-view="${v}"] textarea`);
+          firstInput?.focus?.();
+        }, 50);
+      });
+    });
 
-      if(which === 'instalacion') {
-        $('#cardInstalacion').classList.remove('hidden');
-        setTimeout(()=>$('#nombreI')?.focus(), 50);
-      } else if(which === 'cambio') {
-        $('#cardCambio').classList.remove('hidden');
-        setTimeout(()=>$('#nombreC')?.focus(), 50);
-      } else if(which === 'cancelacion') {
-        $('#cardCancelacion').classList.remove('hidden');
-        setTimeout(()=>$('#nombreX')?.focus(), 50);
+    // Volver
+    $$('[data-back]').forEach(b => b.addEventListener('click', () => showView('home')));
+
+    // =====================
+    // COMPARTIR
+    // =====================
+    $('#shareBtn').addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: 'Airconekta · Centro de Solicitudes',
+            text: 'Instalación, Cambio de domicilio y Cancelación (WhatsApp listo)',
+            url: location.href
+          });
+        } catch (err) { /* cancelado */ }
       } else {
-        // fallback: muestra instalación
-        $('#cardInstalacion').classList.remove('hidden');
-        setTimeout(()=>$('#nombreI')?.focus(), 50);
+        try {
+          await navigator.clipboard?.writeText(location.href);
+          toast('Enlace copiado ✅');
+        } catch {
+          toast('Copia el enlace desde la barra del navegador');
+        }
       }
+    });
 
-      toast('Listo ✅');
+    // =====================
+    // INSTALACIÓN: colonia + geolocalización + envío
+    // =====================
+    const i_coloniaSelect = $('#i_coloniaSelect');
+    const i_coloniaHidden = $('#i_colonia');
+    const i_coloniaStatus = $('#i_coloniaStatus');
+
+    function setInstalacionColonia(val){
+      i_coloniaHidden.value = val || '';
+      i_coloniaStatus.textContent = val ? `Colonia: ${val}` : 'Sin colonia seleccionada';
     }
+    i_coloniaSelect.addEventListener('change', () => setInstalacionColonia(i_coloniaSelect.value));
 
-    // Botones welcome
-    $('#chooseInstalacion').addEventListener('click', () => enterApp('instalacion'));
-    $('#chooseCambio').addEventListener('click', () => enterApp('cambio'));
-    $('#chooseCancelacion').addEventListener('click', () => enterApp('cancelacion'));
-
-    // "Ver opciones" (si quieren pasar) -> muestra instalación por defecto
-    $('#skipWelcome').addEventListener('click', () => enterApp('instalacion'));
-
-    // ======================
-    // Validación común
-    // ======================
-    function validarTelefono(idTelefono){
-      const tel = (idTelefono.value || '').replace(/\D+/g,'');
-      if(tel.length !== 10){
-        toast('El teléfono debe tener 10 dígitos');
-        idTelefono.focus();
-        return null;
+    $('#i_geoBtn').addEventListener('click', () => {
+      const s = $('#i_geoStatus');
+      if (!('geolocation' in navigator)) {
+        s.textContent = 'Geolocalización no soportada';
+        toast('Tu navegador no soporta ubicación');
+        return;
       }
-      return idTelefono.value.trim();
-    }
-
-    // ======================
-    // INSTALACIÓN: Geo
-    // ======================
-    $('#geoBtn').addEventListener('click', () => {
-      const s = $('#geoStatus');
-      if (!('geolocation' in navigator)) { s.textContent = 'Geolocalización no soportada'; toast('Tu navegador no soporta ubicación'); return; }
       s.textContent = 'Obteniendo ubicación…';
       navigator.geolocation.getCurrentPosition((pos) => {
         const { latitude, longitude } = pos.coords;
-        $('#lat').value = latitude.toFixed(6);
-        $('#lng').value = longitude.toFixed(6);
-        s.textContent = `Lat ${$('#lat').value}, Lng ${$('#lng').value}`;
+        $('#i_lat').value = latitude.toFixed(6);
+        $('#i_lng').value = longitude.toFixed(6);
+        s.textContent = `Lat ${$('#i_lat').value}, Lng ${$('#i_lng').value}`;
         toast('Ubicación lista ✅');
       }, (err) => {
         console.warn(err);
         s.textContent = 'No se pudo obtener ubicación';
         toast('No se pudo obtener ubicación');
-      }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 });
+      }, { enableHighAccuracy:true, timeout:12000, maximumAge:0 });
     });
 
-    // ======================
-    // ENVÍO: Instalación
-    // ======================
-    function construirMensajeInstalacion(){
-      const nombre = $('#nombreI').value.trim();
-      const direccion = $('#direccionI').value.trim();
-      const plan = $('#planI').value;
-      const tel = $('#telefonoI').value.trim();
-      const correo = $('#correoI').value.trim();
-      const metodo = $('#metodoI').value;
-      const colonia = ($('#colonia').value || '').trim();
-      const lat = $('#lat').value;
-      const lng = $('#lng').value;
+    function validarTelefono10(idInput){
+      const raw = $(idInput).value.replace(/\D+/g, '');
+      if (raw.length !== 10) return false;
+      return true;
+    }
 
-      let msg = `Hola 👋\nMe gustaría hablar sobre la contratación de servicio (Instalación).\n\n`;
+    function abrirWhatsApp(mensaje){
+      const url = `https://api.whatsapp.com/send?phone=${NUMERO_DESTINO}&text=${encodeURIComponent(mensaje)}&type=phone_number&app_absent=0`;
+      window.open(url, '_blank');
+      toast('Abriendo WhatsApp…');
+    }
+
+    $('#formInstalacion').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = $('#formInstalacion');
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (!validarTelefono10('#i_telefono')) { toast('El teléfono debe tener 10 dígitos'); $('#i_telefono').focus(); return; }
+
+      const nombre = $('#i_nombre').value.trim();
+      const direccion = $('#i_direccion').value.trim();
+      const plan = $('#i_plan').value;
+      const tel = $('#i_telefono').value.trim();
+      const correo = $('#i_correo').value.trim();
+      const metodo = $('#i_metodo').value;
+      const colonia = (i_coloniaHidden.value || '').trim();
+      const lat = $('#i_lat').value, lng = $('#i_lng').value;
+
+      let msg = `Hola 👋\nMe gustaría hablar sobre la contratación de servicio.\n\n`;
+      msg += `*Tipo de solicitud:* Instalación\n`;
       msg += `*Nombre:* ${nombre}\n`;
       msg += `*Dirección:* ${direccion}${colonia ? `, ${colonia}` : ''}\n`;
       msg += `*Plan deseado:* ${plan}\n`;
@@ -578,34 +737,29 @@
       msg += `*Correo:* ${correo}\n`;
       msg += `*Método de contacto:* ${metodo}\n`;
       if (lat && lng) msg += `*Ubicación:* https://www.google.com/maps?q=${lat},${lng}\n`;
-      return msg;
-    }
 
-    $('#formInstalacion').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = $('#formInstalacion');
-      if(!form.checkValidity()){ form.reportValidity(); return; }
-      const telOk = validarTelefono($('#telefonoI'));
-      if(!telOk) return;
-
-      const url = `https://api.whatsapp.com/send?phone=${NUMERO_DESTINO}&text=${encodeURIComponent(construirMensajeInstalacion())}&type=phone_number&app_absent=0`;
-      window.open(url, '_blank');
-      toast('Abriendo WhatsApp…');
+      abrirWhatsApp(msg);
     });
 
-    // ======================
-    // ENVÍO: Cambio
-    // ======================
-    function construirMensajeCambio(){
-      const nombre = $('#nombreC').value.trim();
-      const telefono = $('#telefonoC').value.trim();
-      const fecha = $('#fechaC').value;
-      const hora = $('#horaC').value;
-      const domicilioActual = $('#domicilioActualC').value.trim();
-      const domicilioNuevo = $('#domicilioNuevoC').value.trim();
-      const comentarios = $('#comentariosC').value.trim();
+    // =====================
+    // CAMBIO: envío
+    // =====================
+    $('#formCambio').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = $('#formCambio');
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (!validarTelefono10('#c_telefono')) { toast('El teléfono debe tener 10 dígitos'); $('#c_telefono').focus(); return; }
+
+      const nombre = $('#c_nombre').value.trim();
+      const telefono = $('#c_telefono').value.trim();
+      const fecha = $('#c_fecha').value;
+      const hora = $('#c_hora').value;
+      const domicilioActual = $('#c_domicilioActual').value.trim();
+      const domicilioNuevo = $('#c_domicilioNuevo').value.trim();
+      const comentarios = $('#c_comentarios').value.trim();
 
       let msg = `Hola 👋\nMe gustaría solicitar un *cambio de domicilio* de mi servicio.\n\n`;
+      msg += `*Tipo de solicitud:* Cambio de domicilio\n`;
       msg += `*Nombre:* ${nombre}\n`;
       msg += `*Teléfono de contacto:* ${telefono}\n`;
       msg += `*Domicilio actual:*\n${domicilioActual}\n`;
@@ -613,80 +767,45 @@
       msg += `*Fecha en la que me pueden recibir:* ${fecha || 'No especificada'}\n`;
       msg += `*Hora en la que me pueden recibir:* ${hora || 'No especificada'}\n`;
       if (comentarios) msg += `*Comentarios adicionales:*\n${comentarios}\n`;
-      return msg;
-    }
 
-    $('#formCambio').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = $('#formCambio');
-      if(!form.checkValidity()){ form.reportValidity(); return; }
-      const telOk = validarTelefono($('#telefonoC'));
-      if(!telOk) return;
-
-      const url = `https://api.whatsapp.com/send?phone=${NUMERO_DESTINO}&text=${encodeURIComponent(construirMensajeCambio())}&type=phone_number&app_absent=0`;
-      window.open(url, '_blank');
-      toast('Abriendo WhatsApp…');
+      abrirWhatsApp(msg);
     });
 
-    // ======================
-    // ENVÍO: Cancelación
-    // ======================
-    function construirMensajeCancelacion(){
-      const nombre = $('#nombreX').value.trim();
-      const telefono = $('#telefonoX').value.trim();
-      const fecha = $('#fechaX').value;
-      const hora = $('#horaX').value;
-      const domicilio = $('#domicilioX').value.trim();
-      const motivo = $('#motivoX').value.trim();
+    // =====================
+    // CANCELACIÓN: envío
+    // =====================
+    $('#formCancelacion').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = $('#formCancelacion');
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      if (!validarTelefono10('#x_telefono')) { toast('El teléfono debe tener 10 dígitos'); $('#x_telefono').focus(); return; }
+
+      const nombre = $('#x_nombre').value.trim();
+      const telefono = $('#x_telefono').value.trim();
+      const fecha = $('#x_fecha').value;
+      const hora = $('#x_hora').value;
+      const domicilio = $('#x_domicilio').value.trim();
+      const motivo = $('#x_motivo').value.trim();
 
       let msg = `Hola 👋\nMe gustaría solicitar la *cancelación* de mi servicio.\n\n`;
+      msg += `*Tipo de solicitud:* Cancelación\n`;
       msg += `*Nombre:* ${nombre}\n`;
       msg += `*Teléfono de contacto:* ${telefono}\n`;
       msg += `*Domicilio completo del servicio:*\n${domicilio}\n`;
       msg += `*Fecha en la que me pueden recibir:* ${fecha || 'No especificada'}\n`;
       msg += `*Hora en la que me pueden recibir:* ${hora || 'No especificada'}\n`;
       if (motivo) msg += `*Motivo de cancelación:*\n${motivo}\n`;
-      return msg;
-    }
 
-    $('#formCancelacion').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = $('#formCancelacion');
-      if(!form.checkValidity()){ form.reportValidity(); return; }
-      const telOk = validarTelefono($('#telefonoX'));
-      if(!telOk) return;
-
-      const url = `https://api.whatsapp.com/send?phone=${NUMERO_DESTINO}&text=${encodeURIComponent(construirMensajeCancelacion())}&type=phone_number&app_absent=0`;
-      window.open(url, '_blank');
-      toast('Abriendo WhatsApp…');
+      abrirWhatsApp(msg);
     });
 
-    // ======================
-    // Compartir app
-    // ======================
-    $('#shareBtn').addEventListener('click', async (e) => {
-      e.preventDefault();
-      if (navigator.share) {
-        try {
-          await navigator.share({
-            title: 'Airconekta Solicitudes',
-            text: 'Instalación, cambio o cancelación — en 1 minuto',
-            url: location.href
-          });
-        } catch (err) { /* cancelado */ }
-      } else {
-        navigator.clipboard?.writeText(location.href);
-        toast('Enlace copiado');
-      }
-    });
-
-    // ======================
-    // PWA: manifest + service worker (cache básico)
-    // ======================
+    // =====================
+    // PWA (manifest + SW) simple
+    // =====================
     const manifest = {
-      name: 'Airconekta Solicitudes',
+      name: 'Airconekta Centro de Solicitudes',
       short_name: 'Airconekta',
-      description: 'PWA para Instalación, Cambio de domicilio o Cancelación. Envía datos por WhatsApp.',
+      description: 'Instalación, Cambio de domicilio y Cancelación. Envío por WhatsApp.',
       start_url: '.',
       display: 'standalone',
       background_color: '#ffffff',
@@ -696,13 +815,16 @@
         { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAAB8Hs0fAAAAKUlEQVQ4y2NkoBAwUqifAWEGQwYGBgYwQ2oYg0EwGg0Go0GgYHxGAgA8m0g0pAKg5wAAAABJRU5ErkJggg==', sizes: '72x72', type: 'image/png' }
       ]
     };
-    const manBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    const manBlob = new Blob([JSON.stringify(manifest)], { type:'application/json' });
     const manURL = URL.createObjectURL(manBlob);
-    const link = document.createElement('link'); link.rel = 'manifest'; link.href = manURL; document.head.appendChild(link);
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manURL;
+    document.head.appendChild(link);
 
     if ('serviceWorker' in navigator) {
       const swCode = `
-        const CACHE = 'airconekta-solicitudes-v1';
+        const CACHE = 'airconekta-centro-v1';
         self.addEventListener('install', e => {
           e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.registration.scope])));
           self.skipWaiting();
@@ -720,12 +842,12 @@
           );
         });
       `;
-      const swBlob = new Blob([swCode], { type: 'text/javascript' });
+      const swBlob = new Blob([swCode], { type:'text/javascript' });
       const swURL = URL.createObjectURL(swBlob);
       navigator.serviceWorker.register(swURL).catch(()=>{});
     }
 
-    // Botón instalar (PWA)
+    // Botón instalar PWA (si aplica)
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -738,6 +860,9 @@
         finally { deferredPrompt = null; btn.style.display = 'none'; }
       };
     });
+
+    // Vista inicial
+    showView('home');
   </script>
 </body>
 </html>
