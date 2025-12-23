@@ -4,304 +4,428 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Airconekta · Centro de Solicitudes</title>
-  <meta name="theme-color" content="#ffffff" />
-  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="color-scheme" content="light dark">
   <meta name="description" content="Centro de solicitudes Airconekta: Instalación, Cambio de domicilio y Cancelación. Envío por WhatsApp con formato listo." />
-  <meta name="format-detection" content="telephone=no">
-  <meta name="robots" content="index,follow">
 
-  <!-- Open Graph (mejor preview al compartir) -->
-  <meta property="og:title" content="Airconekta · Centro de Solicitudes">
-  <meta property="og:description" content="Instalación, Cambio y Cancelación. Envía por WhatsApp en 1 minuto.">
-  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23246bff'/%3E%3Cstop offset='1' stop-color='%2318c6ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='256' height='256' rx='56' fill='%230b1220'/%3E%3Cpath fill='url(%23g)' d='M140 16 68 144h60l-12 96 72-128h-60l12-96z'/%3E%3C/svg%3E" />
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23246bff'/%3E%3Cstop offset='1' stop-color='%230b4ddb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='256' height='256' rx='56' fill='%23ffffff'/%3E%3Cpath fill='url(%23g)' d='M146 30c-22 8-35 25-40 50-3 15-3 30-10 44-6 12-16 22-30 28-12 5-25 7-36 14-17 10-26 27-26 49 0 33 23 51 56 51 16 0 28-3 41-12 12-8 21-18 28-30 18-29 25-63 17-96 14 8 23 18 27 31 4 12 5 25 3 39-2 14-6 28-6 42 0 28 17 46 46 46 31 0 50-20 50-54 0-43-21-77-56-103-11-8-23-15-33-23-10-9-18-20-21-36-2-12-1-25-6-40-5-14-16-25-34-30z'/%3E%3C/svg%3E" />
-
-  <!-- Tipografía sistema (rápida) + estética 2026 -->
   <style>
+    /* =========================
+       Airconekta UI 2026
+       ========================= */
     :root{
-      --bg:#0b1020;
-      --bg2:#0a1633;
-      --card:rgba(255,255,255,.86);
-      --card2:rgba(255,255,255,.72);
-      --ink:#0f1a2e;
+      --bg: #f6f8ff;
+      --card: rgba(255,255,255,.78);
+      --card-solid:#ffffff;
+      --ink: #0f1a2e;
       --muted:#5b6b86;
 
       --accent:#246bff;
-      --accent-2:#0b4ddb;
-      --accent-3:#6d5efc;
+      --accent-2:#18c6ff;
+      --accent-3:#7c3aed;
 
-      --border:rgba(140,170,255,.35);
+      --border: rgba(207,224,255,.85);
+      --border-2: rgba(255,255,255,.55);
+
       --ok:#16a34a;
       --warn:#b45309;
 
-      --radius:18px;
-      --radius2:22px;
+      --radius: 18px;
+      --radius-2: 22px;
 
-      --shadow:0 18px 50px rgba(0,0,0,.22);
-      --shadow2:0 14px 32px rgba(16,48,96,.16);
+      --shadow: 0 14px 40px rgba(16,48,96,.12);
+      --shadow-2: 0 18px 60px rgba(16,48,96,.16);
 
-      --focus:0 0 0 4px rgba(36,107,255,.18);
-      --max:1040px;
+      --ring: 0 0 0 4px rgba(36,107,255,.16);
+
+      --maxw: 1040px;
+    }
+
+    /* Dark mode tokens */
+    :root[data-theme="dark"]{
+      --bg: #070b14;
+      --card: rgba(12,18,34,.72);
+      --card-solid:#0b1220;
+      --ink: #e9eefc;
+      --muted:#a9b6d6;
+      --border: rgba(60,86,140,.35);
+      --border-2: rgba(255,255,255,.08);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --shadow-2: 0 28px 90px rgba(0,0,0,.55);
+      --ring: 0 0 0 4px rgba(24,198,255,.18);
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
-      font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      color:#0b1220;
+      font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      color:var(--ink);
       background:
-        radial-gradient(1200px 800px at 15% 10%, rgba(36,107,255,.32), transparent 55%),
-        radial-gradient(1100px 700px at 85% 0%, rgba(109,94,252,.22), transparent 55%),
-        radial-gradient(900px 600px at 50% 100%, rgba(11,77,219,.20), transparent 60%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
+        radial-gradient(900px 500px at 10% -10%, rgba(36,107,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 110% 10%, rgba(24,198,255,.14), transparent 55%),
+        radial-gradient(900px 500px at 50% 115%, rgba(124,58,237,.12), transparent 60%),
+        var(--bg);
       overflow-x:hidden;
     }
 
-    /* contenedor */
-    .shell{ max-width:var(--max); margin:0 auto; padding:22px; }
+    /* Subtle grid texture */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 38px 38px;
+      opacity: .25;
+      pointer-events:none;
+      mix-blend-mode: overlay;
+    }
+    :root[data-theme="dark"] body::before{ opacity:.10; }
 
-    /* “glass” moderno */
-    .glass{
-      background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
-      border:1px solid var(--border);
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(14px) saturate(125%);
-      -webkit-backdrop-filter: blur(14px) saturate(125%);
+    a{ color:inherit; }
+
+    .shell{ max-width:var(--maxw); margin:0 auto; padding:24px; position:relative; }
+
+    /* =========================
+       Splash Screen
+       ========================= */
+    .splash{
+      position:fixed; inset:0;
+      display:grid; place-items:center;
+      background:
+        radial-gradient(900px 520px at 20% 15%, rgba(36,107,255,.28), transparent 60%),
+        radial-gradient(900px 520px at 85% 25%, rgba(24,198,255,.22), transparent 55%),
+        radial-gradient(900px 520px at 45% 100%, rgba(124,58,237,.18), transparent 60%),
+        linear-gradient(180deg, #070b14, #0b1220);
+      z-index:9999;
+      transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
+    }
+    .splash.hide{
+      opacity:0;
+      transform: translateY(-6px);
+      visibility:hidden;
+      pointer-events:none;
+    }
+    .splash-card{
+      width:min(92vw, 560px);
+      border-radius: 28px;
+      padding: 28px 22px;
+      text-align:center;
+      color:#eaf2ff;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(10,16,30,.55);
+      box-shadow: 0 30px 90px rgba(0,0,0,.6);
+      backdrop-filter: blur(14px) saturate(120%);
+    }
+    .splash-logo{
+      width: 88px; height: 88px;
+      margin: 0 auto 10px;
+      border-radius: 26px;
+      display:grid; place-items:center;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      position:relative;
+      overflow:hidden;
+    }
+    .splash-logo::before{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 0deg,
+        rgba(36,107,255,.0),
+        rgba(36,107,255,.6),
+        rgba(24,198,255,.55),
+        rgba(124,58,237,.55),
+        rgba(36,107,255,.0)
+      );
+      animation: spin 2.4s linear infinite;
+      filter: blur(0px);
+      opacity:.9;
+    }
+    .splash-logo span{
+      position:relative;
+      width: 62px; height: 62px;
+      border-radius: 22px;
+      display:grid; place-items:center;
+      background: rgba(11,18,32,.92);
+      border:1px solid rgba(255,255,255,.12);
+      font-size: 30px;
+    }
+    .splash-title{
+      font-weight: 1000;
+      letter-spacing: .6px;
+      font-size: clamp(2.0rem, 4.2vw, 3.0rem);
+      margin: 8px 0 6px;
+    }
+    .splash-sub{
+      margin: 0;
+      color: rgba(233,238,252,.78);
+      font-weight: 700;
+    }
+    .splash-bar{
+      height: 10px;
+      margin: 16px auto 0;
+      border-radius: 999px;
+      width: min(380px, 82%);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .splash-bar > i{
+      display:block;
+      height:100%;
+      width: 40%;
+      background: linear-gradient(90deg, rgba(36,107,255,.15), rgba(36,107,255,.85), rgba(24,198,255,.85));
+      border-radius: 999px;
+      animation: load 1.1s ease-in-out infinite;
+      filter: drop-shadow(0 6px 14px rgba(36,107,255,.20));
+    }
+    @keyframes load{
+      0%{ transform: translateX(-30%); opacity:.65; }
+      50%{ transform: translateX(120%); opacity:1; }
+      100%{ transform: translateX(260%); opacity:.65; }
+    }
+    @keyframes spin{ to{ transform: rotate(360deg);} }
+
+    @media (prefers-reduced-motion: reduce){
+      .splash-logo::before, .splash-bar > i{ animation:none !important; }
+      .splash{ transition:none; }
     }
 
-    /* top nav */
+    /* =========================
+       Top nav
+       ========================= */
     .nav{
       display:flex; align-items:center; justify-content:space-between; gap:12px;
       padding:14px 16px;
-      border-radius:var(--radius2);
+      border-radius: 22px;
+      border:1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
       position:sticky; top:12px;
+      backdrop-filter: blur(14px) saturate(140%);
       z-index:10;
     }
 
     .brand{
       display:flex; gap:12px; align-items:center;
-      font-weight:1000;
-      letter-spacing:.2px;
-      color:#0b1220;
-      min-width: 220px;
+      font-weight: 1000; letter-spacing: .2px;
     }
     .logo{
-      width:40px; height:40px; border-radius:14px;
+      width: 40px; height: 40px; border-radius: 14px;
       display:grid; place-items:center;
-      background:linear-gradient(135deg, rgba(36,107,255,.14), rgba(109,94,252,.10));
-      border:1px solid rgba(36,107,255,.25);
-      color:var(--accent-2);
-      box-shadow:0 10px 24px rgba(36,107,255,.10);
+      background: linear-gradient(135deg, rgba(36,107,255,.18), rgba(24,198,255,.14));
+      border:1px solid var(--border-2);
+      box-shadow: 0 10px 26px rgba(16,48,96,.10);
+      position:relative;
+      overflow:hidden;
     }
-    .logo span{ font-size:18px; }
+    .logo::before{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 0deg,
+        rgba(36,107,255,.0),
+        rgba(36,107,255,.55),
+        rgba(24,198,255,.55),
+        rgba(124,58,237,.55),
+        rgba(36,107,255,.0)
+      );
+      opacity:.55;
+      animation: spin 6.5s linear infinite;
+    }
+    .logo span{ position:relative; font-size:18px; }
     .brand small{
       display:block;
       font-weight:800;
-      color:rgba(15,26,46,.72);
-      margin-top:2px;
+      color:var(--muted);
       letter-spacing:0;
+      margin-top:2px;
     }
 
     .inline{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
 
-    /* Card principal */
+    /* =========================
+       Cards / typography
+       ========================= */
     .card{
-      margin-top:16px;
-      padding:20px;
-      border-radius:26px;
+      margin-top:18px;
+      padding:22px;
+      border-radius: 26px;
+      border:1px solid var(--border);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px) saturate(140%);
     }
 
-    /* Tipografía */
-    h1{ font-size:1.55rem; margin:0 0 6px; letter-spacing:-.2px; }
-    h2{ font-size:1.12rem; margin:0 0 10px; letter-spacing:-.15px; }
-    .lead{ color:rgba(15,26,46,.72); margin:0 0 14px; }
+    h1{ font-size:1.6rem; margin:0 0 6px; letter-spacing:.2px; }
+    h2{ font-size:1.15rem; margin:0 0 10px; }
+    .lead{ color:var(--muted); margin:0 0 14px; }
 
-    /* Botones */
+    /* =========================
+       Buttons
+       ========================= */
     .btn{
       appearance:none;
       cursor:pointer;
       user-select:none;
-      border:1px solid rgba(36,107,255,.35);
-      color:#0b1220;
-      background:rgba(255,255,255,.70);
+      border:1px solid rgba(36,107,255,.65);
+      color:var(--ink);
+      background: rgba(255,255,255,.55);
       padding:12px 14px;
-      border-radius:14px;
-      font-weight:900;
+      border-radius: 14px;
+      font-weight: 900;
       letter-spacing:.2px;
-      transition: transform .08s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+      transition: transform .08s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
       text-decoration:none;
       display:inline-flex;
       align-items:center;
       gap:8px;
       line-height:1;
-      box-shadow:0 10px 22px rgba(0,0,0,.08);
+      backdrop-filter: blur(12px) saturate(120%);
     }
-    .btn:hover{
-      border-color:rgba(36,107,255,.55);
-      box-shadow:0 0 0 4px rgba(36,107,255,.12), 0 14px 28px rgba(0,0,0,.10);
-      transform: translateY(-1px);
-    }
-    .btn:active{ transform:translateY(0); }
+    :root[data-theme="dark"] .btn{ background: rgba(255,255,255,.06); }
+
+    .btn:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.95); }
+    .btn:active{ transform: translateY(1px); }
+    .btn:focus-visible{ outline:none; box-shadow: var(--ring); }
 
     .btn-primary{
-      background:linear-gradient(135deg, var(--accent), var(--accent-2));
       color:#fff;
-      border-color:rgba(255,255,255,.22);
-      box-shadow:0 16px 34px rgba(36,107,255,.22);
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 26px rgba(36,107,255,.22);
     }
-    .btn-primary:hover{
-      box-shadow:0 0 0 4px rgba(36,107,255,.18), 0 18px 42px rgba(36,107,255,.24);
-      border-color:rgba(255,255,255,.28);
-    }
+    .btn-primary:hover{ box-shadow: 0 0 0 4px rgba(24,198,255,.18), 0 18px 46px rgba(36,107,255,.20); }
 
     .btn-ghost{
-      background:rgba(255,255,255,.55);
-      border-color:rgba(140,170,255,.35);
+      border-color: var(--border);
+      color: var(--ink);
+      background: transparent;
+    }
+    .btn-ghost:hover{ box-shadow: 0 0 0 4px rgba(207,224,255,.35); }
+
+    .btn-icon{
+      width: 44px; height: 44px;
+      padding: 0;
+      border-radius: 14px;
+      justify-content:center;
     }
 
-    .status{ font-size:.92rem; color:rgba(15,26,46,.70); }
+    .status{ font-size:.92rem; color:var(--muted); }
     .pill{
       display:inline-flex; align-items:center; gap:8px;
       font-size:.9rem;
       padding:8px 10px;
       border-radius:999px;
-      border:1px solid rgba(140,170,255,.40);
-      background:rgba(255,255,255,.62);
-      color:rgba(15,26,46,.72);
-      font-weight:800;
-      white-space:nowrap;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.45);
+      color:var(--muted);
+      backdrop-filter: blur(12px) saturate(120%);
     }
+    :root[data-theme="dark"] .pill{ background: rgba(255,255,255,.05); }
 
-    /* Layout */
     .grid{
       display:grid;
       grid-template-columns:repeat(12,1fr);
-      gap:12px;
+      gap:14px;
     }
     .col-12{ grid-column:span 12; }
     .col-6{ grid-column:span 6; }
     .col-4{ grid-column:span 4; }
     @media (max-width:860px){
       .col-6,.col-4{ grid-column:span 12; }
-      .shell{ padding:14px; }
-      .brand{ min-width:unset; }
+      .shell{ padding:16px; }
+      .nav{ top:10px; }
     }
 
-    /* Inputs */
-    label{ display:block; font-size:.92rem; color:rgba(15,26,46,.72); margin:6px 0 6px; font-weight:800; }
+    label{ display:block; font-size:.92rem; color:var(--muted); margin:4px 0 6px; }
     input,select,textarea{
       width:100%;
       padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(140,170,255,.38);
-      background:rgba(255,255,255,.78);
-      color:#0b1220;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.55);
+      color: var(--ink);
       outline:none;
-      transition:border .15s ease, box-shadow .15s ease, transform .06s ease, background .15s ease;
+      transition: border .15s ease, box-shadow .15s ease, transform .06s ease, background .15s ease;
       font:inherit;
       resize:vertical;
+      backdrop-filter: blur(12px) saturate(120%);
     }
+    :root[data-theme="dark"] input,
+    :root[data-theme="dark"] select,
+    :root[data-theme="dark"] textarea{
+      background: rgba(255,255,255,.05);
+    }
+
     input:focus,select:focus,textarea:focus{
-      border-color:rgba(36,107,255,.65);
-      box-shadow:var(--focus);
-      background:rgba(255,255,255,.90);
+      border-color: rgba(24,198,255,.75);
+      box-shadow: var(--ring);
     }
-    input:active,select:active,textarea:active{ transform:translateY(.5px); }
+    input:active,select:active,textarea:active{ transform: translateY(.5px); }
 
-    .divider{ height:1px; background:rgba(207,224,255,.7); margin:14px 0; }
+    .divider{ height:1px; background: rgba(207,224,255,.55); margin:14px 0; }
+    :root[data-theme="dark"] .divider{ background: rgba(60,86,140,.35); }
 
-    /* selector de vistas (más claro para el usuario) */
-    .segmented{
-      display:flex; gap:8px; flex-wrap:wrap;
-      margin-top:14px;
-    }
-    .segmented .seg{
-      border-radius:999px;
-      padding:10px 12px;
-      border:1px solid rgba(140,170,255,.38);
-      background:rgba(255,255,255,.56);
-      font-weight:900;
-      cursor:pointer;
-      transition:.18s ease;
-      display:inline-flex; align-items:center; gap:8px;
-    }
-    .segmented .seg[aria-pressed="true"]{
-      background:linear-gradient(135deg, rgba(36,107,255,.20), rgba(109,94,252,.14));
-      border-color:rgba(36,107,255,.45);
-      box-shadow:0 0 0 4px rgba(36,107,255,.10);
-    }
-
-    /* Cards opciones (home) */
+    /* option cards */
     .option-cards{
       display:grid;
       grid-template-columns:repeat(3, 1fr);
       gap:12px;
-      margin-top:12px;
+      margin-top:10px;
     }
-    @media (max-width:860px){
-      .option-cards{ grid-template-columns:1fr; }
-    }
+    @media (max-width:860px){ .option-cards{ grid-template-columns:1fr; } }
+
     .opt{
-      border:1px solid rgba(140,170,255,.38);
-      border-radius:20px;
+      border:1px solid var(--border);
+      border-radius: 20px;
       padding:14px;
-      background:rgba(255,255,255,.66);
-      box-shadow:0 14px 28px rgba(0,0,0,.08);
+      background: rgba(255,255,255,.55);
+      box-shadow: 0 12px 30px rgba(16,48,96,.08);
       cursor:pointer;
       text-align:left;
-      transition:transform .08s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
-      position:relative;
-      overflow:hidden;
+      transition: transform .10s ease, box-shadow .15s ease, border-color .15s ease;
+      backdrop-filter: blur(14px) saturate(140%);
     }
-    .opt::after{
-      content:"";
-      position:absolute; inset:-2px;
-      background:radial-gradient(500px 220px at 20% 0%, rgba(36,107,255,.18), transparent 55%);
-      opacity:.7;
-      pointer-events:none;
-    }
-    .opt:hover{
-      box-shadow:0 18px 40px rgba(0,0,0,.10);
-      border-color:rgba(36,107,255,.55);
-      transform: translateY(-1px);
-      background:rgba(255,255,255,.76);
-    }
-    .opt:active{ transform:translateY(0); }
-    .opt .title{ font-weight:1000; font-size:1.06rem; margin:0; color:#0b1220; position:relative; }
-    .opt .desc{ margin:6px 0 0; color:rgba(15,26,46,.72); font-size:.95rem; position:relative; }
+    :root[data-theme="dark"] .opt{ background: rgba(255,255,255,.04); }
 
-    /* Info comercial */
+    .opt:hover{ box-shadow: var(--shadow); border-color: rgba(24,198,255,.55); transform: translateY(-1px); }
+    .opt:active{ transform: translateY(0px); }
+    .opt:focus-visible{ outline:none; box-shadow: var(--ring); }
+
+    .opt .title{ font-weight: 1000; font-size:1.05rem; margin:0; }
+    .opt .desc{ margin:6px 0 0; color:var(--muted); font-size:.95rem; }
+
     .info{
       margin-top:14px;
-      border:1px solid rgba(140,170,255,.38);
-      border-radius:22px;
+      border:1px solid var(--border);
+      border-radius: 20px;
       padding:14px;
-      background:rgba(255,255,255,.62);
-      box-shadow:0 12px 26px rgba(0,0,0,.06);
+      background: rgba(255,255,255,.52);
+      backdrop-filter: blur(14px) saturate(140%);
     }
+    :root[data-theme="dark"] .info{ background: rgba(255,255,255,.04); }
+
     .info .headline{
-      display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; flex-wrap:wrap;
       margin-bottom:8px;
     }
     .badge{
       display:inline-flex; align-items:center; gap:8px;
       padding:8px 10px;
       border-radius:999px;
-      border:1px solid rgba(22,163,74,.28);
-      background:rgba(22,163,74,.10);
-      color:#0f5132;
-      font-weight:1000;
+      border:1px solid rgba(22,163,74,.25);
+      background: rgba(22,163,74,.10);
+      color: #0f5132;
+      font-weight: 1000;
       font-size:.92rem;
     }
-    .mini-note{
-      border:1px dashed rgba(140,170,255,.55);
-      background:rgba(247,251,255,.75);
-      border-radius:18px;
-      padding:12px;
-      color:rgba(15,26,46,.72);
-      font-size:.95rem;
+    :root[data-theme="dark"] .badge{
+      color: rgba(200,255,220,.95);
+      background: rgba(22,163,74,.12);
+      border-color: rgba(22,163,74,.25);
     }
 
     .kpoints{
@@ -312,10 +436,15 @@
     }
     .k{
       grid-column:span 6;
-      border:1px solid rgba(207,224,255,.85);
-      border-radius:18px;
+      border:1px solid rgba(207,224,255,.55);
+      border-radius: 18px;
       padding:12px;
-      background:rgba(255,255,255,.72);
+      background: rgba(255,255,255,.45);
+      backdrop-filter: blur(14px) saturate(140%);
+    }
+    :root[data-theme="dark"] .k{
+      border-color: rgba(60,86,140,.35);
+      background: rgba(255,255,255,.04);
     }
     .k strong{ display:block; margin-bottom:4px; font-weight:1000; }
     @media (max-width:860px){ .k{ grid-column:span 12; } }
@@ -327,39 +456,53 @@
       margin-top:8px;
     }
     @media (max-width:860px){ .plans{ grid-template-columns:1fr; } }
+
     .plan{
-      border:1px solid rgba(207,224,255,.85);
-      border-radius:18px;
+      border:1px solid rgba(207,224,255,.55);
+      border-radius: 18px;
       padding:12px;
-      background:rgba(255,255,255,.72);
+      background: rgba(255,255,255,.45);
+      backdrop-filter: blur(14px) saturate(140%);
+    }
+    :root[data-theme="dark"] .plan{
+      border-color: rgba(60,86,140,.35);
+      background: rgba(255,255,255,.04);
     }
     .plan .pname{ font-weight:1000; margin:0; }
-    .plan .pdesc{ margin:6px 0 0; color:rgba(15,26,46,.72); }
-    .plan .price{ margin-top:8px; font-weight:1100; color:var(--accent-2); font-size:1.1rem; }
+    .plan .pdesc{ margin:6px 0 0; color:var(--muted); }
+    .plan .price{
+      margin-top:8px;
+      font-weight: 1000;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      font-size: 1.2rem;
+    }
 
-    /* Toast */
     .toast{
-      position:fixed; left:50%; bottom:22px;
-      transform:translateX(-50%) translateY(18px);
+      position:fixed; left:50%; bottom:24px;
+      transform:translateX(-50%) translateY(16px);
       opacity:0; pointer-events:none;
-      background:rgba(255,255,255,.92);
-      color:#0b1220;
+      background: rgba(255,255,255,.65);
+      color:var(--ink);
       padding:10px 14px;
-      border-radius:14px;
-      border:1px solid rgba(36,107,255,.45);
-      box-shadow:0 16px 36px rgba(0,0,0,.18);
-      transition:.18s ease;
-      z-index:999;
+      border-radius: 14px;
+      border:1px solid rgba(24,198,255,.55);
+      box-shadow: var(--shadow);
+      transition: .18s ease;
+      z-index: 999;
       max-width:min(92vw, 560px);
       text-align:center;
-      font-weight:900;
+      font-weight: 900;
+      backdrop-filter: blur(14px) saturate(140%);
     }
+    :root[data-theme="dark"] .toast{ background: rgba(255,255,255,.06); }
     .toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
 
-    /* Footer */
     .footer{
       margin:16px 0 0;
-      color:rgba(15,26,46,.70);
+      color:var(--muted);
       font-size:.9rem;
       display:flex;
       justify-content:space-between;
@@ -368,113 +511,55 @@
       gap:10px;
     }
 
-    /* Vistas */
+    /* Views */
     [data-view]{ display:none; }
     [data-view].active{ display:block; }
 
     .top-actions{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
     }
 
-    /* Accesibilidad: reduce motion */
-    @media (prefers-reduced-motion: reduce){
-      *{ transition:none !important; scroll-behavior:auto !important; }
-      .opt:hover,.btn:hover{ transform:none !important; }
-    }
-
-    /* Bloque rápido de ayuda */
-    .help{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    .mini-note{
+      border:1px dashed rgba(207,224,255,.75);
+      background: rgba(247,251,255,.55);
+      border-radius: 18px;
       padding:12px;
-      border-radius:18px;
-      border:1px solid rgba(140,170,255,.38);
-      background:rgba(255,255,255,.62);
-      margin-top:12px;
+      color:var(--muted);
+      font-size:.95rem;
+      backdrop-filter: blur(14px) saturate(140%);
     }
-    .help .hint{ color:rgba(15,26,46,.72); font-weight:800; }
-    .help .actions{ display:flex; gap:10px; flex-wrap:wrap; }
-
-    /* Campo con botón limpiar */
-    .field{ position:relative; }
-    .clear-btn{
-      position:absolute; right:10px; top:50%;
-      transform:translateY(-50%);
-      border:1px solid rgba(140,170,255,.35);
-      background:rgba(255,255,255,.72);
-      border-radius:999px;
-      padding:8px 10px;
-      cursor:pointer;
-      font-weight:1000;
-      color:rgba(15,26,46,.78);
-      display:none;
-    }
-    .clear-btn:hover{ box-shadow:0 0 0 4px rgba(36,107,255,.10); border-color:rgba(36,107,255,.45); }
-    .field.has-value .clear-btn{ display:inline-flex; }
-
-    /* Búsqueda colonia */
-    .search-row{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
-    .search-row > *{ flex:1; }
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px; border-radius:999px;
-      border:1px solid rgba(140,170,255,.38);
-      background:rgba(255,255,255,.62);
-      font-weight:900;
-      color:rgba(15,26,46,.72);
-      width:max-content;
+    :root[data-theme="dark"] .mini-note{
+      background: rgba(255,255,255,.04);
+      border-color: rgba(60,86,140,.35);
     }
 
-    /* Header de sección */
-    .section-title{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px; flex-wrap:wrap;
-      margin-top:6px;
+    .sr-only{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); border:0;
     }
-    .section-title .meta{
-      display:flex; gap:8px; flex-wrap:wrap; align-items:center;
-    }
-
-    /* Mensaje previsualización */
-    .preview{
-      margin-top:12px;
-      border:1px solid rgba(140,170,255,.38);
-      border-radius:18px;
-      background:rgba(255,255,255,.62);
-      padding:12px;
-    }
-    .preview pre{
-      margin:0;
-      white-space:pre-wrap;
-      word-break:break-word;
-      font: 13px/1.4 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      color:rgba(15,26,46,.88);
-    }
-
-    /* Banner arriba (opcional) */
-    .hero{
-      padding:14px;
-      border-radius:22px;
-      border:1px solid rgba(140,170,255,.35);
-      background:linear-gradient(135deg, rgba(255,255,255,.74), rgba(255,255,255,.58));
-      box-shadow:0 14px 34px rgba(0,0,0,.08);
-      margin-top:14px;
-    }
-    .hero .row{
-      display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap;
-    }
-    .hero .row strong{ font-weight:1000; }
-    .hero .row .right{ display:flex; gap:10px; flex-wrap:wrap; }
   </style>
 </head>
 
 <body>
-  <div class="shell">
+  <!-- Splash -->
+  <div class="splash" id="splash" aria-label="Cargando Airconekta">
+    <div class="splash-card" role="status" aria-live="polite">
+      <div class="splash-logo" aria-hidden="true"><span>⚡</span></div>
+      <div class="splash-title">AIRCONEKTA</div>
+      <p class="splash-sub">Centro de solicitudes · Atención local</p>
+      <div class="splash-bar" aria-hidden="true"><i></i></div>
+      <p class="sr-only">Cargando…</p>
+    </div>
+  </div>
 
-    <!-- NAV -->
-    <nav class="nav glass" aria-label="Navegación principal">
-      <div class="brand" aria-label="Airconekta">
-        <div class="logo" aria-hidden="true"><span>⚡</span></div>
+  <div class="shell">
+    <nav class="nav" aria-label="Barra superior">
+      <div class="brand">
+        <div class="logo"><span>⚡</span></div>
         <div>
           Airconekta
           <small>Centro de solicitudes</small>
@@ -482,56 +567,45 @@
       </div>
 
       <div class="inline">
-        <button class="btn btn-ghost" id="menuBtn" type="button" aria-label="Ver opciones">☰ Ver opciones</button>
+        <button class="btn btn-ghost" id="menuBtn" type="button">☰ Ver opciones</button>
+
+        <button class="btn btn-icon" id="themeBtn" type="button" title="Cambiar tema" aria-label="Cambiar tema">
+          🌓
+        </button>
+
         <button id="installBtn" class="btn" style="display:none" type="button">➕ Instalar app</button>
-        <button class="btn" type="button" id="copyBtn" title="Copiar enlace">🔗 Copiar enlace</button>
         <a class="btn" href="#" id="shareBtn" title="Compartir">⇪ Compartir</a>
       </div>
     </nav>
 
-    <!-- ===== HOME ===== -->
-    <section class="card glass active" data-view="home" id="viewHome">
+    <!-- ===== MENÚ PRINCIPAL ===== -->
+    <section class="card active" data-view="home" id="viewHome">
       <div class="top-actions">
         <div>
           <h1>Bienvenidos a Airconekta</h1>
-          <p class="lead" style="margin-bottom:0">Elige una opción y envía tu solicitud por WhatsApp en menos de 1 minuto.</p>
+          <p class="lead" style="margin-bottom:0">¿Qué desea?</p>
         </div>
-        <span class="pill" title="Atención directa">📍 Empresa local · Atención directa</span>
+        <span class="pill">📍 Empresa local · Atención directa</span>
       </div>
 
-      <div class="hero" role="note" aria-label="Información rápida">
-        <div class="row">
-          <div>
-            <strong>🕒 Horarios y atención:</strong>
-            <div class="status">Respondemos lo más rápido posible. Si tardamos, te contestamos en cuanto estemos disponibles.</div>
-          </div>
-          <div class="right">
-            <span class="chip">✅ Sin contratos forzosos</span>
-            <span class="chip">✅ Sin aumentos sorpresa</span>
-            <span class="chip">✅ Internet ilimitado</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Opciones -->
-      <div class="option-cards" style="margin-top:14px" role="navigation" aria-label="Opciones">
+      <div class="option-cards" style="margin-top:14px">
         <button class="opt" type="button" data-go="instalacion" aria-label="Ir a Instalación">
           <p class="title">🛠️ Instalación</p>
-          <p class="desc">Solicita instalación nueva y envía tus datos listos.</p>
+          <p class="desc">Solicita instalación nueva y envía tus datos por WhatsApp.</p>
         </button>
 
         <button class="opt" type="button" data-go="cambio" aria-label="Ir a Cambio de domicilio">
           <p class="title">🏠 Cambio de Domicilio</p>
-          <p class="desc">Agenda fecha y hora para mover tu servicio.</p>
+          <p class="desc">Cambia tu servicio a un nuevo domicilio con fecha y hora.</p>
         </button>
 
         <button class="opt" type="button" data-go="cancelacion" aria-label="Ir a Cancelación">
           <p class="title">🧾 Cancelación</p>
-          <p class="desc">Solicita cancelación y agenda visita de retiro.</p>
+          <p class="desc">Solicita cancelación y agenda la visita de retiro.</p>
         </button>
       </div>
 
-      <!-- Info comercial -->
+      <!-- ===== INFO COMERCIAL ===== -->
       <div class="info" aria-label="Puntos clave Airconekta">
         <div class="headline">
           <div class="badge">💸 Refiere y gana $100</div>
@@ -578,36 +652,23 @@
         <div class="divider"></div>
 
         <div class="mini-note">
-          🤝 <strong>Somos empresa local, no call center:</strong>
+          🤝 <strong>Somos una empresa local, no call center ni franquicia:</strong>
           te atendemos directo, rápido y de frente.
-        </div>
-      </div>
-
-      <div class="help" aria-label="Ayuda rápida">
-        <div class="hint">Tip: si ya tienes datos guardados, se autollenan en tu próxima visita ✅</div>
-        <div class="actions">
-          <button class="btn" type="button" id="saveDraftBtn">💾 Guardar mis datos</button>
-          <button class="btn btn-ghost" type="button" id="clearAllBtn">🧹 Borrar todo</button>
         </div>
       </div>
 
       <div class="footer">
         <span>© <span id="year"></span> Airconekta</span>
-        <span style="opacity:.85">Hecho con ❤️ para clientes felices</span>
+        <span style="opacity:.85">Hecho con ⚡ para clientes felices</span>
       </div>
     </section>
 
     <!-- ===== INSTALACIÓN ===== -->
-    <section class="card glass" data-view="instalacion" id="viewInstalacion">
+    <section class="card" data-view="instalacion" id="viewInstalacion">
       <div class="top-actions">
-        <div class="section-title">
-          <div>
-            <h1>Solicitar instalación</h1>
-            <p class="lead">Completa tus datos. La ubicación es <strong>opcional</strong>. Al final se abrirá WhatsApp con tu información formateada.</p>
-          </div>
-          <div class="meta">
-            <span class="pill">🔒 Tus datos solo se usan para generar el mensaje</span>
-          </div>
+        <div>
+          <h1>Solicitar instalación</h1>
+          <p class="lead">Completa tus datos. La ubicación es <strong>opcional</strong>. Al final se abrirá WhatsApp con tu información formateada.</p>
         </div>
         <button class="btn btn-ghost" type="button" data-back>← Volver</button>
       </div>
@@ -616,29 +677,23 @@
         <input type="hidden" id="i_colonia" name="colonia" />
 
         <div class="col-12">
-          <label for="i_coloniaSearch">Colonia (opcional) — busca rápido</label>
-          <div class="search-row">
-            <div class="field">
-              <input id="i_coloniaSearch" placeholder="Escribe para filtrar... (ej. Valle, Zafiro)" autocomplete="off" />
-              <button class="clear-btn" type="button" id="i_clearColonia" aria-label="Limpiar búsqueda">✕</button>
-            </div>
-            <select id="i_coloniaSelect" name="coloniaSelect" aria-label="Selecciona colonia">
-              <option value="" selected>Selecciona una colonia…</option>
-              <option>⚒️ El Canton, JAL</option>
-              <option>⚒️ Fracc. Ex Haciendas San Angel, NAY</option>
-              <option>⚒️ Fracc. La Joya / Los Mangos, NAY</option>
-              <option>⚒️ Fracc. La Mision, NAY</option>
-              <option>⚒️ Fracc. Jardin De Las Arboledas, NAY</option>
-              <option>⚒️ Fracc. Los Anhelos, NAY</option>
-              <option>⚒️ Fracc. Palma Real, NAY</option>
-              <option>⚒️ Fracc. Parque Central, NAY</option>
-              <option>⚒️ Fracc. Primavera Residencial, NAY</option>
-              <option>⚒️ Fracc. Valle Dorado, NAY</option>
-              <option>⚒️ Fracc. Valle Esmeralda, NAY</option>
-              <option>⚒️ Fracc. Valle Marlin, NAY</option>
-              <option>⚒️ Fracc. Zafiro Residencial, NAY</option>
-            </select>
-          </div>
+          <label for="i_coloniaSelect">Colonia (opcional)</label>
+          <select id="i_coloniaSelect" name="coloniaSelect">
+            <option value="" selected>Selecciona una colonia…</option>
+            <option>⚒️ El Canton, JAL</option>
+            <option>⚒️ Fracc. Ex Haciendas San Angel, NAY</option>
+            <option>⚒️ Fracc. La Joya / Los Mangos, NAY</option>
+            <option>⚒️ Fracc. La Mision, NAY</option>
+            <option>⚒️ Fracc. Jardin De Las Arboledas, NAY</option>
+            <option>⚒️ Fracc. Los Anhelos, NAY</option>
+            <option>⚒️ Fracc. Palma Real, NAY</option>
+            <option>⚒️ Fracc. Parque Central, NAY</option>
+            <option>⚒️ Fracc. Primavera Residencial, NAY</option>
+            <option>⚒️ Fracc. Valle Dorado, NAY</option>
+            <option>⚒️ Fracc. Valle Esmeralda, NAY</option>
+            <option>⚒️ Fracc. Valle Marlin, NAY</option>
+            <option>⚒️ Fracc. Zafiro Residencial, NAY</option>
+          </select>
           <div class="status" id="i_coloniaStatus" style="margin-top:6px">Sin colonia seleccionada</div>
         </div>
 
@@ -649,7 +704,8 @@
 
         <div class="col-6">
           <label for="i_telefono">Teléfono</label>
-          <input id="i_telefono" name="telefono" inputmode="numeric" autocomplete="tel"
+          <input id="i_telefono" name="telefono"
+                 inputmode="numeric" autocomplete="tel"
                  placeholder="10 dígitos" pattern="[0-9]{10}"
                  title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
         </div>
@@ -695,14 +751,7 @@
         </div>
 
         <div class="col-12">
-          <div class="inline" style="justify-content:space-between">
-            <button type="button" class="btn btn-ghost" id="i_previewBtn">👀 Ver mensaje</button>
-            <button type="submit" class="btn btn-primary" id="i_sendBtn">📨 Enviar por WhatsApp</button>
-          </div>
-          <div class="preview" id="i_preview" style="display:none">
-            <div class="status" style="margin-bottom:8px;font-weight:900">Previsualización</div>
-            <pre id="i_previewText"></pre>
-          </div>
+          <button type="submit" class="btn btn-primary" id="i_sendBtn">📨 Enviar información</button>
         </div>
       </form>
 
@@ -713,11 +762,11 @@
     </section>
 
     <!-- ===== CAMBIO ===== -->
-    <section class="card glass" data-view="cambio" id="viewCambio">
+    <section class="card" data-view="cambio" id="viewCambio">
       <div class="top-actions">
         <div>
           <h1>Solicitar cambio de domicilio</h1>
-          <p class="lead">Agenda fecha y hora. Al finalizar se abrirá WhatsApp con tu información lista para enviar.</p>
+          <p class="lead">Al finalizar se abrirá WhatsApp con tu información lista para enviar.</p>
         </div>
         <button class="btn btn-ghost" type="button" data-back>← Volver</button>
       </div>
@@ -730,7 +779,8 @@
 
         <div class="col-6">
           <label for="c_telefono">Teléfono de contacto</label>
-          <input id="c_telefono" name="telefono" inputmode="numeric" autocomplete="tel"
+          <input id="c_telefono" name="telefono"
+                 inputmode="numeric" autocomplete="tel"
                  placeholder="10 dígitos" pattern="[0-9]{10}"
                  title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
         </div>
@@ -743,7 +793,6 @@
         <div class="col-6">
           <label for="c_hora">Hora en la que nos puede recibir</label>
           <input id="c_hora" name="hora" type="time" required />
-          <div class="status" style="margin-top:6px">Sugerencia: elige una hora en la que estés seguro de poder recibirnos.</div>
         </div>
 
         <div class="col-12">
@@ -765,14 +814,7 @@
         </div>
 
         <div class="col-12">
-          <div class="inline" style="justify-content:space-between">
-            <button type="button" class="btn btn-ghost" id="c_previewBtn">👀 Ver mensaje</button>
-            <button type="submit" class="btn btn-primary">📨 Enviar por WhatsApp</button>
-          </div>
-          <div class="preview" id="c_preview" style="display:none">
-            <div class="status" style="margin-bottom:8px;font-weight:900">Previsualización</div>
-            <pre id="c_previewText"></pre>
-          </div>
+          <button type="submit" class="btn btn-primary">📨 Enviar solicitud por WhatsApp</button>
         </div>
       </form>
 
@@ -783,7 +825,7 @@
     </section>
 
     <!-- ===== CANCELACIÓN ===== -->
-    <section class="card glass" data-view="cancelacion" id="viewCancelacion">
+    <section class="card" data-view="cancelacion" id="viewCancelacion">
       <div class="top-actions">
         <div>
           <h1>Solicitar cancelación</h1>
@@ -800,7 +842,8 @@
 
         <div class="col-6">
           <label for="x_telefono">Teléfono de contacto</label>
-          <input id="x_telefono" name="telefono" inputmode="numeric" autocomplete="tel"
+          <input id="x_telefono" name="telefono"
+                 inputmode="numeric" autocomplete="tel"
                  placeholder="10 dígitos" pattern="[0-9]{10}"
                  title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
         </div>
@@ -828,14 +871,7 @@
         </div>
 
         <div class="col-12">
-          <div class="inline" style="justify-content:space-between">
-            <button type="button" class="btn btn-ghost" id="x_previewBtn">👀 Ver mensaje</button>
-            <button type="submit" class="btn btn-primary">📨 Enviar por WhatsApp</button>
-          </div>
-          <div class="preview" id="x_preview" style="display:none">
-            <div class="status" style="margin-bottom:8px;font-weight:900">Previsualización</div>
-            <pre id="x_previewText"></pre>
-          </div>
+          <button type="submit" class="btn btn-primary">📨 Enviar solicitud por WhatsApp</button>
         </div>
       </form>
 
@@ -855,9 +891,6 @@
     // =====================
     const NUMERO_DESTINO = "5213222108817";
 
-    // Guarda borradores localmente (no se envían a ningún servidor)
-    const LS_KEY = "airconekta_draft_v1";
-
     const $ = (sel) => document.querySelector(sel);
     const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
@@ -865,79 +898,105 @@
       const t = $('#toast');
       t.textContent = msg;
       t.classList.add('show');
-      clearTimeout(toast._t);
-      toast._t = setTimeout(()=>t.classList.remove('show'), 1900);
+      setTimeout(()=>t.classList.remove('show'), 1800);
     };
 
+    // =====================
+    // Splash (3s)
+    // =====================
+    const splash = document.getElementById('splash');
+    const hideSplash = () => splash?.classList.add('hide');
+
+    // si el user toca/clic, se puede cerrar antes (se siente pro)
+    splash?.addEventListener('click', hideSplash, { passive:true });
+
+    // ocultar a los 3s, pero también cuando termina de cargar
+    window.addEventListener('load', () => {
+      setTimeout(hideSplash, 3000);
+    });
+
+    // =====================
     // Año
+    // =====================
     $('#year').textContent = new Date().getFullYear();
     $$('.year').forEach(el => el.textContent = new Date().getFullYear());
 
     // =====================
+    // Tema (Light/Dark)
+    // =====================
+    const THEME_KEY = 'airconekta_theme';
+    function applyTheme(theme){
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem(THEME_KEY, theme);
+      const icon = theme === 'dark' ? '🌙' : '☀️';
+      $('#themeBtn').textContent = icon;
+      $('#themeBtn').setAttribute('aria-label', theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro');
+    }
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (savedTheme) {
+      applyTheme(savedTheme);
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(prefersDark ? 'dark' : 'light');
+    }
+    $('#themeBtn').addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      applyTheme(current === 'dark' ? 'light' : 'dark');
+      toast('Tema actualizado ✅');
+    });
+
+    // =====================
     // NAVEGACIÓN DE VISTAS
     // =====================
+    const VIEW_KEY = 'airconekta_last_view';
+
     function showView(name){
       $$('[data-view]').forEach(v => v.classList.remove('active'));
       const view = document.querySelector(`[data-view="${name}"]`);
       if (view) view.classList.add('active');
-      // scroll instant (evita “saltos” raros)
-      window.scrollTo(0, 0);
-      // enfoque amigable
-      setTimeout(() => {
-        const firstInput = document.querySelector(`[data-view="${name}"] input, [data-view="${name}"] select, [data-view="${name}"] textarea`);
-        firstInput?.focus?.();
-      }, 60);
-      // actualizar hash (para compartir con vista)
-      try { history.replaceState(null, "", `#${name}`); } catch {}
+
+      // recordar vista
+      sessionStorage.setItem(VIEW_KEY, name);
+
+      // scroll top suave compatible (sin "instant" que no existe en algunos navegadores)
+      try { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+      catch { window.scrollTo(0,0); }
     }
 
-    // Botón menú
+    // Botón "Ver opciones"
     $('#menuBtn').addEventListener('click', () => {
       showView('home');
       toast('Opciones listas ✅');
     });
 
-    // Botones del home
+    // Botones del menú
     $$('[data-go]').forEach(btn => {
       btn.addEventListener('click', () => {
         const v = btn.getAttribute('data-go');
         showView(v);
+        setTimeout(() => {
+          const firstInput = document.querySelector(`[data-view="${v}"] input, [data-view="${v}"] select, [data-view="${v}"] textarea`);
+          firstInput?.focus?.();
+        }, 60);
       });
     });
 
     // Volver
     $$('[data-back]').forEach(b => b.addEventListener('click', () => showView('home')));
 
-    // Carga vista desde hash (si abren enlace #cambio etc.)
-    (function(){
-      const h = (location.hash || "").replace("#","");
-      const allowed = new Set(["home","instalacion","cambio","cancelacion"]);
-      if (allowed.has(h)) showView(h);
-      else showView('home');
-    })();
-
     // =====================
-    // COMPARTIR / COPIAR
+    // COMPARTIR
     // =====================
-    $('#copyBtn').addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(location.href);
-        toast('Enlace copiado ✅');
-      } catch {
-        toast('No pude copiar. Mantén presionado y copia la URL.');
-      }
-    });
-
     $('#shareBtn').addEventListener('click', async (e) => {
       e.preventDefault();
-      const payload = {
-        title: 'Airconekta · Centro de Solicitudes',
-        text: 'Instalación, Cambio y Cancelación (WhatsApp listo)',
-        url: location.href
-      };
       if (navigator.share) {
-        try { await navigator.share(payload); }
-        catch (_) {}
+        try {
+          await navigator.share({
+            title: 'Airconekta · Centro de Solicitudes',
+            text: 'Instalación, Cambio de domicilio y Cancelación (WhatsApp listo)',
+            url: location.href
+          });
+        } catch (err) { /* cancelado */ }
       } else {
         try {
           await navigator.clipboard?.writeText(location.href);
@@ -949,132 +1008,7 @@
     });
 
     // =====================
-    // UTILIDADES
-    // =====================
-    function onlyDigits10(raw){
-      const s = (raw || "").replace(/\D+/g,'').slice(0,10);
-      return s;
-    }
-
-    function validarTelefono10(selector){
-      const el = $(selector);
-      const digits = onlyDigits10(el.value);
-      if (digits.length !== 10) return false;
-      return true;
-    }
-
-    // Formatea teléfono mientras escribe (sin romper pattern)
-    function bindPhoneMask(selector){
-      const el = $(selector);
-      if (!el) return;
-      el.addEventListener('input', () => {
-        const d = onlyDigits10(el.value);
-        el.value = d;
-      });
-    }
-    bindPhoneMask('#i_telefono');
-    bindPhoneMask('#c_telefono');
-    bindPhoneMask('#x_telefono');
-
-    function abrirWhatsApp(mensaje){
-      const url = `https://api.whatsapp.com/send?phone=${NUMERO_DESTINO}&text=${encodeURIComponent(mensaje)}&type=phone_number&app_absent=0`;
-      window.open(url, '_blank');
-      toast('Abriendo WhatsApp…');
-    }
-
-    function formatDateES(iso){
-      if (!iso) return '';
-      // iso: YYYY-MM-DD
-      const [y,m,d] = iso.split('-').map(Number);
-      if (!y || !m || !d) return iso;
-      const dt = new Date(Date.UTC(y, m-1, d));
-      return dt.toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'2-digit' });
-    }
-
-    // =====================
-    // DRAFT (guardar / cargar)
-    // =====================
-    function getDraft(){
-      try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); }
-      catch { return {}; }
-    }
-    function setDraft(obj){
-      try { localStorage.setItem(LS_KEY, JSON.stringify(obj || {})); } catch {}
-    }
-
-    function fillDraft(){
-      const d = getDraft();
-      if (!d) return;
-
-      // Instalación
-      if (d.i_nombre) $('#i_nombre').value = d.i_nombre;
-      if (d.i_telefono) $('#i_telefono').value = d.i_telefono;
-      if (d.i_direccion) $('#i_direccion').value = d.i_direccion;
-      if (d.i_correo) $('#i_correo').value = d.i_correo;
-      if (d.i_metodo) $('#i_metodo').value = d.i_metodo;
-      if (d.i_plan) $('#i_plan').value = d.i_plan;
-      if (d.i_colonia) {
-        $('#i_colonia').value = d.i_colonia;
-        $('#i_coloniaStatus').textContent = `Colonia: ${d.i_colonia}`;
-        // intentar seleccionar en select si coincide
-        const sel = $('#i_coloniaSelect');
-        const found = Array.from(sel.options).find(o => o.value === d.i_colonia || o.textContent === d.i_colonia);
-        if (found) sel.value = found.value;
-      }
-
-      // Cambio
-      if (d.c_nombre) $('#c_nombre').value = d.c_nombre;
-      if (d.c_telefono) $('#c_telefono').value = d.c_telefono;
-
-      // Cancelación
-      if (d.x_nombre) $('#x_nombre').value = d.x_nombre;
-      if (d.x_telefono) $('#x_telefono').value = d.x_telefono;
-    }
-
-    function collectDraft(){
-      const obj = {
-        i_nombre: $('#i_nombre')?.value?.trim() || "",
-        i_telefono: $('#i_telefono')?.value?.trim() || "",
-        i_direccion: $('#i_direccion')?.value?.trim() || "",
-        i_correo: $('#i_correo')?.value?.trim() || "",
-        i_metodo: $('#i_metodo')?.value || "",
-        i_plan: $('#i_plan')?.value || "",
-        i_colonia: ($('#i_colonia')?.value || "").trim(),
-
-        c_nombre: $('#c_nombre')?.value?.trim() || "",
-        c_telefono: $('#c_telefono')?.value?.trim() || "",
-
-        x_nombre: $('#x_nombre')?.value?.trim() || "",
-        x_telefono: $('#x_telefono')?.value?.trim() || "",
-      };
-      return obj;
-    }
-
-    $('#saveDraftBtn').addEventListener('click', () => {
-      setDraft(collectDraft());
-      toast('Datos guardados en este dispositivo ✅');
-    });
-
-    $('#clearAllBtn').addEventListener('click', () => {
-      // limpia forms + draft
-      ['formInstalacion','formCambio','formCancelacion'].forEach(id => {
-        const f = document.getElementById(id);
-        if (f) f.reset();
-      });
-      setDraft({});
-      // reseteos extras
-      setInstalacionColonia('');
-      $('#i_geoStatus').textContent = 'Sin ubicación';
-      $('#i_lat').value = '';
-      $('#i_lng').value = '';
-      hideAllPreviews();
-      toast('Todo borrado ✅');
-    });
-
-    fillDraft();
-
-    // =====================
-    // INSTALACIÓN: colonia + búsqueda + geolocalización
+    // INSTALACIÓN: colonia + geolocalización + envío
     // =====================
     const i_coloniaSelect = $('#i_coloniaSelect');
     const i_coloniaHidden = $('#i_colonia');
@@ -1086,59 +1020,6 @@
     }
     i_coloniaSelect.addEventListener('change', () => setInstalacionColonia(i_coloniaSelect.value));
 
-    // filtro de colonias (búsqueda)
-    const coloniaAll = Array.from(i_coloniaSelect.querySelectorAll('option'))
-      .map(o => ({ value:o.value, text:o.textContent }));
-
-    function applyColoniaFilter(q){
-      const query = (q || '').trim().toLowerCase();
-      // reconstruye options preservando el primero
-      i_coloniaSelect.innerHTML = '';
-      const first = document.createElement('option');
-      first.value = '';
-      first.selected = true;
-      first.textContent = 'Selecciona una colonia…';
-      i_coloniaSelect.appendChild(first);
-
-      coloniaAll.forEach((o, idx) => {
-        if (idx === 0) return; // era el placeholder original
-        if (!query || (o.text || '').toLowerCase().includes(query)) {
-          const opt = document.createElement('option');
-          opt.value = o.value;
-          opt.textContent = o.text;
-          i_coloniaSelect.appendChild(opt);
-        }
-      });
-
-      // si había colonia ya seleccionada, intenta mantenerla
-      const current = (i_coloniaHidden.value || '').trim();
-      if (current) {
-        const match = Array.from(i_coloniaSelect.options).find(x => x.value === current || x.textContent === current);
-        if (match) i_coloniaSelect.value = match.value;
-      }
-    }
-
-    const i_coloniaSearch = $('#i_coloniaSearch');
-    const i_clearColonia = $('#i_clearColonia');
-    function updateClearBtn(){
-      const field = i_coloniaSearch.closest('.field');
-      if (!field) return;
-      if (i_coloniaSearch.value.trim()) field.classList.add('has-value');
-      else field.classList.remove('has-value');
-    }
-    i_coloniaSearch.addEventListener('input', () => {
-      applyColoniaFilter(i_coloniaSearch.value);
-      updateClearBtn();
-    });
-    i_clearColonia.addEventListener('click', () => {
-      i_coloniaSearch.value = '';
-      applyColoniaFilter('');
-      updateClearBtn();
-      i_coloniaSearch.focus();
-    });
-    updateClearBtn();
-
-    // Geolocalización
     $('#i_geoBtn').addEventListener('click', () => {
       const s = $('#i_geoStatus');
       if (!('geolocation' in navigator)) {
@@ -1160,49 +1041,63 @@
       }, { enableHighAccuracy:true, timeout:12000, maximumAge:0 });
     });
 
-    // =====================
-    // PREVIEWS
-    // =====================
-    function hideAllPreviews(){
-      ['i_preview','c_preview','x_preview'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = 'none';
-      });
+    function digits10FromInput(inputSel){
+      const el = $(inputSel);
+      const raw = (el.value || '').replace(/\D+/g, '');
+      // UX: si pegó con espacios/guiones, lo normalizamos
+      if (raw && raw !== el.value) el.value = raw;
+      return raw.length === 10 ? raw : null;
     }
 
-    function buildMsgInstalacion(){
+    function abrirWhatsApp(mensaje){
+      const url = `https://api.whatsapp.com/send?phone=${NUMERO_DESTINO}&text=${encodeURIComponent(mensaje)}&type=phone_number&app_absent=0`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+      toast('Abriendo WhatsApp…');
+    }
+
+    $('#formInstalacion').addEventListener('submit', (e) => {
+      e.preventDefault();
       const form = $('#formInstalacion');
-      if (!form.checkValidity()) return null;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const tel10 = digits10FromInput('#i_telefono');
+      if (!tel10) { toast('El teléfono debe tener 10 dígitos'); $('#i_telefono').focus(); return; }
 
       const nombre = $('#i_nombre').value.trim();
       const direccion = $('#i_direccion').value.trim();
       const plan = $('#i_plan').value;
-      const tel = $('#i_telefono').value.trim();
+      const tel = tel10;
       const correo = $('#i_correo').value.trim();
       const metodo = $('#i_metodo').value;
       const colonia = (i_coloniaHidden.value || '').trim();
       const lat = $('#i_lat').value, lng = $('#i_lng').value;
 
-      let msg = `Hola 👋\nMe gustaría hablar sobre la contratación del servicio.\n\n`;
+      let msg = `Hola 👋\nMe gustaría hablar sobre la contratación de servicio.\n\n`;
       msg += `*Tipo de solicitud:* Instalación\n`;
       msg += `*Nombre:* ${nombre}\n`;
       msg += `*Dirección:* ${direccion}${colonia ? `, ${colonia}` : ''}\n`;
       msg += `*Plan deseado:* ${plan}\n`;
       msg += `*Teléfono:* ${tel}\n`;
       msg += `*Correo:* ${correo}\n`;
-      msg += `*Cómo me enteré:* ${metodo}\n`;
+      msg += `*Método de contacto:* ${metodo}\n`;
       if (lat && lng) msg += `*Ubicación:* https://www.google.com/maps?q=${lat},${lng}\n`;
-      msg += `\nGracias.`;
 
-      return msg;
-    }
+      abrirWhatsApp(msg);
+    });
 
-    function buildMsgCambio(){
+    // =====================
+    // CAMBIO: envío
+    // =====================
+    $('#formCambio').addEventListener('submit', (e) => {
+      e.preventDefault();
       const form = $('#formCambio');
-      if (!form.checkValidity()) return null;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const tel10 = digits10FromInput('#c_telefono');
+      if (!tel10) { toast('El teléfono debe tener 10 dígitos'); $('#c_telefono').focus(); return; }
 
       const nombre = $('#c_nombre').value.trim();
-      const telefono = $('#c_telefono').value.trim();
+      const telefono = tel10;
       const fecha = $('#c_fecha').value;
       const hora = $('#c_hora').value;
       const domicilioActual = $('#c_domicilioActual').value.trim();
@@ -1215,20 +1110,26 @@
       msg += `*Teléfono de contacto:* ${telefono}\n`;
       msg += `*Domicilio actual:*\n${domicilioActual}\n`;
       msg += `*Nuevo domicilio:*\n${domicilioNuevo}\n`;
-      msg += `*Fecha:* ${fecha ? formatDateES(fecha) : 'No especificada'}\n`;
-      msg += `*Hora:* ${hora || 'No especificada'}\n`;
-      if (comentarios) msg += `*Comentarios:*\n${comentarios}\n`;
-      msg += `\nGracias.`;
+      msg += `*Fecha en la que me pueden recibir:* ${fecha || 'No especificada'}\n`;
+      msg += `*Hora en la que me pueden recibir:* ${hora || 'No especificada'}\n`;
+      if (comentarios) msg += `*Comentarios adicionales:*\n${comentarios}\n`;
 
-      return msg;
-    }
+      abrirWhatsApp(msg);
+    });
 
-    function buildMsgCancelacion(){
+    // =====================
+    // CANCELACIÓN: envío
+    // =====================
+    $('#formCancelacion').addEventListener('submit', (e) => {
+      e.preventDefault();
       const form = $('#formCancelacion');
-      if (!form.checkValidity()) return null;
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const tel10 = digits10FromInput('#x_telefono');
+      if (!tel10) { toast('El teléfono debe tener 10 dígitos'); $('#x_telefono').focus(); return; }
 
       const nombre = $('#x_nombre').value.trim();
-      const telefono = $('#x_telefono').value.trim();
+      const telefono = tel10;
       const fecha = $('#x_fecha').value;
       const hora = $('#x_hora').value;
       const domicilio = $('#x_domicilio').value.trim();
@@ -1238,100 +1139,30 @@
       msg += `*Tipo de solicitud:* Cancelación\n`;
       msg += `*Nombre:* ${nombre}\n`;
       msg += `*Teléfono de contacto:* ${telefono}\n`;
-      msg += `*Domicilio del servicio:*\n${domicilio}\n`;
-      msg += `*Fecha:* ${fecha ? formatDateES(fecha) : 'No especificada'}\n`;
-      msg += `*Hora:* ${hora || 'No especificada'}\n`;
-      if (motivo) msg += `*Motivo:*\n${motivo}\n`;
-      msg += `\nGracias.`;
+      msg += `*Domicilio completo del servicio:*\n${domicilio}\n`;
+      msg += `*Fecha en la que me pueden recibir:* ${fecha || 'No especificada'}\n`;
+      msg += `*Hora en la que me pueden recibir:* ${hora || 'No especificada'}\n`;
+      if (motivo) msg += `*Motivo de cancelación:*\n${motivo}\n`;
 
-      return msg;
-    }
-
-    // Botones preview
-    $('#i_previewBtn').addEventListener('click', () => {
-      const form = $('#formInstalacion');
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-      if (!validarTelefono10('#i_telefono')) { toast('El teléfono debe tener 10 dígitos'); $('#i_telefono').focus(); return; }
-
-      const msg = buildMsgInstalacion();
-      $('#i_previewText').textContent = msg || '';
-      $('#i_preview').style.display = 'block';
-      toast('Vista previa lista ✅');
-    });
-
-    $('#c_previewBtn').addEventListener('click', () => {
-      const form = $('#formCambio');
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-      if (!validarTelefono10('#c_telefono')) { toast('El teléfono debe tener 10 dígitos'); $('#c_telefono').focus(); return; }
-
-      const msg = buildMsgCambio();
-      $('#c_previewText').textContent = msg || '';
-      $('#c_preview').style.display = 'block';
-      toast('Vista previa lista ✅');
-    });
-
-    $('#x_previewBtn').addEventListener('click', () => {
-      const form = $('#formCancelacion');
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-      if (!validarTelefono10('#x_telefono')) { toast('El teléfono debe tener 10 dígitos'); $('#x_telefono').focus(); return; }
-
-      const msg = buildMsgCancelacion();
-      $('#x_previewText').textContent = msg || '';
-      $('#x_preview').style.display = 'block';
-      toast('Vista previa lista ✅');
-    });
-
-    // =====================
-    // SUBMITS
-    // =====================
-    $('#formInstalacion').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = $('#formInstalacion');
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-      if (!validarTelefono10('#i_telefono')) { toast('El teléfono debe tener 10 dígitos'); $('#i_telefono').focus(); return; }
-
-      const msg = buildMsgInstalacion();
-      // autoguardar datos
-      setDraft(collectDraft());
-      abrirWhatsApp(msg);
-    });
-
-    $('#formCambio').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = $('#formCambio');
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-      if (!validarTelefono10('#c_telefono')) { toast('El teléfono debe tener 10 dígitos'); $('#c_telefono').focus(); return; }
-
-      const msg = buildMsgCambio();
-      setDraft(collectDraft());
-      abrirWhatsApp(msg);
-    });
-
-    $('#formCancelacion').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = $('#formCancelacion');
-      if (!form.checkValidity()) { form.reportValidity(); return; }
-      if (!validarTelefono10('#x_telefono')) { toast('El teléfono debe tener 10 dígitos'); $('#x_telefono').focus(); return; }
-
-      const msg = buildMsgCancelacion();
-      setDraft(collectDraft());
       abrirWhatsApp(msg);
     });
 
     // =====================
-    // PWA (manifest + SW) simple (sin archivos extra)
+    // PWA (manifest + SW) simple (mejorado para GitHub Pages)
     // =====================
+    // Nota: start_url apunta a este archivo.
     const manifest = {
       name: 'Airconekta Centro de Solicitudes',
       short_name: 'Airconekta',
       description: 'Instalación, Cambio de domicilio y Cancelación. Envío por WhatsApp.',
-      start_url: '.',
+      start_url: './menu.html',
+      scope: './',
       display: 'standalone',
-      background_color: '#0b1020',
-      theme_color: '#ffffff',
+      background_color: '#0b1220',
+      theme_color: '#0b1220',
       icons: [
-        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAACENn8fAAAAI0lEQVQYV2NkYGD4z0AEMGGgAQZGBgYGBhA1FIwJQ3EAAEw4AABf1g4p2n3Y3wAAAABJRU5ErkJggg==', sizes: '48x48', type: 'image/png' },
-        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAAB8Hs0fAAAAKUlEQVQ4y2NkoBAwUqifAWEGQwYGBgYwQ2oYg0EwGg0Go0GgYHxGAgA8m0g0pAKg5wAAAABJRU5ErkJggg==', sizes: '72x72', type: 'image/png' }
+        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAt0lEQVRYR+2WwQ2DMAxFf4Qb2oJmYgU2YgU2YgU2YgXcQK0oQmGQ7qkzIuWmH0p8vVwq8iKp3gk4A9gD7y0YwqJp5gHkqg0xq3mCwAqk8Q2qgF4aQe8nKXb5vQw4Qp0uQh0d3o1ZgGQ7cBf0oYzqk3y0b0lGm1b8gk1s8hB9c3m0Bf8b8f7e3w2wCzqQkE0XQm0a0xJYyY8gG8cQqWkqYkAAAAASUVORK5CYII=', sizes: '32x32', type: 'image/png' },
+        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGUlEQVR4nO3aMQ6CMBQF0Z+oZQp8gB1gB1gB1gB1gB1gJxq0c0xqTnF1b0mWm0p8x9c9m0cJ8mQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQk9gM0bQy4s6oWkAAAAASUVORK5CYII=', sizes: '64x64', type: 'image/png' }
       ]
     };
     const manBlob = new Blob([JSON.stringify(manifest)], { type:'application/json' });
@@ -1344,8 +1175,9 @@
     if ('serviceWorker' in navigator) {
       const swCode = `
         const CACHE = 'airconekta-centro-v2';
+        const CORE = ['./', './menu.html'];
         self.addEventListener('install', e => {
-          e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.registration.scope])));
+          e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)));
           self.skipWaiting();
         });
         self.addEventListener('activate', e => { e.waitUntil(self.clients.claim()); });
@@ -1355,9 +1187,9 @@
           e.respondWith(
             caches.match(req).then(r => r || fetch(req).then(res => {
               const copy = res.clone();
-              caches.open(CACHE).then(c => c.put(req, copy));
+              caches.open(CACHE).then(c => c.put(req, copy)).catch(()=>{});
               return res;
-            }).catch(() => caches.match(self.registration.scope)))
+            }).catch(() => caches.match('./menu.html')))
           );
         });
       `;
@@ -1379,6 +1211,10 @@
         finally { deferredPrompt = null; btn.style.display = 'none'; }
       };
     });
+
+    // Vista inicial (recuerda última pantalla, si aplica)
+    const last = sessionStorage.getItem(VIEW_KEY);
+    showView(last || 'home');
   </script>
 </body>
 </html>
