@@ -8,7 +8,20 @@
   <meta name="color-scheme" content="light dark">
   <meta name="description" content="Centro de solicitudes Airconekta: Instalación, Cambio de domicilio y Cancelación. Envío por WhatsApp con formato listo." />
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23246bff'/%3E%3Cstop offset='1' stop-color='%2318c6ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='256' height='256' rx='56' fill='%230b1220'/%3E%3Cpath fill='url(%23g)' d='M140 16 68 144h60l-12 96 72-128h-60l12-96z'/%3E%3C/svg%3E" />
+  <!-- =========================
+       LOGOS / ICONOS
+       ========================= -->
+  <!-- (Favicon) -->
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png" />
+
+  <!-- (Icono iOS al “Agregar a pantalla de inicio”) -->
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png" />
+
+  <!-- (Compartir en redes) -->
+  <meta property="og:title" content="Airconekta · Centro de Solicitudes" />
+  <meta property="og:description" content="Instalación, Cambio de domicilio y Cancelación. Envío por WhatsApp con formato listo." />
+  <meta property="og:image" content="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <style>
     /* =========================
@@ -40,6 +53,11 @@
       --ring: 0 0 0 4px rgba(36,107,255,.16);
 
       --maxw: 1040px;
+
+      /* URLs de logos */
+      --logo-1024: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png");
+      --logo-512:  url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png");
+      --logo-trans: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png");
     }
 
     /* Dark mode tokens */
@@ -143,15 +161,19 @@
       filter: blur(0px);
       opacity:.9;
     }
-    .splash-logo span{
+
+    /* LOGO real en el centro (en vez de ⚡) */
+    .splash-logo .logo-img{
       position:relative;
       width: 62px; height: 62px;
       border-radius: 22px;
-      display:grid; place-items:center;
+      display:block;
       background: rgba(11,18,32,.92);
       border:1px solid rgba(255,255,255,.12);
-      font-size: 30px;
+      object-fit: contain;
+      padding: 10px;
     }
+
     .splash-title{
       font-weight: 1000;
       letter-spacing: .6px;
@@ -212,6 +234,7 @@
       display:flex; gap:12px; align-items:center;
       font-weight: 1000; letter-spacing: .2px;
     }
+
     .logo{
       width: 40px; height: 40px; border-radius: 14px;
       display:grid; place-items:center;
@@ -234,7 +257,16 @@
       opacity:.55;
       animation: spin 6.5s linear infinite;
     }
-    .logo span{ position:relative; font-size:18px; }
+
+    /* LOGO real dentro del cuadrito del navbar */
+    .logo .logo-img{
+      position:relative;
+      width: 26px; height: 26px;
+      display:block;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
+    }
+
     .brand small{
       display:block;
       font-weight:800;
@@ -548,7 +580,9 @@
   <!-- Splash -->
   <div class="splash" id="splash" aria-label="Cargando Airconekta">
     <div class="splash-card" role="status" aria-live="polite">
-      <div class="splash-logo" aria-hidden="true"><span>⚡</span></div>
+      <div class="splash-logo" aria-hidden="true">
+        <img class="logo-img" alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
+      </div>
       <div class="splash-title">AIRCONEKTA</div>
       <p class="splash-sub">Centro de solicitudes · Atención local</p>
       <div class="splash-bar" aria-hidden="true"><i></i></div>
@@ -559,7 +593,9 @@
   <div class="shell">
     <nav class="nav" aria-label="Barra superior">
       <div class="brand">
-        <div class="logo"><span>⚡</span></div>
+        <div class="logo" aria-hidden="true">
+          <img class="logo-img" alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
+        </div>
         <div>
           Airconekta
           <small>Centro de solicitudes</small>
@@ -891,6 +927,11 @@
     // =====================
     const NUMERO_DESTINO = "5213222108817";
 
+    // LOGOS (por si quieres reusarlos en JS)
+    const LOGO_1024 = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png";
+    const LOGO_512  = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png";
+    const LOGO_TRANS = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png";
+
     const $ = (sel) => document.querySelector(sel);
     const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
@@ -907,10 +948,8 @@
     const splash = document.getElementById('splash');
     const hideSplash = () => splash?.classList.add('hide');
 
-    // si el user toca/clic, se puede cerrar antes (se siente pro)
     splash?.addEventListener('click', hideSplash, { passive:true });
 
-    // ocultar a los 3s, pero también cuando termina de cargar
     window.addEventListener('load', () => {
       setTimeout(hideSplash, 3000);
     });
@@ -955,21 +994,17 @@
       const view = document.querySelector(`[data-view="${name}"]`);
       if (view) view.classList.add('active');
 
-      // recordar vista
       sessionStorage.setItem(VIEW_KEY, name);
 
-      // scroll top suave compatible (sin "instant" que no existe en algunos navegadores)
       try { window.scrollTo({ top: 0, behavior: 'smooth' }); }
       catch { window.scrollTo(0,0); }
     }
 
-    // Botón "Ver opciones"
     $('#menuBtn').addEventListener('click', () => {
       showView('home');
       toast('Opciones listas ✅');
     });
 
-    // Botones del menú
     $$('[data-go]').forEach(btn => {
       btn.addEventListener('click', () => {
         const v = btn.getAttribute('data-go');
@@ -981,7 +1016,6 @@
       });
     });
 
-    // Volver
     $$('[data-back]').forEach(b => b.addEventListener('click', () => showView('home')));
 
     // =====================
@@ -1044,7 +1078,6 @@
     function digits10FromInput(inputSel){
       const el = $(inputSel);
       const raw = (el.value || '').replace(/\D+/g, '');
-      // UX: si pegó con espacios/guiones, lo normalizamos
       if (raw && raw !== el.value) el.value = raw;
       return raw.length === 10 ? raw : null;
     }
@@ -1150,7 +1183,6 @@
     // =====================
     // PWA (manifest + SW) simple (mejorado para GitHub Pages)
     // =====================
-    // Nota: start_url apunta a este archivo.
     const manifest = {
       name: 'Airconekta Centro de Solicitudes',
       short_name: 'Airconekta',
@@ -1161,8 +1193,8 @@
       background_color: '#0b1220',
       theme_color: '#0b1220',
       icons: [
-        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAt0lEQVRYR+2WwQ2DMAxFf4Qb2oJmYgU2YgU2YgU2YgXcQK0oQmGQ7qkzIuWmH0p8vVwq8iKp3gk4A9gD7y0YwqJp5gHkqg0xq3mCwAqk8Q2qgF4aQe8nKXb5vQw4Qp0uQh0d3o1ZgGQ7cBf0oYzqk3y0b0lGm1b8gk1s8hB9c3m0Bf8b8f7e3w2wCzqQkE0XQm0a0xJYyY8gG8cQqWkqYkAAAAASUVORK5CYII=', sizes: '32x32', type: 'image/png' },
-        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABGUlEQVR4nO3aMQ6CMBQF0Z+oZQp8gB1gB1gB1gB1gB1gJxq0c0xqTnF1b0mWm0p8x9c9m0cJ8mQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQmQk9gM0bQy4s6oWkAAAAASUVORK5CYII=', sizes: '64x64', type: 'image/png' }
+        { src: LOGO_512, sizes: '512x512', type: 'image/png' },
+        { src: LOGO_1024, sizes: '1024x1024', type: 'image/png' }
       ]
     };
     const manBlob = new Blob([JSON.stringify(manifest)], { type:'application/json' });
@@ -1174,7 +1206,7 @@
 
     if ('serviceWorker' in navigator) {
       const swCode = `
-        const CACHE = 'airconekta-centro-v2';
+        const CACHE = 'airconekta-centro-v3';
         const CORE = ['./', './menu.html'];
         self.addEventListener('install', e => {
           e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)));
@@ -1212,7 +1244,7 @@
       };
     });
 
-    // Vista inicial (recuerda última pantalla, si aplica)
+    // Vista inicial
     const last = sessionStorage.getItem(VIEW_KEY);
     showView(last || 'home');
   </script>
