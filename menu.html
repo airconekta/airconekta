@@ -11,13 +11,8 @@
   <!-- =========================
        LOGOS / ICONOS
        ========================= -->
-  <!-- (Favicon) -->
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png" />
-
-  <!-- (Icono iOS al “Agregar a pantalla de inicio”) -->
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png" />
-
-  <!-- (Compartir en redes) -->
   <meta property="og:title" content="Airconekta · Centro de Solicitudes" />
   <meta property="og:description" content="Instalación, Cambio de domicilio y Cancelación. Envío por WhatsApp con formato listo." />
   <meta property="og:image" content="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png" />
@@ -58,6 +53,8 @@
       --logo-1024: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png");
       --logo-512:  url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png");
       --logo-trans: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png");
+      /* Opcional: “wordmark” si tienes un PNG horizontal con el nombre */
+      --logo-wordmark: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_wordmark.png");
     }
 
     /* Dark mode tokens */
@@ -138,9 +135,9 @@
       backdrop-filter: blur(14px) saturate(120%);
     }
     .splash-logo{
-      width: 88px; height: 88px;
+      width: 110px; height: 110px;
       margin: 0 auto 10px;
-      border-radius: 26px;
+      border-radius: 28px;
       display:grid; place-items:center;
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.12);
@@ -158,15 +155,14 @@
         rgba(36,107,255,.0)
       );
       animation: spin 2.4s linear infinite;
-      filter: blur(0px);
       opacity:.9;
     }
 
-    /* LOGO real en el centro (en vez de ⚡) */
+    /* LOGO real en el centro */
     .splash-logo .logo-img{
       position:relative;
-      width: 62px; height: 62px;
-      border-radius: 22px;
+      width: 78px; height: 78px;
+      border-radius: 26px;
       display:block;
       background: rgba(11,18,32,.92);
       border:1px solid rgba(255,255,255,.12);
@@ -174,6 +170,19 @@
       padding: 10px;
     }
 
+    /* NUEVO: wordmark PNG (si existe) */
+    .splash-wordmark{
+      width: min(360px, 78%);
+      height: 54px;
+      margin: 10px auto 4px;
+      background-image: var(--logo-wordmark);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      filter: drop-shadow(0 16px 26px rgba(0,0,0,.28));
+    }
+
+    /* Fallback si no existe el wordmark */
     .splash-title{
       font-weight: 1000;
       letter-spacing: .6px;
@@ -214,6 +223,10 @@
       .splash-logo::before, .splash-bar > i{ animation:none !important; }
       .splash{ transition:none; }
     }
+
+    /* Si NO tienes el wordmark, muestro el texto. Si SÍ lo tienes, oculto el texto */
+    .has-wordmark .splash-title{ display:none; }
+    .no-wordmark .splash-wordmark{ display:none; }
 
     /* =========================
        Top nav
@@ -267,13 +280,32 @@
       filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
     }
 
-    .brand small{
+    /* NUEVO: Wordmark en navbar (si existe) */
+    .wordmark{
+      width: 150px;
+      height: 34px;
+      background-image: var(--logo-wordmark);
+      background-repeat:no-repeat;
+      background-position:left center;
+      background-size: contain;
+      display:block;
+      filter: drop-shadow(0 10px 14px rgba(0,0,0,.08));
+    }
+    .brand-text{
+      display:block;
+      line-height:1.05;
+    }
+    .brand-text small{
       display:block;
       font-weight:800;
       color:var(--muted);
       letter-spacing:0;
       margin-top:2px;
     }
+
+    /* Si hay wordmark, oculto el texto “Airconekta” */
+    .has-wordmark .brand-text .brand-name{ display:none; }
+    .no-wordmark .wordmark{ display:none; }
 
     .inline{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
 
@@ -369,6 +401,7 @@
       .col-6,.col-4{ grid-column:span 12; }
       .shell{ padding:16px; }
       .nav{ top:10px; }
+      .wordmark{ width: 130px; }
     }
 
     label{ display:block; font-size:.92rem; color:var(--muted); margin:4px 0 6px; }
@@ -578,12 +611,18 @@
 
 <body>
   <!-- Splash -->
-  <div class="splash" id="splash" aria-label="Cargando Airconekta">
+  <div class="splash no-wordmark" id="splash" aria-label="Cargando Airconekta">
     <div class="splash-card" role="status" aria-live="polite">
       <div class="splash-logo" aria-hidden="true">
-        <img class="logo-img" alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
+        <img class="logo-img" alt="Airconekta" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
       </div>
-      <div class="splash-title">AIRCONEKTA</div>
+
+      <!-- Si existe el wordmark PNG, se mostrará esto y se ocultará el texto -->
+      <div class="splash-wordmark" aria-label="Airconekta"></div>
+
+      <!-- Fallback si no hay wordmark -->
+      <div class="splash-title">Airconekta</div>
+
       <p class="splash-sub">Centro de solicitudes · Atención local</p>
       <div class="splash-bar" aria-hidden="true"><i></i></div>
       <p class="sr-only">Cargando…</p>
@@ -594,11 +633,16 @@
     <nav class="nav" aria-label="Barra superior">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <img class="logo-img" alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
+          <img class="logo-img" alt="Airconekta" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
         </div>
+
+        <!-- Wordmark + fallback -->
         <div>
-          Airconekta
-          <small>Centro de solicitudes</small>
+          <span class="wordmark" aria-label="Airconekta"></span>
+          <span class="brand-text">
+            <span class="brand-name">Airconekta</span>
+            <small>Centro de solicitudes</small>
+          </span>
         </div>
       </div>
 
@@ -618,7 +662,7 @@
     <section class="card active" data-view="home" id="viewHome">
       <div class="top-actions">
         <div>
-          <h1>Bienvenidos a Airconekta</h1>
+          <h1>Bienvenidos</h1>
           <p class="lead" style="margin-bottom:0">¿Qué desea?</p>
         </div>
         <span class="pill">📍 Empresa local · Atención directa</span>
@@ -649,7 +693,7 @@
         </div>
 
         <div class="mini-note">
-          🌐 <strong>AIRCONEKTA</strong> — Internet para tu hogar. <strong>Empresa 100% local</strong>, atención directa y <strong>sin letras chiquitas</strong>.
+          🌐 <strong>Airconekta</strong> — Internet para tu hogar. <strong>Empresa 100% local</strong>, atención directa y <strong>sin letras chiquitas</strong>.
         </div>
 
         <div class="divider"></div>
@@ -927,10 +971,14 @@
     // =====================
     const NUMERO_DESTINO = "5213222108817";
 
-    // LOGOS (por si quieres reusarlos en JS)
+    // LOGOS
     const LOGO_1024 = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png";
     const LOGO_512  = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png";
     const LOGO_TRANS = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png";
+
+    // OPCIONAL: Wordmark (PNG horizontal con el nombre)
+    // Si NO existe en tu repo, no pasa nada: se quedará en modo fallback con texto.
+    const LOGO_WORDMARK = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_wordmark.png";
 
     const $ = (sel) => document.querySelector(sel);
     const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -943,6 +991,38 @@
     };
 
     // =====================
+    // Util: detectar si el PNG wordmark existe
+    // =====================
+    function checkImage(url){
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now();
+      });
+    }
+
+    async function initBranding(){
+      // Poner el wordmark en CSS var
+      document.documentElement.style.setProperty('--logo-wordmark', `url("${LOGO_WORDMARK}")`);
+
+      const ok = await checkImage(LOGO_WORDMARK);
+      const splash = $('#splash');
+
+      if (ok) {
+        document.documentElement.classList.add('has-wordmark');
+        document.documentElement.classList.remove('no-wordmark');
+        splash?.classList.add('has-wordmark');
+        splash?.classList.remove('no-wordmark');
+      } else {
+        document.documentElement.classList.add('no-wordmark');
+        document.documentElement.classList.remove('has-wordmark');
+        splash?.classList.add('no-wordmark');
+        splash?.classList.remove('has-wordmark');
+      }
+    }
+
+    // =====================
     // Splash (3s)
     // =====================
     const splash = document.getElementById('splash');
@@ -950,7 +1030,9 @@
 
     splash?.addEventListener('click', hideSplash, { passive:true });
 
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async () => {
+      // Branding primero (para que se pinte el wordmark si existe)
+      try { await initBranding(); } catch {}
       setTimeout(hideSplash, 3000);
     });
 
