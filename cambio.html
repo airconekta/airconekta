@@ -14,7 +14,7 @@
     Firma / Autor (solo visible al depurar o ver código fuente)
     Jair Elizondo
     +52 322 243 9782
-    Hint: /#whoami
+    Hint: #whoami
     ===========================================================
   -->
 
@@ -25,19 +25,27 @@
       --ink: #0f1a2e;
       --muted: #5b6b86;
       --accent: #246bff;
+      --accent-2:#18c6ff;
+      --accent-3:#7c3aed;
       --border: #cfe0ff;
       --ok: #1f9d55;
       --radius: 18px;
       --shadow: 0 10px 26px rgba(16,48,96,.10);
+
+      --logo-1024: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png");
+      --logo-512: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png");
+      --logo-trans: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png");
     }
 
     *{ box-sizing: border-box; }
     html,body{ height:100%; }
+
     body{
       margin:0;
       font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       background:#fff;
       color:var(--ink);
+      overflow-x:hidden;
     }
 
     .shell{ max-width:920px; margin:0 auto; padding:24px; }
@@ -52,7 +60,12 @@
       z-index:10;
     }
     .brand{ display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.2px; color:var(--ink); }
-    .brand .logo{ width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:#fff; border:1px solid var(--border); color:var(--accent); }
+    .brand .logo{
+      width:36px; height:36px; border-radius:12px; display:grid; place-items:center;
+      background:#fff; border:1px solid var(--border); color:var(--accent);
+      overflow:hidden;
+    }
+    .brand .logo img{ width:22px; height:22px; object-fit:contain; display:block; }
     .brand .logo span{ font-size:18px; }
 
     .card{
@@ -115,7 +128,7 @@
       position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(16px); opacity:0; pointer-events:none;
       background:#fff; color:var(--ink); padding:10px 14px; border-radius:12px;
       border:1px solid var(--accent); box-shadow:0 8px 20px rgba(16,48,96,.10); transition:.18s ease;
-      z-index:30;
+      z-index:20;
     }
     .toast.show{ transform:translateX(-50%) translateY(0); opacity:1; }
 
@@ -228,52 +241,58 @@
       .splash{ transition:none; }
     }
 
-    /* ========================= WHOAMI overlay (hash) ========================= */
-    .whoami{
-      position:fixed;
-      inset:0;
-      background: rgba(7,11,20,.62);
-      backdrop-filter: blur(12px) saturate(120%);
-      display:none;
-      place-items:center;
-      z-index:9998;
-      padding: 18px;
-    }
-    .whoami.show{ display:grid; }
-    .who-card{
-      width:min(92vw, 720px);
-      background:#fff;
-      color: var(--ink);
-      border-radius: 20px;
-      border:1px solid var(--border);
-      box-shadow: 0 24px 60px rgba(0,0,0,.25);
-      padding: 16px;
-    }
+    /* ========================= WHOAMI (vista especial) ========================= */
+    [data-view]{ display:none; }
+    [data-view].active{ display:block; }
+
     .who-top{
       display:flex;
-      justify-content:space-between;
       align-items:flex-start;
-      gap:10px;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .who-card{
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px;
+      background:#fff;
+      box-shadow:var(--shadow);
+    }
+    .who-hero{
+      display:flex;
+      gap:12px;
+      align-items:center;
       flex-wrap:wrap;
     }
-    .who-title{ margin:0; font-size:1.15rem; }
-    .who-sub{ margin:4px 0 0; color:var(--muted); font-weight:600; }
-    .who-grid{
-      margin-top:12px;
-      display:grid;
-      grid-template-columns:repeat(12,1fr);
-      gap:10px;
-    }
-    .who-item{
-      grid-column: span 6;
+    .who-avatar{
+      width:64px;height:64px;border-radius:18px;
       border:1px solid var(--border);
-      border-radius:14px;
-      padding:10px 12px;
-      background:#f6f9ff;
+      display:grid;place-items:center;
+      font-weight:900;
+      background:
+        radial-gradient(60px 60px at 30% 20%, rgba(36,107,255,.22), transparent 60%),
+        radial-gradient(60px 60px at 90% 30%, rgba(24,198,255,.18), transparent 55%),
+        radial-gradient(60px 60px at 40% 95%, rgba(124,58,237,.14), transparent 60%),
+        #fff;
     }
-    @media (max-width:680px){ .who-item{ grid-column:span 12; } }
-    .who-item b{ display:block; margin-bottom:4px; }
-    .who-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    .who-name{ margin:0; font-weight:900; font-size:1.15rem; }
+    .who-role{ margin:2px 0 0; color:var(--muted); font-weight:700; }
+    .who-actions{ margin-top:12px; display:flex; gap:10px; flex-wrap:wrap; }
+
+    /* ✅ IMPORTANTE: respeta espacios y saltos de línea del TIP */
+    .who-tip{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px dashed rgba(207,224,255,.95);
+      background:rgba(36,107,255,.05);
+      color:var(--muted);
+      font-size:.95rem;
+      white-space: pre-wrap;     /* <- mantiene espacios/saltos */
+      word-break: break-word;
+    }
   </style>
 </head>
 
@@ -294,128 +313,142 @@
     </div>
   </div>
 
-  <!-- Whoami (hash route) -->
-  <div class="whoami" id="whoami" aria-label="Whoami">
-    <div class="who-card" role="dialog" aria-modal="true" aria-labelledby="whoTitle">
-      <div class="who-top">
-        <div>
-          <h2 class="who-title" id="whoTitle">Whoami</h2>
-          <p class="who-sub">Vista especial (solo con <b>#whoami</b>).</p>
-        </div>
-        <button class="btn" type="button" id="whoCloseBtn">✕ Cerrar</button>
-      </div>
-
-      <div class="who-grid">
-        <div class="who-item">
-          <b>👤 Nombre</b>
-          <span id="whoName">Jair Elizondo</span>
-        </div>
-        <div class="who-item">
-          <b>🧩 Rol</b>
-          <span id="whoRole">Soporte / Instalaciones · Airconekta</span>
-        </div>
-        <div class="who-item">
-          <b>📞 Teléfono</b>
-          <span id="whoPhone">322 243 9782</span>
-        </div>
-        <div class="who-item">
-          <b>🔗 Tip</b>
-          <span id="whoTip"></span>
-        </div>
-      </div>
-
-      <div class="who-actions">
-        <a class="btn btn-primary" id="whoWhatsBtn" href="#" rel="noopener noreferrer">🟢 Abrir WhatsApp</a>
-        <a class="btn" id="whoCallBtn" href="#">📞 Llamar</a>
-        <button class="btn" type="button" id="whoCopyBtn">📋 Copiar datos</button>
-      </div>
-
-      <p class="status" style="margin:12px 0 0">
-        Para salir también puedes borrar el hash (<b>#whoami</b>) de la URL.
-      </p>
-    </div>
-  </div>
-
   <div class="shell">
-    <nav class="nav">
-      <div class="brand">
-        <div class="logo"><span>⚡</span></div>
-        <div>Airconekta <span style="opacity:.65;font-weight:600">Cambio</span></div>
+
+    <!-- ===== HOME ===== -->
+    <div data-view="home" class="active" id="viewHome">
+      <nav class="nav">
+        <div class="brand">
+          <div class="logo">
+            <img alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
+          </div>
+          <div>Airconekta <span style="opacity:.65;font-weight:600">Cambio</span></div>
+        </div>
+        <div class="inline">
+          <button id="installBtn" class="btn" style="display:none">➕ Instalar</button>
+          <a class="btn" href="#" id="shareBtn" title="Compartir app">⇪ Compartir</a>
+        </div>
+      </nav>
+
+      <section class="card">
+        <h1>Solicitar cambio de domicilio</h1>
+        <p class="lead">
+          Llena los datos para solicitar el cambio de domicilio de tu servicio. Al finalizar se abrirá WhatsApp con tu información lista para enviar.
+        </p>
+
+        <form id="form" novalidate>
+          <div class="col-12">
+            <label for="nombre">Nombre completo</label>
+            <input id="nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
+          </div>
+
+          <div class="col-6">
+            <label for="telefono">Teléfono de contacto</label>
+            <input id="telefono" name="telefono" inputmode="numeric" autocomplete="tel"
+                   placeholder="10 dígitos" pattern="[0-9]{10}"
+                   title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
+          </div>
+
+          <div class="col-6">
+            <label for="fecha">Fecha en la que nos puede recibir</label>
+            <input id="fecha" name="fecha" type="date" required />
+          </div>
+
+          <div class="col-6">
+            <label for="hora">Hora en la que nos puede recibir</label>
+            <input id="hora" name="hora" type="time" required />
+          </div>
+
+          <div class="col-12">
+            <label for="domicilioActual">Domicilio actual completo</label>
+            <textarea id="domicilioActual" name="domicilioActual" rows="3"
+                      placeholder="Calle, número, colonia, ciudad, CP"
+                      required></textarea>
+          </div>
+
+          <div class="col-12">
+            <label for="domicilioNuevo">Nuevo domicilio completo</label>
+            <textarea id="domicilioNuevo" name="domicilioNuevo" rows="3"
+                      placeholder="Calle, número, colonia, ciudad, CP"
+                      required></textarea>
+          </div>
+
+          <div class="col-12">
+            <label for="comentarios">Comentarios adicionales (opcional)</label>
+            <textarea id="comentarios" name="comentarios" rows="3"
+                      placeholder="Referencias, detalles de acceso, etc. (opcional)"></textarea>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary" id="sendBtn">📨 Enviar solicitud por WhatsApp</button>
+          </div>
+        </form>
+
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      </section>
+
+      <div class="footer">
+        <span>© <span id="year"></span> Airconekta</span>
+        <span style="opacity:.75">Hecho con ❤️ para clientes felices</span>
       </div>
-      <div class="inline">
-        <button id="installBtn" class="btn" style="display:none">➕ Instalar</button>
-        <a class="btn" href="#" id="shareBtn" title="Compartir app">⇪ Compartir</a>
-      </div>
-    </nav>
-
-    <section class="card">
-      <h1>Solicitar cambio de domicilio</h1>
-      <p class="lead">
-        Llena los datos para solicitar el cambio de domicilio de tu servicio. Al finalizar se abrirá WhatsApp con tu información lista para enviar.
-      </p>
-
-      <form id="form" novalidate>
-        <div class="col-12">
-          <label for="nombre">Nombre completo</label>
-          <input id="nombre" name="nombre" placeholder="Tu nombre" required autocomplete="name" />
-        </div>
-
-        <div class="col-6">
-          <label for="telefono">Teléfono de contacto</label>
-          <input id="telefono" name="telefono" inputmode="numeric" autocomplete="tel"
-                 placeholder="10 dígitos" pattern="[0-9]{10}"
-                 title="Debe contener exactamente 10 dígitos (solo números 0-9)" required />
-        </div>
-
-        <div class="col-6">
-          <label for="fecha">Fecha en la que nos puede recibir</label>
-          <input id="fecha" name="fecha" type="date" required />
-        </div>
-
-        <div class="col-6">
-          <label for="hora">Hora en la que nos puede recibir</label>
-          <input id="hora" name="hora" type="time" required />
-        </div>
-
-        <div class="col-12">
-          <label for="domicilioActual">Domicilio actual completo</label>
-          <textarea id="domicilioActual" name="domicilioActual" rows="3"
-                    placeholder="Calle, número, colonia, ciudad, CP"
-                    required></textarea>
-        </div>
-
-        <div class="col-12">
-          <label for="domicilioNuevo">Nuevo domicilio completo</label>
-          <textarea id="domicilioNuevo" name="domicilioNuevo" rows="3"
-                    placeholder="Calle, número, colonia, ciudad, CP"
-                    required></textarea>
-        </div>
-
-        <div class="col-12">
-          <label for="comentarios">Comentarios adicionales (opcional)</label>
-          <textarea id="comentarios" name="comentarios" rows="3"
-                    placeholder="Referencias, detalles de acceso, etc. (opcional)"></textarea>
-        </div>
-
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary" id="sendBtn">📨 Enviar solicitud por WhatsApp</button>
-        </div>
-      </form>
-
-      <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    </section>
-
-    <div class="footer">
-      <span>© <span id="year"></span> Airconekta</span>
-      <span style="opacity:.75">Hecho con ❤️ para clientes felices</span>
     </div>
+
+    <!-- ===== WHOAMI ===== -->
+    <div data-view="whoami" id="viewWhoami">
+      <nav class="nav">
+        <div class="brand">
+          <div class="logo">
+            <img alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
+          </div>
+          <div>Airconekta <span style="opacity:.65;font-weight:600">Whoami</span></div>
+        </div>
+        <div class="inline">
+          <button class="btn" type="button" id="backBtn">← Volver</button>
+        </div>
+      </nav>
+
+      <section class="card">
+        <div class="who-top">
+          <div>
+            <h1 style="margin:0 0 6px">Whoami</h1>
+            <p class="lead" style="margin:0">Vista especial (solo con <strong>#whoami</strong>).</p>
+          </div>
+        </div>
+
+        <div class="who-card">
+          <div class="who-hero">
+            <div class="who-avatar" aria-hidden="true">JE</div>
+            <div>
+              <p class="who-name" id="whoName">Jair Elizondo</p>
+              <p class="who-role" id="whoRole">Soporte / Instalaciones · Airconekta</p>
+            </div>
+          </div>
+
+          <div class="who-actions">
+            <a class="btn btn-primary" id="whoWhatsBtn" href="#" rel="noopener noreferrer">🟢 Abrir chat</a>
+            <a class="btn" id="whoCallBtn" href="#">📞 Llamar</a>
+            <button class="btn" type="button" id="whoCopyBtn">📋 Copiar datos</button>
+          </div>
+
+          <div class="who-tip" id="whoTip"></div>
+        </div>
+
+        <div class="footer" style="margin-top:14px">
+          <span>© <span class="year"></span> Airconekta</span>
+          <span style="opacity:.75">Debug view · #whoami</span>
+        </div>
+      </section>
+    </div>
+
   </div>
 
   <script>
-    // Configuración
+    // =====================
+    // CONFIGURACIÓN
+    // =====================
     const NUMERO_DESTINO = "5213222108817";
 
-    // Firma / whoami
+    // Firma (debug / whoami)
     const WHOAMI = {
       name: "Jair Elizondo",
       phonePretty: "322 243 9782",
@@ -426,40 +459,117 @@
     };
 
     const $ = sel => document.querySelector(sel);
+
     const toast = (msg) => {
       const t = $('#toast');
+      if (!t) return;
       t.textContent = msg;
       t.classList.add('show');
       setTimeout(()=>t.classList.remove('show'), 1800);
     };
 
     // =====================
-    // Firma en consola (debug)
+    // Firma en consola (solo al depurar)
     // =====================
     (function consoleSignature(){
       try{
         const line = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
         console.log("%c" + line, "color:#18c6ff;font-weight:900");
-        console.log("%cAIRCONEKTA · Firma de desarrollo","color:#246bff;font-size:14px;font-weight:900");
-        console.log("%c" + WHOAMI.name + "  ·  " + WHOAMI.phonePretty + "  ·  " + WHOAMI.hint,"color:#7c3aed;font-size:12px;font-weight:900");
-        console.log("%c" + WHOAMI.webHint,"color:#5b6b86;font-size:12px;font-weight:800");
+        console.log("%cAIRCONEKTA · Firma de desarrollo", "color:#246bff;font-size:14px;font-weight:900");
+        console.log("%c" + WHOAMI.name + "  ·  " + WHOAMI.phonePretty + "  ·  " + WHOAMI.hint, "color:#7c3aed;font-size:12px;font-weight:900");
+        console.log("%c" + WHOAMI.webHint, "color:#5b6b86;font-size:12px;font-weight:800");
         console.log("%c" + line, "color:#18c6ff;font-weight:900");
       }catch{}
     })();
 
     // =====================
-    // Splash (3s) - no afecta funciones del form
+    // Splash (3s)
     // =====================
     const splash = document.getElementById("splash");
     const hideSplash = () => splash?.classList.add("hide");
     splash?.addEventListener("click", hideSplash, { passive: true });
-    window.addEventListener("load", () => setTimeout(hideSplash, 3000));
+    window.addEventListener("load", () => { setTimeout(hideSplash, 3000); });
 
     // =====================
     // Año dinámico
     // =====================
     $('#year').textContent = new Date().getFullYear();
+    document.querySelectorAll('.year').forEach(el => el.textContent = new Date().getFullYear());
 
+    // =====================
+    // Vistas: home / whoami
+    // =====================
+    function showView(name){
+      document.querySelectorAll('[data-view]').forEach(v => v.classList.remove('active'));
+      const v = document.querySelector(`[data-view="${name}"]`);
+      if (v) v.classList.add('active');
+
+      try { window.scrollTo({top:0, behavior:"smooth"}); }
+      catch { window.scrollTo(0,0); }
+    }
+
+    function renderWhoami(){
+      $("#whoName").textContent = WHOAMI.name;
+      $("#whoRole").textContent = WHOAMI.role;
+
+      const waLink =
+        `https://api.whatsapp.com/send?phone=52${WHOAMI.phoneDigits}` +
+        `&text=${encodeURIComponent("Hola 👋 " + WHOAMI.name + ", necesito soporte / info de Airconekta (cambio de domicilio).")}` +
+        `&type=phone_number&app_absent=0`;
+
+      $("#whoWhatsBtn").setAttribute("href", waLink);
+      $("#whoCallBtn").setAttribute("href", `tel:+52${WHOAMI.phoneDigits}`);
+
+      $("#whoCopyBtn").onclick = async () => {
+        const text =
+          `${WHOAMI.name}\n` +
+          `${WHOAMI.phonePretty}\n` +
+          `Airconekta\n` +
+          `Tip: ${location.origin + location.pathname}#whoami`;
+        try{
+          await navigator.clipboard.writeText(text);
+          toast("Datos copiados ✅");
+        }catch{
+          toast("No se pudo copiar (permiso del navegador)");
+        }
+      };
+
+      // ✅ Tip con espacios/saltos respetados
+      $("#whoTip").textContent =
+`Cómo sé que sí funciona:
+
+1) Abre DevTools → Console y recarga:
+   verás tu firma.
+
+2) Ctrl+U (Ver código fuente):
+   verás el bloque de firma en comentarios.
+
+3) Agrega al final de la URL:
+   ${location.origin + location.pathname}#whoami`;
+
+      $("#backBtn").onclick = () => {
+        history.replaceState(null, "", location.pathname + location.search);
+        showView("home");
+        toast("Regresando ✅");
+      };
+    }
+
+    function handleHashRoute(){
+      const h = (location.hash || "").toLowerCase().trim();
+      if (h === "#whoami"){
+        renderWhoami();
+        showView("whoami");
+        return;
+      }
+      showView("home");
+    }
+
+    window.addEventListener("hashchange", handleHashRoute, { passive:true });
+    handleHashRoute();
+
+    // =====================
+    // VALIDACIÓN + WHATSAPP (MISMA FUNCIÓN)
+    // =====================
     function validarFormulario() {
       const form = $('#form');
       if (!form.checkValidity()) {
@@ -510,7 +620,9 @@
       enviarWhatsApp();
     });
 
-    // Compartir app
+    // =====================
+    // Compartir app (MISMA FUNCIÓN)
+    // =====================
     $('#shareBtn').addEventListener('click', async (e) => {
       e.preventDefault();
       if (navigator.share) {
@@ -522,69 +634,17 @@
           });
         } catch (err) {/* cancelado */}
       } else {
-        navigator.clipboard?.writeText(location.href);
-        toast('Enlace copiado');
+        try{
+          await navigator.clipboard?.writeText(location.href);
+          toast('Enlace copiado');
+        }catch{
+          toast('Copia el enlace desde la barra');
+        }
       }
     });
 
     // =====================
-    // WHOAMI (hash route) - overlay sin romper estructura
-    // =====================
-    function openWhoami(){
-      const tip = `${location.origin}${location.pathname}#whoami`;
-      $("#whoName").textContent = WHOAMI.name;
-      $("#whoRole").textContent = WHOAMI.role;
-      $("#whoPhone").textContent = WHOAMI.phonePretty;
-      $("#whoTip").textContent = tip;
-
-      const waLink =
-        `https://api.whatsapp.com/send?phone=52${WHOAMI.phoneDigits}` +
-        `&text=${encodeURIComponent("Hola 👋 " + WHOAMI.name + ", necesito soporte / info de Airconekta.")}` +
-        `&type=phone_number&app_absent=0`;
-
-      $("#whoWhatsBtn").setAttribute("href", waLink);
-      $("#whoCallBtn").setAttribute("href", `tel:+52${WHOAMI.phoneDigits}`);
-
-      $("#whoCopyBtn").onclick = async () => {
-        const text =
-          `${WHOAMI.name}\n` +
-          `${WHOAMI.phonePretty}\n` +
-          `Airconekta\n` +
-          `Tip: ${tip}`;
-        try{
-          await navigator.clipboard.writeText(text);
-          toast("Datos copiados ✅");
-        }catch{
-          toast("No se pudo copiar (permiso del navegador)");
-        }
-      };
-
-      $("#whoCloseBtn").onclick = closeWhoami;
-
-      $("#whoami").classList.add("show");
-    }
-
-    function closeWhoami(){
-      $("#whoami").classList.remove("show");
-      // limpiamos hash sin recargar
-      history.replaceState(null, "", location.pathname + location.search);
-    }
-
-    function handleHashRoute(){
-      const h = (location.hash || "").toLowerCase().trim();
-      if (h === "#whoami"){
-        openWhoami();
-      } else {
-        $("#whoami").classList.remove("show");
-      }
-    }
-    window.addEventListener("hashchange", handleHashRoute, { passive: true });
-
-    // inicia si ya viene con #whoami
-    handleHashRoute();
-
-    // =====================
-    // PWA: manifest + service worker (TU CÓDIGO ORIGINAL)
+    // PWA: manifest + service worker (MISMA FUNCIÓN)
     // =====================
     const manifest = {
       name: 'Airconekta Cambio',
