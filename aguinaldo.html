@@ -6,48 +6,108 @@
   <title>Calculadora de Aguinaldo · Bahía de Banderas</title>
 
   <meta name="theme-color" content="#0b1220" />
-  <meta name="color-scheme" content="light" />
+  <meta name="color-scheme" content="light dark" />
   <meta name="description" content="Calculadora profesional de aguinaldo para trabajadores en México.">
 
-  <!-- =========================================================
-    Firma (solo inspección / ver código fuente)
+  <!-- ========================= LOGOS / ICONOS ========================= -->
+  <link
+    rel="icon"
+    type="image/png"
+    href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png"
+  />
+
+  <!--
+    ===========================================================
+    Firma / Autor (solo visible al depurar o ver código fuente)
     Jair Elizondo
-    322 243 9782
-    Función: abre este sitio con #whoami para ver la tarjeta
-    Ejemplo: aguinaldo.html#whoami
-  ========================================================== -->
+    +52 322 243 9782
+    Hint: #whoami
+    ===========================================================
+  -->
 
   <style>
     :root{
-      --bg: #ffffff;
-      --bg-2: #ffffff;
+      --bg: #f6f8ff;
+      --card: rgba(255,255,255,.78);
+      --card-solid:#ffffff;
       --ink: #0f1a2e;
-      --muted: #5b6b86;
+      --muted:#5b6b86;
       --accent: #246bff;
       --accent-2:#18c6ff;
       --accent-3:#7c3aed;
-      --border: #cfe0ff;
+      --border: rgba(207,224,255,.85);
+      --border-2: rgba(255,255,255,.55);
       --radius: 18px;
-      --shadow: 0 10px 26px rgba(16,48,96,.10);
+      --radius-2: 22px;
+      --shadow: 0 14px 40px rgba(16,48,96,.12);
+      --shadow-2: 0 18px 60px rgba(16,48,96,.16);
       --ring: 0 0 0 4px rgba(36,107,255,.16);
+      --maxw: 920px;
+    }
+
+    :root[data-theme="dark"]{
+      --bg: #070b14;
+      --card: rgba(12,18,34,.72);
+      --card-solid:#0b1220;
+      --ink: #e9eefc;
+      --muted:#a9b6d6;
+      --border: rgba(60,86,140,.35);
+      --border-2: rgba(255,255,255,.08);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --shadow-2: 0 28px 90px rgba(0,0,0,.55);
+      --ring: 0 0 0 4px rgba(24,198,255,.18);
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
 
     body{
-      margin:0; padding:0;
-      font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+      margin:0;
+      font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
       color:var(--ink);
       background:
-        radial-gradient(900px 500px at 10% -10%, rgba(36,107,255,.12), transparent 60%),
-        radial-gradient(900px 500px at 110% 10%, rgba(24,198,255,.10), transparent 55%),
-        radial-gradient(900px 500px at 50% 115%, rgba(124,58,237,.08), transparent 60%),
-        #fff;
+        radial-gradient(900px 500px at 10% -10%, rgba(36,107,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 110% 10%, rgba(24,198,255,.14), transparent 55%),
+        radial-gradient(900px 500px at 50% 115%, rgba(124,58,237,.12), transparent 60%),
+        var(--bg);
       overflow-x:hidden;
     }
 
-    .shell{ max-width:820px; margin:0 auto; padding:24px; }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 38px 38px;
+      opacity: .25;
+      pointer-events:none;
+      mix-blend-mode: overlay;
+    }
+    :root[data-theme="dark"] body::before{ opacity:.10; }
+
+    a{ color:inherit; }
+
+    /* ===== Layout para que footer no se vaya al infinito ===== */
+    .page{
+      min-height: 100svh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .shell{
+      max-width:var(--maxw);
+      margin:0 auto;
+      padding:24px;
+      position:relative;
+      width:100%;
+      flex: 1 0 auto;
+    }
 
     /* ========================= Splash Screen (Airconekta) ========================= */
     .splash{
@@ -121,7 +181,7 @@
     .splash-title{
       font-weight: 1000;
       letter-spacing: .6px;
-      font-size: clamp(1.8rem, 4.2vw, 2.6rem);
+      font-size: clamp(2.0rem, 4.2vw, 3.0rem);
       margin: 8px 0 6px;
     }
     .splash-sub{
@@ -160,183 +220,310 @@
       .splash{ transition:none; }
     }
 
-    /* ========================= UI ========================= */
+    /* ========================= Top nav ========================= */
     .nav{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:16px 18px;
-      background:var(--bg-2);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 16px;
+      border-radius: 22px;
       border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      position:sticky; top:12px;
-      backdrop-filter: blur(10px);
-      z-index:3;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      position:sticky;
+      top:12px;
+      backdrop-filter: blur(14px) saturate(140%);
+      z-index:10;
     }
-    .brand{ display:flex; gap:10px; align-items:center; font-weight:900; }
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      font-weight: 1000;
+      letter-spacing: .2px;
+    }
     .logo{
-      width:36px; height:36px; display:grid; place-items:center;
-      border-radius:12px;
-      background:#fff;
-      border:1px solid var(--border);
-      color:var(--accent);
-      font-size:20px;
-      box-shadow: 0 10px 26px rgba(16,48,96,.08);
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg, rgba(36,107,255,.18), rgba(24,198,255,.14));
+      border:1px solid var(--border-2);
+      box-shadow: 0 10px 26px rgba(16,48,96,.10);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: conic-gradient(
+        from 0deg,
+        rgba(36,107,255,.0),
+        rgba(36,107,255,.55),
+        rgba(24,198,255,.55),
+        rgba(124,58,237,.55),
+        rgba(36,107,255,.0)
+      );
+      opacity:.55;
+      animation: spin 6.5s linear infinite;
+    }
+    .logo .logo-img{
+      position:relative;
+      width: 26px;
+      height: 26px;
+      display:block;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
+    }
+    .brand small{
+      display:block;
+      font-weight:800;
+      color:var(--muted);
+      letter-spacing:0;
+      margin-top:2px;
+    }
+    .inline{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
 
+    /* ========================= Cards / typography ========================= */
     .card{
-      margin-top:24px;
+      margin-top:18px;
       padding:22px;
-      border-radius:22px;
-      background:var(--bg-2);
+      border-radius: 26px;
       border:1px solid var(--border);
-      box-shadow:var(--shadow);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px) saturate(140%);
     }
-    h1{ margin:0 0 6px; }
-    .lead{ color:var(--muted); margin-bottom:16px; }
+    h1{ font-size:1.6rem; margin:0 0 6px; letter-spacing:.2px; }
+    h2{ font-size:1.15rem; margin:0 0 10px; }
+    .lead{ color:var(--muted); margin:0 0 14px; }
 
-    form{
+    label{ display:block; font-size:.92rem; color:var(--muted); margin:4px 0 6px; }
+
+    input{
+      width:100%;
+      padding:12px 14px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.55);
+      color: var(--ink);
+      outline:none;
+      transition: border .15s ease, box-shadow .15s ease, transform .06s ease, background .15s ease;
+      font:inherit;
+      backdrop-filter: blur(12px) saturate(120%);
+    }
+    :root[data-theme="dark"] input{ background: rgba(255,255,255,.05); }
+    input:focus{
+      border-color: rgba(24,198,255,.75);
+      box-shadow: var(--ring);
+    }
+
+    .grid{
       display:grid;
       grid-template-columns:repeat(12,1fr);
       gap:14px;
     }
-    .col-6{ grid-column:span 6; }
     .col-12{ grid-column:span 12; }
-    @media(max-width:860px){ .col-6{ grid-column:span 12; } }
+    .col-6{ grid-column:span 6; }
+    @media (max-width:860px){ .col-6{ grid-column:span 12; } .shell{ padding:16px; } .nav{ top:10px; } }
 
-    label{ color:var(--muted); font-size:.92rem; display:block; margin:4px 0 6px; }
-    input{
-      width:100%; padding:12px 14px; border-radius:14px;
-      border:1px solid var(--border);
-      font-size:1rem;
-      outline:none;
-      background:#fff;
-    }
-    input:focus{
-      border-color:var(--accent);
-      box-shadow: 0 0 0 4px rgba(36,107,255,.12);
-    }
-
+    /* ========================= Buttons ========================= */
     .btn{
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color:#fff;
-      border:0;
-      padding:12px 16px;
-      border-radius:14px;
+      appearance:none;
       cursor:pointer;
-      font-weight:900;
+      user-select:none;
+      border:1px solid rgba(36,107,255,.65);
+      color:var(--ink);
+      background: rgba(255,255,255,.55);
+      padding:12px 14px;
+      border-radius: 14px;
+      font-weight: 900;
       letter-spacing:.2px;
-      transition:.15s ease;
+      transition: transform .08s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      line-height:1;
+      backdrop-filter: blur(12px) saturate(120%);
     }
-    .btn:hover{ box-shadow: 0 0 0 4px rgba(24,198,255,.14), 0 16px 40px rgba(36,107,255,.12); }
+    :root[data-theme="dark"] .btn{ background: rgba(255,255,255,.06); }
+    .btn:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.95); }
     .btn:active{ transform: translateY(1px); }
     .btn:focus-visible{ outline:none; box-shadow: var(--ring); }
 
-    .result-box{
-      margin-top:22px;
-      padding:18px;
-      border-radius:16px;
-      background:#eef4ff;
-      border:1px solid var(--border);
-      font-size:1.1rem;
+    .btn-primary{
+      color:#fff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 26px rgba(36,107,255,.22);
     }
+    .btn-primary:hover{
+      box-shadow: 0 0 0 4px rgba(24,198,255,.18), 0 18px 46px rgba(36,107,255,.20);
+    }
+    .btn-ghost{
+      border-color: var(--border);
+      color: var(--ink);
+      background: transparent;
+    }
+    .btn-ghost:hover{ box-shadow: 0 0 0 4px rgba(207,224,255,.35); }
+
+    .btn-icon{
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: 14px;
+      justify-content:center;
+    }
+
+    .divider{ height:1px; background: rgba(207,224,255,.55); margin:14px 0; }
+    :root[data-theme="dark"] .divider{ background: rgba(60,86,140,.35); }
+
+    .status{ font-size:.92rem; color:var(--muted); }
+
+    .result-box{
+      margin-top:14px;
+      padding:16px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(14px) saturate(140%);
+      box-shadow: 0 12px 30px rgba(16,48,96,.08);
+    }
+    :root[data-theme="dark"] .result-box{ background: rgba(255,255,255,.04); }
 
     .footer{
-      margin-top:20px;
-      font-size:.9rem;
+      margin-top:18px;
       color:var(--muted);
-      display:flex; justify-content:space-between; flex-wrap:wrap;
-      gap:10px;
-    }
-
-    /* ========================= WHOAMI overlay ========================= */
-    .whoami{
-      position:fixed;
-      inset:0;
-      display:none;
-      place-items:center;
-      padding:16px;
-      background: rgba(3,6,14,.55);
-      backdrop-filter: blur(10px) saturate(130%);
-      z-index:9998;
-    }
-    .whoami.show{ display:grid; }
-
-    .whoami-card{
-      width:min(92vw, 620px);
-      border-radius: 26px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,.18);
-      background:
-        radial-gradient(900px 520px at 20% 15%, rgba(36,107,255,.22), transparent 60%),
-        radial-gradient(900px 520px at 85% 25%, rgba(24,198,255,.18), transparent 55%),
-        radial-gradient(900px 520px at 45% 100%, rgba(124,58,237,.16), transparent 60%),
-        rgba(11,18,32,.92);
-      color: #eaf2ff;
-      box-shadow: 0 30px 90px rgba(0,0,0,.55);
-    }
-    .whoami-top{
+      font-size:.9rem;
       display:flex;
-      align-items:center;
       justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
       gap:10px;
-      margin-bottom:10px;
+
+      /* clave para que no se quede “muy abajo” si el contenido es corto */
+      margin-top:auto;
+      padding: 18px 0 6px;
     }
-    .whoami-badge{
+
+    /* Views */
+    [data-view]{ display:none; }
+    [data-view].active{ display:block; }
+
+    /* ========================= WHOAMI (vista especial) ========================= */
+    .pill{
       display:inline-flex;
       align-items:center;
-      gap:10px;
-      padding:10px 12px;
+      gap:8px;
+      font-size:.9rem;
+      padding:8px 10px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      font-weight:900;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.45);
+      color:var(--muted);
+      backdrop-filter: blur(12px) saturate(120%);
     }
-    .whoami-close{
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      color:#eaf2ff;
-      padding:10px 12px;
-      border-radius: 14px;
-      cursor:pointer;
-      font-weight:900;
-    }
-    .whoami-close:hover{ box-shadow: 0 0 0 4px rgba(24,198,255,.14); }
-    .whoami-title{
-      font-size: clamp(1.4rem, 3.6vw, 2.0rem);
-      font-weight:1000;
-      margin: 8px 0 6px;
-      letter-spacing:.3px;
-    }
-    .whoami-sub{ margin:0; color: rgba(233,238,252,.78); font-weight:700; }
+    :root[data-theme="dark"] .pill{ background: rgba(255,255,255,.05); }
 
-    .whoami-grid{
-      margin-top:14px;
+    .who-wrap{
       display:grid;
-      grid-template-columns:repeat(12,1fr);
+      grid-template-columns: 1.2fr .8fr;
+      gap:14px;
+      margin-top:12px;
+      align-items:stretch;
+    }
+    @media (max-width:860px){
+      .who-wrap{ grid-template-columns:1fr; }
+    }
+    .who-card{
+      border:1px solid var(--border);
+      border-radius: 22px;
+      padding:16px;
+      background: rgba(255,255,255,.50);
+      backdrop-filter: blur(14px) saturate(140%);
+      box-shadow: 0 12px 30px rgba(16,48,96,.08);
+    }
+    :root[data-theme="dark"] .who-card{ background: rgba(255,255,255,.04); }
+
+    .who-hero{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .who-avatar{
+      width:72px;
+      height:72px;
+      border-radius: 22px;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(60px 60px at 30% 20%, rgba(36,107,255,.35), transparent 60%),
+        radial-gradient(60px 60px at 90% 30%, rgba(24,198,255,.28), transparent 55%),
+        radial-gradient(60px 60px at 40% 95%, rgba(124,58,237,.22), transparent 60%),
+        rgba(255,255,255,.45);
+      display:grid;
+      place-items:center;
+      font-weight:1000;
+      letter-spacing:.6px;
+      box-shadow: 0 18px 50px rgba(16,48,96,.12);
+    }
+    :root[data-theme="dark"] .who-avatar{ background: rgba(255,255,255,.04); }
+
+    .who-name{ font-size:1.25rem; margin:0; font-weight:1000; }
+    .who-role{ margin:2px 0 0; color:var(--muted); font-weight:800; }
+
+    .who-actions{
+      display:flex;
       gap:10px;
-    }
-    .whoami-box{
-      grid-column:span 12;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      padding:12px;
-    }
-    .whoami-box strong{ display:block; font-weight:1000; margin-bottom:4px; }
-    .whoami-mini{
-      margin-top:10px;
-      color: rgba(233,238,252,.70);
-      font-weight:700;
-      font-size:.95rem;
+      flex-wrap:wrap;
+      margin-top:12px;
     }
 
     .sr-only{
       position:absolute;
-      width:1px; height:1px;
-      padding:0; margin:-1px;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
       overflow:hidden;
       clip:rect(0,0,0,0);
       border:0;
+    }
+
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translateX(-50%) translateY(16px);
+      opacity:0;
+      pointer-events:none;
+      background: rgba(255,255,255,.65);
+      color:var(--ink);
+      padding:10px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(24,198,255,.55);
+      box-shadow: var(--shadow);
+      transition: .18s ease;
+      z-index: 999;
+      max-width:min(92vw, 560px);
+      text-align:center;
+      font-weight: 900;
+      backdrop-filter: blur(14px) saturate(140%);
+    }
+    :root[data-theme="dark"] .toast{ background: rgba(255,255,255,.06); }
+    .toast.show{
+      transform:translateX(-50%) translateY(0);
+      opacity:1;
     }
   </style>
 </head>
@@ -346,7 +533,11 @@
   <div class="splash" id="splash" aria-label="Cargando Airconekta">
     <div class="splash-card" role="status" aria-live="polite">
       <div class="splash-logo" aria-hidden="true">
-        <img class="logo-img" alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png" />
+        <img
+          class="logo-img"
+          alt=""
+          src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png"
+        />
       </div>
       <div class="splash-title">AIRCONEKTA</div>
       <p class="splash-sub">Herramienta · Aguinaldo</p>
@@ -355,168 +546,358 @@
     </div>
   </div>
 
-  <!-- WHOAMI Overlay (solo con #whoami) -->
-  <div class="whoami" id="whoami" aria-hidden="true">
-    <div class="whoami-card" role="dialog" aria-modal="true" aria-label="Whoami">
-      <div class="whoami-top">
-        <div class="whoami-badge">🧩 whoami</div>
-        <button class="whoami-close" type="button" id="whoamiClose">✕ Cerrar</button>
-      </div>
-
-      <div class="whoami-title">Jair Elizondo</div>
-      <p class="whoami-sub">Contacto de soporte · Airconekta</p>
-
-      <div class="whoami-grid">
-        <div class="whoami-box">
-          <strong>📞 Teléfono</strong>
-          322 243 9782
+  <div class="page">
+    <div class="shell">
+      <nav class="nav" aria-label="Barra superior">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">
+            <img
+              class="logo-img"
+              alt=""
+              src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png"
+            />
+          </div>
+          <div>
+            Airconekta
+            <small>Calculadora de Aguinaldo</small>
+          </div>
         </div>
-        <div class="whoami-box">
-          <strong>🧠 Tip</strong>
-          Este panel solo aparece si agregas <b>#whoami</b> a la URL.
-        </div>
-        <div class="whoami-box">
-          <strong>🧾 Nota</strong>
-          No se muestra dentro del dashboard normal; es para depuración/inspección.
-        </div>
-      </div>
 
-      <div class="whoami-mini">
-        ✨ Prueba: <b>aguinaldo.html#whoami</b>
+        <div class="inline">
+          <button class="btn btn-ghost" id="menuBtn" type="button">☰ Inicio</button>
+          <button class="btn btn-icon" id="themeBtn" type="button" title="Cambiar tema" aria-label="Cambiar tema">🌓</button>
+          <a class="btn" href="#" id="shareBtn" title="Compartir">⇪ Compartir</a>
+        </div>
+      </nav>
+
+      <!-- ===== HOME (aguinaldo) ===== -->
+      <section class="card active" data-view="home" id="viewHome">
+        <h1>Aguinaldo México</h1>
+        <p class="lead">
+          Basado en la <strong>Ley Federal del Trabajo</strong> — mínimo <strong>15 días de salario</strong>.
+        </p>
+
+        <form id="form" class="grid" novalidate>
+          <div class="col-6">
+            <label for="dias">Días trabajados en el año</label>
+            <input type="number" id="dias" placeholder="Ej. 365" min="1" required>
+          </div>
+
+          <div class="col-6">
+            <label for="salarioSem">Salario semanal (MXN)</label>
+            <input type="number" id="salarioSem" placeholder="Ej. 2800" min="1" required>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Calcular Aguinaldo 🎄</button>
+          </div>
+        </form>
+
+        <div id="resultado" class="result-box" style="display:none;"></div>
+
+        <div class="divider"></div>
+        <div class="status">
+          Tip debug: agrega <strong>#whoami</strong> al final de la URL.
+        </div>
+      </section>
+
+      <!-- ===== WHOAMI (vista oculta por hash) ===== -->
+      <section class="card" data-view="whoami" id="viewWhoami" aria-label="Whoami">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+          <div>
+            <h1>Whoami</h1>
+            <p class="lead" style="margin-bottom:0">Vista especial (solo con <strong>#whoami</strong>).</p>
+          </div>
+          <button class="btn btn-ghost" type="button" id="whoBackBtn">← Volver</button>
+        </div>
+
+        <div class="who-wrap">
+          <div class="who-card">
+            <div class="who-hero">
+              <div class="who-avatar" aria-hidden="true">JE</div>
+              <div>
+                <p class="who-name" id="whoName">Jair Elizondo</p>
+                <p class="who-role" id="whoRole">Soporte / Instalaciones · Airconekta</p>
+              </div>
+              <span class="pill">🧩 Debug route · #whoami</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="grid">
+              <div class="col-6">
+                <div class="who-card" style="padding:12px">
+                  <strong>📞 Teléfono</strong><br>
+                  <span class="status" id="whoPhonePretty">322 243 9782</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="who-card" style="padding:12px">
+                  <strong>🟢 WhatsApp</strong><br>
+                  <span class="status">Toca “Abrir chat” para escribir directo</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="who-card" style="padding:12px">
+                  <strong>🧠 Tip</strong><br>
+                  <span class="status">En consola también aparece tu firma</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="who-card" style="padding:12px">
+                  <strong>🔒 Nota</strong><br>
+                  <span class="status">No aparece en el dashboard normal, solo aquí</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="who-actions">
+              <a class="btn btn-primary" id="whoWhatsBtn" href="#" rel="noopener noreferrer">🟢 Abrir chat</a>
+              <a class="btn" id="whoCallBtn" href="#">📞 Llamar</a>
+              <button class="btn btn-ghost" type="button" id="whoCopyBtn">📋 Copiar datos</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="status">
+              Si llegaste aquí por accidente: vuelve al inicio o borra el hash (<strong>#whoami</strong>) de la barra.
+            </div>
+          </div>
+
+          <div class="who-card">
+            <h2 style="margin:0 0 8px">🔎 ¿Cómo sé que sí funciona?</h2>
+            <div class="status">
+              <strong>1)</strong> Abre DevTools → Console y recarga: verás tu firma.<br><br>
+              <strong>2)</strong> Ctrl+U (Ver código fuente): verás el bloque de firma en comentarios.<br><br>
+              <strong>3)</strong> Escribe <strong>#whoami</strong> al final de la URL: te trae a esta vista.
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="status">
+              Pro tip: <strong>aguinaldo.html#whoami</strong> desde cualquier dispositivo 📱💻
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="shell" style="padding-top:0">
+      <div class="footer">
+        <span>© <span id="year"></span> Bahía de Banderas</span>
+        <span style="opacity:.85">Hecho con ❤️ para empleados</span>
       </div>
     </div>
   </div>
 
-  <div class="shell">
-    <nav class="nav">
-      <div class="brand">
-        <div class="logo">💼</div>
-        <div>Calculadora de Aguinaldo</div>
-      </div>
-    </nav>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <section class="card">
-      <h1>Aguinaldo México</h1>
-      <p class="lead">
-        Basado en la <strong>Ley Federal del Trabajo</strong> — mínimo 15 días de salario.
-      </p>
+<script>
+  // =====================
+  // CONFIG / FIRMA
+  // =====================
+  const WHOAMI = {
+    name: "Jair Elizondo",
+    phonePretty: "322 243 9782",
+    phoneDigits: "3222439782",
+    role: "Soporte / Instalaciones · Airconekta",
+    hint: "#whoami",
+    webHint: "Escribe #whoami al final de la URL"
+  };
 
-      <form id="form" novalidate>
-        <div class="col-6">
-          <label for="dias">Días trabajados en el año</label>
-          <input type="number" id="dias" placeholder="Ej. 365" min="1" required>
-        </div>
+  const $ = (sel) => document.querySelector(sel);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
-        <div class="col-6">
-          <label for="salarioSem">Salario semanal (MXN)</label>
-          <input type="number" id="salarioSem" placeholder="Ej. 2800" min="1" required>
-        </div>
+  const toast = (msg) => {
+    const t = $("#toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 1800);
+  };
 
-        <div class="col-12">
-          <button type="submit" class="btn">Calcular Aguinaldo 🎄</button>
-        </div>
-      </form>
+  // =====================
+  // Firma en consola (solo al depurar)
+  // =====================
+  (function consoleSignature(){
+    try{
+      const line = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+      console.log("%c" + line, "color:#18c6ff;font-weight:900");
+      console.log("%cAIRCONEKTA · Firma de desarrollo", "color:#246bff;font-size:14px;font-weight:900");
+      console.log(
+        "%c" + WHOAMI.name + "  ·  " + WHOAMI.phonePretty + "  ·  " + WHOAMI.hint,
+        "color:#7c3aed;font-size:12px;font-weight:900"
+      );
+      console.log("%c" + WHOAMI.webHint, "color:#5b6b86;font-size:12px;font-weight:800");
+      console.log("%c" + line, "color:#18c6ff;font-weight:900");
+    }catch{}
+  })();
 
-      <div id="resultado" class="result-box" style="display:none;"></div>
-    </section>
+  // =====================
+  // Splash (3s)
+  // =====================
+  const splash = document.getElementById("splash");
+  const hideSplash = () => splash?.classList.add("hide");
+  splash?.addEventListener("click", hideSplash, { passive: true });
+  window.addEventListener("load", () => setTimeout(hideSplash, 3000));
 
-    <div class="footer">
-      <span>© <span id="year"></span> Bahía de Banderas</span>
-      <span>Hecho con ❤️ para empleados</span>
-    </div>
-  </div>
+  // =====================
+  // Año
+  // =====================
+  $("#year").textContent = new Date().getFullYear();
 
-  <script>
-    // =========================
-    // Firma (solo consola / depuración)
-    // =========================
-    (function signature(){
-      const sig = [
-        "========================================",
-        "Jair Elizondo",
-        "322 243 9782",
-        "Tip: agrega #whoami a la URL",
-        "Ej: aguinaldo.html#whoami",
-        "========================================"
-      ].join("\n");
-      try { console.log(sig); } catch {}
-    })();
+  // =====================
+  // Tema (Light/Dark)
+  // =====================
+  const THEME_KEY = "airconekta_theme";
 
-    // =====================
-    // Splash (3s)
-    // =====================
-    const splash = document.getElementById("splash");
-    const hideSplash = () => splash?.classList.add("hide");
-    splash?.addEventListener("click", hideSplash, { passive: true });
-    window.addEventListener("load", () => setTimeout(hideSplash, 2200));
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem(THEME_KEY, theme);
+    const icon = theme === "dark" ? "🌙" : "☀️";
+    $("#themeBtn").textContent = icon;
+    $("#themeBtn").setAttribute(
+      "aria-label",
+      theme === "dark" ? "Cambiar a tema claro" : "Cambiar a tema oscuro"
+    );
+  }
 
-    // =====================
-    // Año
-    // =====================
-    document.getElementById("year").textContent = new Date().getFullYear();
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else {
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    applyTheme(prefersDark ? "dark" : "light");
+  }
 
-    // =====================
-    // Aguinaldo
-    // =====================
-    const form = document.getElementById("form");
-    const resultado = document.getElementById("resultado");
+  $("#themeBtn").addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme") || "light";
+    applyTheme(current === "dark" ? "light" : "dark");
+    toast("Tema actualizado ✅");
+  });
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (!form.checkValidity()){
-        form.reportValidity();
-        return;
+  // =====================
+  // Navegación de vistas
+  // =====================
+  function showView(name) {
+    $$("[data-view]").forEach((v) => v.classList.remove("active"));
+    const view = document.querySelector(`[data-view="${name}"]`);
+    if (view) view.classList.add("active");
+    try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch { window.scrollTo(0,0); }
+  }
+
+  $("#menuBtn").addEventListener("click", () => {
+    if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+    showView("home");
+    toast("Listo ✅");
+  });
+
+  // =====================
+  // WHOAMI (hash route)
+  // =====================
+  function renderWhoami(){
+    $("#whoName").textContent = WHOAMI.name;
+    $("#whoRole").textContent = WHOAMI.role;
+    $("#whoPhonePretty").textContent = WHOAMI.phonePretty;
+
+    const waLink =
+      `https://api.whatsapp.com/send?phone=52${WHOAMI.phoneDigits}` +
+      `&text=${encodeURIComponent("Hola 👋 " + WHOAMI.name + ", necesito soporte / info de Airconekta.")}` +
+      `&type=phone_number&app_absent=0`;
+
+    $("#whoWhatsBtn").setAttribute("href", waLink);
+    $("#whoCallBtn").setAttribute("href", `tel:+52${WHOAMI.phoneDigits}`);
+
+    $("#whoCopyBtn").onclick = async () => {
+      const text =
+        `${WHOAMI.name}\n` +
+        `${WHOAMI.phonePretty}\n` +
+        `Airconekta\n` +
+        `Tip: ${location.origin + location.pathname}#whoami`;
+      try{
+        await navigator.clipboard.writeText(text);
+        toast("Datos copiados ✅");
+      }catch{
+        toast("No se pudo copiar (permiso del navegador)");
       }
+    };
 
-      const dias = parseInt(document.getElementById("dias").value, 10);
-      const salarioSem = parseFloat(document.getElementById("salarioSem").value);
+    $("#whoBackBtn").onclick = () => {
+      history.replaceState(null, "", location.pathname + location.search);
+      showView("home");
+      toast("Regresando ✅");
+    };
+  }
 
-      const salarioDia = salarioSem / 7;
-      const aguinaldo = (dias / 365) * 15 * salarioDia;
+  function handleHashRoute(){
+    const h = (location.hash || "").toLowerCase().trim();
+    if (h === "#whoami"){
+      renderWhoami();
+      showView("whoami");
+      return;
+    }
+    showView("home");
+  }
 
-      resultado.innerHTML = `
-        <strong>Resultado:</strong><br><br>
-        Salario diario: <strong>$${salarioDia.toFixed(2)} MXN</strong><br>
-        Aguinaldo correspondiente: <strong>$${aguinaldo.toFixed(2)} MXN</strong><br><br>
-        <span style="color:#5b6b86; font-size:.95rem">
-          * Cálculo basado en 15 días de salario según la Ley Federal del Trabajo.
-        </span>
-      `;
-      resultado.style.display = "block";
-    });
+  window.addEventListener("hashchange", handleHashRoute, { passive:true });
 
-    // =====================
-    // #whoami router (overlay)
-    // =====================
-    const who = document.getElementById("whoami");
-    const whoClose = document.getElementById("whoamiClose");
+  // =====================
+  // Compartir
+  // =====================
+  $("#shareBtn").addEventListener("click", async (e) => {
+    e.preventDefault();
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Calculadora de Aguinaldo",
+          text: "Calcula tu aguinaldo en México (LFT 15 días mínimo).",
+          url: location.href,
+        });
+      } catch {}
+    } else {
+      try {
+        await navigator.clipboard?.writeText(location.href);
+        toast("Enlace copiado ✅");
+      } catch {
+        toast("Copia el enlace desde la barra del navegador");
+      }
+    }
+  });
 
-    function setWhoami(open){
-      who.classList.toggle("show", !!open);
-      who.setAttribute("aria-hidden", open ? "false" : "true");
+  // =====================
+  // Aguinaldo: cálculo
+  // =====================
+  const form = document.getElementById("form");
+  const resultado = document.getElementById("resultado");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()){
+      form.reportValidity();
+      return;
     }
 
-    function handleHash(){
-      const h = (location.hash || "").toLowerCase();
-      setWhoami(h === "#whoami");
-    }
+    const dias = parseInt(document.getElementById("dias").value, 10);
+    const salarioSem = parseFloat(document.getElementById("salarioSem").value);
 
-    whoClose.addEventListener("click", () => {
-      // regresa a "sin hash"
-      history.pushState("", document.title, location.pathname + location.search);
-      handleHash();
-    });
+    const salarioDia = salarioSem / 7;
+    const aguinaldo = (dias / 365) * 15 * salarioDia;
 
-    // clic afuera = cerrar
-    who.addEventListener("click", (e) => {
-      if (e.target === who){
-        history.pushState("", document.title, location.pathname + location.search);
-        handleHash();
-      }
-    });
+    resultado.innerHTML = `
+      <strong>Resultado:</strong><br><br>
+      Salario diario: <strong>$${salarioDia.toFixed(2)} MXN</strong><br>
+      Aguinaldo correspondiente: <strong>$${aguinaldo.toFixed(2)} MXN</strong><br><br>
+      <span class="status">
+        * Cálculo basado en 15 días de salario según la Ley Federal del Trabajo.
+      </span>
+    `;
+    resultado.style.display = "block";
+    toast("Cálculo listo ✅");
+  });
 
-    window.addEventListener("hashchange", handleHash);
-    handleHash(); // al cargar
-  </script>
+  // Init
+  handleHashRoute();
+</script>
+
 </body>
 </html>
