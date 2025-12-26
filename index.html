@@ -4,10 +4,23 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Airconekta · Solicitar Instalación</title>
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#0b1220" />
   <meta name="color-scheme" content="light">
   <meta name="description" content="Formulario profesional para solicitar instalación y enviar datos vía WhatsApp.">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%23ffffff'/%3E%3Cpath fill='%23246bff' d='M192 76a8 8 0 0 1 8 8v88a8 8 0 0 1-8 8H64a8 8 0 0 1-8-8V84a8 8 0 0 1 8-8h128zm-16 24H80v72h96V100zM92 72h72a4 4 0 0 1 0 8H92a4 4 0 1 1 0-8z'/%3E%3C/svg%3E" />
+
+  <!-- Logos Airconekta (para splash y PWA) -->
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png" />
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png" />
+
+  <!--
+    ===========================================================
+    Firma / Autor (solo visible al depurar o ver código fuente)
+    Jair Elizondo
+    +52 322 243 9782
+    Hint: #whoami
+    ===========================================================
+  -->
+
   <style>
     :root{
       --bg: #ffffff;
@@ -19,6 +32,10 @@
       --ok: #1f9d55;
       --radius: 18px;
       --shadow: 0 10px 26px rgba(16,48,96,.10);
+
+      --logo-1024: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png");
+      --logo-512: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png");
+      --logo-trans: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png");
     }
 
     *{ box-sizing: border-box; }
@@ -39,9 +56,15 @@
       border:1px solid var(--border);
       box-shadow:var(--shadow);
       position:sticky; top:12px; backdrop-filter:saturate(110%);
+      z-index:10;
     }
     .brand{ display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.2px; color:var(--ink); }
-    .brand .logo{ width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:#fff; border:1px solid var(--border); color:var(--accent); }
+    .brand .logo{
+      width:36px; height:36px; border-radius:12px; display:grid; place-items:center;
+      background:#fff; border:1px solid var(--border); color:var(--accent);
+      overflow:hidden;
+    }
+    .brand .logo img{ width:22px; height:22px; object-fit:contain; display:block; }
     .brand .logo span{ font-size:18px; }
 
     .card{
@@ -113,7 +136,7 @@
     .welcome{
       position:fixed; inset:0;
       background:#fff;
-      z-index:9999;
+      z-index:9000;
       display:flex;
       flex-direction:column;
     }
@@ -174,9 +197,235 @@
     /* Ocultar app hasta que elijan colonia */
     .app-hidden body{ visibility:hidden; }
     .app-hidden #welcome{ visibility:visible; }
+
+    /* ========================= Splash Screen Airconekta ========================= */
+    .splash{
+      position:fixed;
+      inset:0;
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(900px 520px at 20% 15%, rgba(36,107,255,.28), transparent 60%),
+        radial-gradient(900px 520px at 85% 25%, rgba(24,198,255,.22), transparent 55%),
+        radial-gradient(900px 520px at 45% 100%, rgba(124,58,237,.18), transparent 60%),
+        linear-gradient(180deg, #070b14, #0b1220);
+      z-index:9999;
+      transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
+    }
+    .splash.hide{
+      opacity:0;
+      transform: translateY(-6px);
+      visibility:hidden;
+      pointer-events:none;
+    }
+    .splash-card{
+      width:min(92vw, 560px);
+      border-radius: 28px;
+      padding: 28px 22px;
+      text-align:center;
+      color:#eaf2ff;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(10,16,30,.55);
+      box-shadow: 0 30px 90px rgba(0,0,0,.6);
+      backdrop-filter: blur(14px) saturate(120%);
+    }
+    .splash-logo{
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 10px;
+      border-radius: 26px;
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      position:relative;
+      overflow:hidden;
+    }
+    .splash-logo::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: conic-gradient(
+        from 0deg,
+        rgba(36,107,255,.0),
+        rgba(36,107,255,.6),
+        rgba(24,198,255,.55),
+        rgba(124,58,237,.55),
+        rgba(36,107,255,.0)
+      );
+      animation: spin 2.4s linear infinite;
+      opacity:.9;
+    }
+    .splash-logo .logo-img{
+      position:relative;
+      width: 62px;
+      height: 62px;
+      border-radius: 22px;
+      display:block;
+      background: rgba(11,18,32,.92);
+      border:1px solid rgba(255,255,255,.12);
+      object-fit: contain;
+      padding: 10px;
+    }
+    .splash-title{
+      font-weight: 1000;
+      letter-spacing: .6px;
+      font-size: clamp(2.0rem, 4.2vw, 3.0rem);
+      margin: 8px 0 6px;
+    }
+    .splash-sub{
+      margin: 0;
+      color: rgba(233,238,252,.78);
+      font-weight: 700;
+    }
+    .splash-bar{
+      height: 10px;
+      margin: 16px auto 0;
+      border-radius: 999px;
+      width: min(380px, 82%);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .splash-bar > i{
+      display:block;
+      height:100%;
+      width: 40%;
+      background: linear-gradient(90deg, rgba(36,107,255,.15), rgba(36,107,255,.85), rgba(24,198,255,.85));
+      border-radius: 999px;
+      animation: load 1.1s ease-in-out infinite;
+      filter: drop-shadow(0 6px 14px rgba(36,107,255,.20));
+    }
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      border:0;
+    }
+
+    @keyframes load{
+      0%{ transform: translateX(-30%); opacity:.65; }
+      50%{ transform: translateX(120%); opacity:1; }
+      100%{ transform: translateX(260%); opacity:.65; }
+    }
+    @keyframes spin{ to{ transform: rotate(360deg);} }
+
+    @media (prefers-reduced-motion: reduce){
+      .splash-logo::before, .splash-bar > i{ animation:none !important; }
+      .splash{ transition:none; }
+    }
+
+    /* ========================= WHOAMI (overlay) ========================= */
+    .whoami{
+      position:fixed;
+      inset:0;
+      z-index:9998;
+      display:none;
+      place-items:center;
+      padding:18px;
+      background: rgba(7,11,20,.55);
+      backdrop-filter: blur(10px) saturate(120%);
+    }
+    .whoami.show{ display:grid; }
+    .who-card{
+      width:min(92vw, 760px);
+      border-radius: 22px;
+      background:#fff;
+      border:1px solid rgba(207,224,255,.85);
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      overflow:hidden;
+    }
+    .who-head{
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:1px solid rgba(207,224,255,.85);
+      background: rgba(36,107,255,.06);
+    }
+    .who-title{
+      margin:0;
+      font-weight:1000;
+      letter-spacing:.2px;
+    }
+    .who-body{ padding:16px; }
+    .who-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width:860px){ .who-grid{ grid-template-columns:1fr; } }
+
+    .who-box{
+      border:1px solid rgba(207,224,255,.85);
+      border-radius:16px;
+      padding:12px;
+      background:#fff;
+    }
+    .who-box strong{ display:block; margin-bottom:4px; }
+    .who-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:12px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Splash Screen Airconekta -->
+  <div class="splash" id="splash" aria-label="Cargando Airconekta">
+    <div class="splash-card" role="status" aria-live="polite">
+      <div class="splash-logo" aria-hidden="true">
+        <img class="logo-img" alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png" />
+      </div>
+      <div class="splash-title">AIRCONEKTA</div>
+      <p class="splash-sub">Instalaciones · Atención local</p>
+      <div class="splash-bar" aria-hidden="true"><i></i></div>
+      <p class="sr-only">Cargando…</p>
+    </div>
+  </div>
+
+  <!-- WHOAMI overlay (solo con #whoami) -->
+  <section id="whoami" class="whoami" aria-label="Whoami">
+    <div class="who-card" role="dialog" aria-modal="true" aria-labelledby="whoTitle">
+      <div class="who-head">
+        <h2 class="who-title" id="whoTitle">Whoami</h2>
+        <button type="button" class="btn" id="whoClose">Cerrar ✕</button>
+      </div>
+      <div class="who-body">
+        <div class="who-grid">
+          <div class="who-box">
+            <strong>👤 Nombre</strong>
+            <div id="whoName">Jair Elizondo</div>
+          </div>
+          <div class="who-box">
+            <strong>🧩 Rol</strong>
+            <div id="whoRole">Soporte / Instalaciones · Airconekta</div>
+          </div>
+          <div class="who-box">
+            <strong>📞 Teléfono</strong>
+            <div id="whoPhone">322 243 9782</div>
+          </div>
+          <div class="who-box">
+            <strong>🔗 Tip</strong>
+            <div id="whoTip">Agrega <b>#whoami</b> al final de la URL</div>
+          </div>
+        </div>
+
+        <div class="who-actions">
+          <a class="btn btn-primary" id="whoWa" href="#" rel="noopener noreferrer">🟢 Abrir WhatsApp</a>
+          <a class="btn" id="whoCall" href="#">📞 Llamar</a>
+          <button class="btn" type="button" id="whoCopy">📋 Copiar datos</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Pantalla inicial: selección de colonia (full-screen, sin slide) -->
   <section id="welcome" class="welcome" aria-label="Seleccionar colonia">
@@ -207,7 +456,9 @@
   <div class="shell">
     <nav class="nav">
       <div class="brand">
-        <div class="logo"><span>⚡</span></div>
+        <div class="logo" aria-hidden="true">
+          <img alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
+        </div>
         <div>Airconekta <span style="opacity:.65;font-weight:600">Instalaciones</span></div>
       </div>
       <div class="inline">
@@ -289,11 +540,43 @@
     // Configuración
     const NUMERO_DESTINO = "5213222108817"; // fijo
 
+    // Firma (debug / whoami)
+    const WHOAMI = {
+      name: "Jair Elizondo",
+      phonePretty: "322 243 9782",
+      phoneDigits: "3222439782",
+      role: "Soporte / Instalaciones · Airconekta",
+      hint: "#whoami",
+      webHint: "Agrega #whoami al final de la URL"
+    };
+
+    const LOGO_1024 = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png";
+    const LOGO_512 = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png";
+    const LOGO_TRANS = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png";
+
     const $ = sel => document.querySelector(sel);
     const toast = (msg) => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); };
 
+    // Firma en consola (solo al depurar)
+    (function consoleSignature(){
+      try{
+        const line = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+        console.log("%c" + line, "color:#18c6ff;font-weight:900");
+        console.log("%cAIRCONEKTA · Firma de desarrollo", "color:#246bff;font-size:14px;font-weight:900");
+        console.log("%c" + WHOAMI.name + "  ·  " + WHOAMI.phonePretty + "  ·  " + WHOAMI.hint, "color:#7c3aed;font-size:12px;font-weight:900");
+        console.log("%c" + WHOAMI.webHint, "color:#5b6b86;font-size:12px;font-weight:800");
+        console.log("%c" + line, "color:#18c6ff;font-weight:900");
+      }catch{}
+    })();
+
     // Año dinámico
     $('#year').textContent = new Date().getFullYear();
+
+    // Splash (3s)
+    const splash = document.getElementById("splash");
+    const hideSplash = () => splash?.classList.add("hide");
+    splash?.addEventListener("click", hideSplash, { passive: true });
+    window.addEventListener("load", () => { setTimeout(hideSplash, 3000); });
 
     // ===== Selección de colonia (ultra compatible, sin slide) =====
     const COLONIAS = [
@@ -366,6 +649,56 @@
       });
     })();
 
+    // =====================
+    // WHOAMI (hash route) — sin afectar estructura/función
+    // =====================
+    function showWhoami(){
+      $("#whoName").textContent = WHOAMI.name;
+      $("#whoRole").textContent = WHOAMI.role;
+      $("#whoPhone").textContent = WHOAMI.phonePretty;
+      $("#whoTip").innerHTML = `Agrega <b>${WHOAMI.hint}</b> al final de la URL`;
+
+      const waLink =
+        `https://api.whatsapp.com/send?phone=52${WHOAMI.phoneDigits}` +
+        `&text=${encodeURIComponent("Hola 👋 " + WHOAMI.name + ", necesito soporte / info de Airconekta.")}` +
+        `&type=phone_number&app_absent=0`;
+
+      $("#whoWa").setAttribute("href", waLink);
+      $("#whoCall").setAttribute("href", `tel:+52${WHOAMI.phoneDigits}`);
+
+      $("#whoCopy").onclick = async () => {
+        const text =
+          `${WHOAMI.name}\n` +
+          `${WHOAMI.phonePretty}\n` +
+          `Airconekta\n` +
+          `Tip: ${location.origin + location.pathname}#whoami`;
+        try{
+          await navigator.clipboard.writeText(text);
+          toast("Datos copiados ✅");
+        }catch{
+          toast("No se pudo copiar (permiso del navegador)");
+        }
+      };
+
+      $("#whoClose").onclick = () => {
+        $("#whoami").classList.remove("show");
+        history.replaceState(null, "", location.pathname + location.search);
+      };
+
+      $("#whoami").classList.add("show");
+    }
+
+    function handleHash(){
+      const h = (location.hash || "").toLowerCase().trim();
+      if (h === "#whoami"){
+        // si está el welcome abierto, lo dejamos (no tocamos tu flujo)
+        // solo mostramos overlay
+        showWhoami();
+      }
+    }
+    window.addEventListener("hashchange", handleHash, { passive:true });
+    handleHash();
+
     // Geolocalización
     $('#geoBtn').addEventListener('click', () => {
       const s = $('#geoStatus');
@@ -431,18 +764,18 @@
       }
     });
 
-    // ——— PWA: manifest + service worker en claro ———
+    // ——— PWA: manifest + service worker (mismo flujo, solo mejor icon) ———
     const manifest = {
       name: 'Airconekta Instalaciones',
       short_name: 'Airconekta',
       description: 'Formulario PWA para solicitar instalación y enviar datos por WhatsApp.',
       start_url: '.',
       display: 'standalone',
-      background_color: '#ffffff',
-      theme_color: '#ffffff',
+      background_color: '#0b1220',
+      theme_color: '#0b1220',
       icons: [
-        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAACENn8fAAAAI0lEQVQYV2NkYGD4z0AEMGGgAQZGBgYGBhA1FIwJQ3EAAEw4AABf1g4p2n3Y3wAAAABJRU5ErkJggg==', sizes: '48x48', type: 'image/png' },
-        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAAB8Hs0fAAAAKUlEQVQ4y2NkoBAwUqifAWEGQwYGBgYwQ2oYg0EwGg0Go0GgYHxGAgA8m0g0pAKg5wAAAABJRU5ErkJggg==', sizes: '72x72', type: 'image/png' }
+        { src: LOGO_512, sizes: '512x512', type: 'image/png' },
+        { src: LOGO_1024, sizes: '1024x1024', type: 'image/png' }
       ]
     };
     const manBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
@@ -452,7 +785,7 @@
     // Service Worker (cache básico)
     if ('serviceWorker' in navigator) {
       const swCode = `
-        const CACHE = 'airconekta-v1';
+        const CACHE = 'airconekta-instalacion-v2';
         self.addEventListener('install', e => {
           e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.registration.scope])));
           self.skipWaiting();
