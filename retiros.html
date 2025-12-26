@@ -6,22 +6,28 @@
 <title>Airconekta · Retiros (3+)</title>
 
 <!--
-  ===========================================================
-  Firma / Autor (solo visible al depurar o ver código fuente)
-  Jair Elizondo
-  +52 322 243 9782
-  Hint: /#whoami
-  ===========================================================
+===========================================================
+Firma / Autor (solo visible al depurar o ver código fuente)
+Jair Elizondo
++52 322 243 9782
+Hint: #whoami
+===========================================================
 -->
 
 <style>
 :root{
   --ink:#0f1a2e; --muted:#5b6b86; --accent:#246bff; --border:#cfe0ff;
-  --card: rgba(255,255,255,.72);
-  --shadow: 0 10px 26px rgba(16,48,96,.10);
+  --card: rgba(255,255,255,.78);
+  --shadow: 0 14px 40px rgba(16,48,96,.12);
+  --ring: 0 0 0 4px rgba(36,107,255,.16);
 }
 
+/* Base */
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
 body{margin:0;font:16px system-ui;background:#fff;color:var(--ink)}
+
+/* Layout original */
 .wrap{max-width:1200px;margin:auto;padding:20px}
 .top{position:sticky;top:0;background:#fff;padding-bottom:10px;z-index:5}
 input{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px}
@@ -67,105 +73,342 @@ button:disabled{opacity:.5}
 .ok{color:#1f9d55;font-weight:800}
 .muted{color:var(--muted)}
 
-/* ========================= WHOAMI (solo con #whoami) ========================= */
-[data-view]{ display:none; }
-[data-view].active{ display:block; }
+/* ========================= Splash Screen (Airconekta) ========================= */
+.splash{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(900px 520px at 20% 15%, rgba(36,107,255,.28), transparent 60%),
+    radial-gradient(900px 520px at 85% 25%, rgba(24,198,255,.22), transparent 55%),
+    radial-gradient(900px 520px at 45% 100%, rgba(124,58,237,.18), transparent 60%),
+    linear-gradient(180deg, #070b14, #0b1220);
+  z-index:9999;
+  transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
+}
+.splash.hide{
+  opacity:0;
+  transform: translateY(-6px);
+  visibility:hidden;
+  pointer-events:none;
+}
+.splash-card{
+  width:min(92vw, 560px);
+  border-radius: 28px;
+  padding: 28px 22px;
+  text-align:center;
+  color:#eaf2ff;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(10,16,30,.55);
+  box-shadow: 0 30px 90px rgba(0,0,0,.6);
+  backdrop-filter: blur(14px) saturate(120%);
+}
+.splash-logo{
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 10px;
+  border-radius: 26px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  position:relative;
+  overflow:hidden;
+}
+.splash-logo::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(36,107,255,.0),
+    rgba(36,107,255,.6),
+    rgba(24,198,255,.55),
+    rgba(124,58,237,.55),
+    rgba(36,107,255,.0)
+  );
+  animation: spin 2.4s linear infinite;
+  opacity:.9;
+}
+.splash-logo .logo-img{
+  position:relative;
+  width: 62px;
+  height: 62px;
+  border-radius: 22px;
+  display:block;
+  background: rgba(11,18,32,.92);
+  border:1px solid rgba(255,255,255,.12);
+  object-fit: contain;
+  padding: 10px;
+}
+.splash-title{
+  font-weight: 1000;
+  letter-spacing: .6px;
+  font-size: clamp(2.0rem, 4.2vw, 3.0rem);
+  margin: 8px 0 6px;
+}
+.splash-sub{
+  margin: 0;
+  color: rgba(233,238,252,.78);
+  font-weight: 700;
+}
+.splash-bar{
+  height: 10px;
+  margin: 16px auto 0;
+  border-radius: 999px;
+  width: min(380px, 82%);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.10);
+  overflow:hidden;
+}
+.splash-bar > i{
+  display:block;
+  height:100%;
+  width: 40%;
+  background: linear-gradient(90deg, rgba(36,107,255,.15), rgba(36,107,255,.85), rgba(24,198,255,.85));
+  border-radius: 999px;
+  animation: load 1.1s ease-in-out infinite;
+  filter: drop-shadow(0 6px 14px rgba(36,107,255,.20));
+}
+@keyframes load{
+  0%{ transform: translateX(-30%); opacity:.65; }
+  50%{ transform: translateX(120%); opacity:1; }
+  100%{ transform: translateX(260%); opacity:.65; }
+}
+@keyframes spin{ to{ transform: rotate(360deg);} }
+@media (prefers-reduced-motion: reduce){
+  .splash-logo::before, .splash-bar > i{ animation:none !important; }
+  .splash{ transition:none; }
+}
 
-.who-shell{
-  max-width:1100px;
-  margin:0 auto;
-  padding:20px;
+/* ========================= WHOAMI modal (hash) ========================= */
+body.whoami-open{ overflow:hidden; }
+.whoami{
+  position:fixed;
+  inset:0;
+  display:none;
+  place-items:center;
+  z-index:9998;
+  padding:18px;
+  background: rgba(7,11,20,.70);
+  backdrop-filter: blur(10px) saturate(120%);
 }
+.whoami.show{ display:grid; }
 .who-card{
-  margin-top:12px;
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:16px;
-  background:var(--card);
-  box-shadow:var(--shadow);
+  width:min(980px, 100%);
+  border-radius: 26px;
+  border:1px solid rgba(207,224,255,.35);
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 30px 90px rgba(0,0,0,.35);
+  overflow:hidden;
 }
-.who-top{
+.who-head{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:12px;
+  padding:16px 16px 12px;
+  border-bottom:1px solid rgba(207,224,255,.65);
+  background:
+    radial-gradient(700px 240px at 10% 0%, rgba(36,107,255,.18), transparent 55%),
+    radial-gradient(700px 240px at 90% 0%, rgba(24,198,255,.14), transparent 55%),
+    #fff;
+}
+.who-title{
+  margin:0;
+  font-size:1.25rem;
+  font-weight:1000;
+}
+.who-sub{
+  margin:2px 0 0;
+  color:var(--muted);
+  font-weight:800;
+  font-size:.95rem;
+}
+.who-close{
+  border:1px solid rgba(36,107,255,.35);
+  background:#fff;
+  color:var(--ink);
+  padding:10px 12px;
+  border-radius:14px;
+  font-weight:1000;
+  cursor:pointer;
+}
+.who-close:hover{ box-shadow: var(--ring); }
+.who-body{
+  padding:16px;
+  display:grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap:14px;
+}
+@media (max-width:860px){
+  .who-body{ grid-template-columns:1fr; }
+}
+.who-panel{
+  border:1px solid rgba(207,224,255,.75);
+  border-radius: 20px;
+  padding:14px;
+  background: rgba(255,255,255,.78);
+}
+.who-hero{
+  display:flex;
+  gap:14px;
+  align-items:center;
   flex-wrap:wrap;
 }
-.who-brand{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
 .who-avatar{
-  width:56px;height:56px;border-radius:16px;
-  border:1px solid var(--border);
+  width:72px;height:72px;border-radius:22px;
+  border:1px solid rgba(207,224,255,.85);
+  background:
+    radial-gradient(60px 60px at 30% 20%, rgba(36,107,255,.35), transparent 60%),
+    radial-gradient(60px 60px at 90% 30%, rgba(24,198,255,.28), transparent 55%),
+    radial-gradient(60px 60px at 40% 95%, rgba(124,58,237,.22), transparent 60%),
+    rgba(255,255,255,.85);
   display:grid;place-items:center;
-  font-weight:1000;
-  background:rgba(36,107,255,.08);
+  font-weight:1000;letter-spacing:.6px;
 }
-.who-title{ margin:0; font-size:1.25rem; }
-.who-sub{ margin:4px 0 0; color:var(--muted); font-weight:700; }
+.who-name{ margin:0; font-size:1.15rem; font-weight:1000; }
+.who-role{ margin:2px 0 0; color:var(--muted); font-weight:900; }
 
+.who-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:10px;
+  margin-top:12px;
+}
+.who-k{
+  grid-column:span 6;
+  border:1px solid rgba(207,224,255,.75);
+  border-radius: 16px;
+  padding:10px;
+  background: rgba(255,255,255,.70);
+}
+@media (max-width:860px){ .who-k{ grid-column:span 12; } }
+.who-k strong{ display:block; margin-bottom:4px; font-weight:1000; }
 .who-actions{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
+  margin-top:12px;
 }
-.who-btn{
+.wbtn{
   appearance:none;
-  border:1px solid var(--border);
-  background:#fff;
-  color:var(--ink);
-  padding:10px 12px;
-  border-radius:12px;
-  font-weight:900;
   cursor:pointer;
+  user-select:none;
+  border:1px solid rgba(36,107,255,.65);
+  color:var(--ink);
+  background:#fff;
+  padding:12px 14px;
+  border-radius: 14px;
+  font-weight: 1000;
+  letter-spacing:.2px;
   text-decoration:none;
   display:inline-flex;
   align-items:center;
   gap:8px;
+  line-height:1;
 }
-.who-btn.primary{
-  border-color: var(--accent);
-  background: var(--accent);
+.wbtn:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.95); }
+.wbtn-primary{
   color:#fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--accent), #18c6ff);
 }
-.who-grid{
-  display:grid;
-  grid-template-columns:repeat(12,1fr);
-  gap:12px;
+.who-tip{
   margin-top:12px;
-}
-.who-k{
-  grid-column: span 6;
-  border:1px solid #eef3ff;
-  border-radius:14px;
   padding:12px;
-  background:#fff;
-}
-.who-k strong{ display:block; margin-bottom:6px; }
-@media(max-width:860px){
-  .who-k{ grid-column: span 12; }
-  .wrap{ padding:14px; }
-  .who-shell{ padding:14px; }
-}
-
-.who-note{
-  margin-top:12px;
-  border:1px dashed var(--border);
-  border-radius:14px;
-  padding:12px;
+  border-radius:16px;
+  border:1px dashed rgba(207,224,255,.95);
+  background: rgba(247,251,255,.85);
   color:var(--muted);
-  background:rgba(36,107,255,.05);
+  font-weight:800;
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- ===== VISTA NORMAL ===== -->
-<div class="wrap" data-view="main" id="viewMain">
+<!-- Splash (Airconekta) -->
+<div class="splash" id="splash" aria-label="Cargando Airconekta">
+  <div class="splash-card" role="status" aria-live="polite">
+    <div class="splash-logo" aria-hidden="true">
+      <img class="logo-img" alt=""
+        src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png" />
+    </div>
+    <div class="splash-title">AIRCONEKTA</div>
+    <p class="splash-sub">Retiros (3+) · Panel interno</p>
+    <div class="splash-bar" aria-hidden="true"><i></i></div>
+    <p style="margin:10px 0 0;color:rgba(233,238,252,.72);font-weight:800;font-size:.95rem">
+      Toca para entrar
+    </p>
+  </div>
+</div>
+
+<!-- WHOAMI modal (solo con #whoami) -->
+<div class="whoami" id="whoami" aria-hidden="true">
+  <div class="who-card" role="dialog" aria-modal="true" aria-label="Whoami">
+    <div class="who-head">
+      <div>
+        <p class="who-title">Whoami</p>
+        <p class="who-sub">Vista especial (solo con <strong>#whoami</strong>)</p>
+      </div>
+      <button class="who-close" type="button" id="whoCloseBtn">✕ Cerrar</button>
+    </div>
+
+    <div class="who-body">
+      <div class="who-panel">
+        <div class="who-hero">
+          <div class="who-avatar" aria-hidden="true">JE</div>
+          <div>
+            <p class="who-name" id="whoName">Jair Elizondo</p>
+            <p class="who-role" id="whoRole">Soporte / Instalaciones · Airconekta</p>
+          </div>
+        </div>
+
+        <div class="who-grid">
+          <div class="who-k">
+            <strong>📞 Teléfono</strong>
+            <span class="muted" id="whoPhonePretty">322 243 9782</span>
+          </div>
+          <div class="who-k">
+            <strong>🟢 WhatsApp</strong>
+            <span class="muted">Abrir chat directo</span>
+          </div>
+          <div class="who-k">
+            <strong>🔎 Debug</strong>
+            <span class="muted">Solo visible por hash</span>
+          </div>
+          <div class="who-k">
+            <strong>🧠 Tip</strong>
+            <span class="muted">También está tu firma en consola</span>
+          </div>
+        </div>
+
+        <div class="who-actions">
+          <a class="wbtn wbtn-primary" id="whoWhatsBtn" href="#" rel="noopener noreferrer">🟢 Abrir chat</a>
+          <a class="wbtn" id="whoCallBtn" href="#">📞 Llamar</a>
+          <button class="wbtn" type="button" id="whoCopyBtn">📋 Copiar datos</button>
+        </div>
+
+        <div class="who-tip">
+          Pro tip: escribe <strong>#whoami</strong> al final de la URL. Para salir: cierra o borra el hash.
+        </div>
+      </div>
+
+      <div class="who-panel">
+        <p style="margin:0 0 8px;font-weight:1000">✅ ¿Cómo sé que funcionó?</p>
+        <div class="who-tip" style="margin-top:0">
+          <strong>1)</strong> Abre DevTools → Console: verás tu firma.<br><br>
+          <strong>2)</strong> Ctrl+U: verás el bloque de firma en comentarios.<br><br>
+          <strong>3)</strong> Agrega <strong>#whoami</strong> y te abre esta pantalla.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
   <div class="top">
     <h2>📡 Airconekta – Retiros (3+)</h2>
     <input id="q" placeholder="Buscar por dirección, barrio, teléfono, plan…">
@@ -190,55 +433,112 @@ button:disabled{opacity:.5}
   </table>
 </div>
 
-<!-- ===== WHOAMI (solo con #whoami) ===== -->
-<section class="who-shell" data-view="whoami" id="viewWhoami" aria-label="Whoami">
-  <div class="who-card">
-    <div class="who-top">
-      <div class="who-brand">
-        <div class="who-avatar" aria-hidden="true">JE</div>
-        <div>
-          <p class="who-title" id="whoName">Jair Elizondo</p>
-          <p class="who-sub" id="whoRole">Soporte / Instalaciones · Airconekta</p>
-        </div>
-      </div>
-
-      <div class="who-actions">
-        <a class="who-btn primary" id="whoWhatsBtn" href="#" rel="noopener noreferrer">🟢 Abrir WhatsApp</a>
-        <a class="who-btn" id="whoCallBtn" href="#">📞 Llamar</a>
-        <button class="who-btn" type="button" id="whoCopyBtn">📋 Copiar</button>
-        <button class="who-btn" type="button" id="whoBackBtn">← Volver</button>
-      </div>
-    </div>
-
-    <div class="who-grid">
-      <div class="who-k">
-        <strong>📞 Teléfono</strong>
-        <span id="whoPhonePretty">322 243 9782</span>
-      </div>
-      <div class="who-k">
-        <strong>🔎 Ruta</strong>
-        <span class="muted">Se abre solo con <b>#whoami</b></span>
-      </div>
-      <div class="who-k">
-        <strong>🧠 Tip</strong>
-        <span class="muted">Ver consola → aparece firma (solo depuración)</span>
-      </div>
-      <div class="who-k">
-        <strong>🔒 Nota</strong>
-        <span class="muted">No se muestra en el dashboard normal</span>
-      </div>
-    </div>
-
-    <div class="who-note">
-      Si llegaste aquí por accidente: borra <b>#whoami</b> de la URL o presiona “Volver”.
-    </div>
-  </div>
-</section>
-
 <script>
+/* =====================
+   CONFIG + FIRMA
+===================== */
 const API_URL = "https://script.google.com/macros/s/AKfycbzyys9F3FAGxnJEBCkYXOMH16xMFaouuThHahpa7rjzfTp-YTpY4J95U-n7v0f7l2U4/exec";
 const API_KEY = "retiros2025x";
 
+const WHOAMI = {
+  name: "Jair Elizondo",
+  phonePretty: "322 243 9782",
+  phoneDigits: "3222439782",
+  role: "Soporte / Instalaciones · Airconekta",
+  hint: "#whoami",
+  webHint: "Escribe #whoami al final de la URL"
+};
+
+// Firma en consola (solo al depurar)
+(function consoleSignature(){
+  try{
+    const line = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+    console.log("%c" + line, "color:#18c6ff;font-weight:900");
+    console.log("%cAIRCONEKTA · Firma de desarrollo", "color:#246bff;font-size:14px;font-weight:900");
+    console.log("%c" + WHOAMI.name + "  ·  " + WHOAMI.phonePretty + "  ·  " + WHOAMI.hint, "color:#7c3aed;font-size:12px;font-weight:900");
+    console.log("%c" + WHOAMI.webHint, "color:#5b6b86;font-size:12px;font-weight:800");
+    console.log("%c" + line, "color:#18c6ff;font-weight:900");
+  }catch{}
+})();
+
+/* =====================
+   Splash (3s o click)
+===================== */
+const splash = document.getElementById("splash");
+const hideSplash = () => splash?.classList.add("hide");
+splash?.addEventListener("click", hideSplash, { passive:true });
+window.addEventListener("load", () => setTimeout(hideSplash, 3000));
+
+/* =====================
+   WHOAMI (hash route)
+===================== */
+const whoModal = document.getElementById("whoami");
+
+function openWhoami(){
+  // Render
+  document.getElementById("whoName").textContent = WHOAMI.name;
+  document.getElementById("whoRole").textContent = WHOAMI.role;
+  document.getElementById("whoPhonePretty").textContent = WHOAMI.phonePretty;
+
+  const waLink =
+    `https://api.whatsapp.com/send?phone=52${WHOAMI.phoneDigits}` +
+    `&text=${encodeURIComponent("Hola 👋 " + WHOAMI.name + ", necesito soporte / info de Airconekta.")}` +
+    `&type=phone_number&app_absent=0`;
+
+  document.getElementById("whoWhatsBtn").setAttribute("href", waLink);
+  document.getElementById("whoCallBtn").setAttribute("href", `tel:+52${WHOAMI.phoneDigits}`);
+
+  document.getElementById("whoCopyBtn").onclick = async () => {
+    const text =
+      `${WHOAMI.name}\n` +
+      `${WHOAMI.phonePretty}\n` +
+      `Airconekta\n` +
+      `Tip: ${location.origin + location.pathname}#whoami`;
+    try{
+      await navigator.clipboard.writeText(text);
+      alert("Datos copiados ✅");
+    }catch{
+      alert("No se pudo copiar (permiso del navegador)");
+    }
+  };
+
+  // Show
+  document.body.classList.add("whoami-open");
+  whoModal.classList.add("show");
+  whoModal.setAttribute("aria-hidden","false");
+}
+
+function closeWhoami(){
+  document.body.classList.remove("whoami-open");
+  whoModal.classList.remove("show");
+  whoModal.setAttribute("aria-hidden","true");
+
+  // limpiar hash sin recargar
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+}
+
+document.getElementById("whoCloseBtn").addEventListener("click", closeWhoami);
+
+// click fuera para cerrar
+whoModal.addEventListener("click", (e)=>{
+  if (e.target === whoModal) closeWhoami();
+});
+
+// ESC para cerrar
+window.addEventListener("keydown", (e)=>{
+  if (e.key === "Escape" && whoModal.classList.contains("show")) closeWhoami();
+});
+
+function handleHashRoute(){
+  const h = (location.hash || "").toLowerCase().trim();
+  if (h === "#whoami") openWhoami();
+  else closeWhoami();
+}
+window.addEventListener("hashchange", handleHashRoute, { passive:true });
+
+/* =====================
+   TU CÓDIGO ORIGINAL (sin cambios)
+===================== */
 const tb = document.getElementById("tb");
 const q  = document.getElementById("q");
 const statusEl = document.getElementById("status");
@@ -388,91 +688,8 @@ load().catch((e)=>{
   statusEl.textContent="ERROR: API_KEY o permisos";
 });
 
-/* =====================
-   Firma + #whoami (NO toca tus funciones)
-   ===================== */
-const WHOAMI = {
-  name: "Jair Elizondo",
-  phonePretty: "322 243 9782",
-  phoneDigits: "3222439782",
-  role: "Soporte / Instalaciones · Airconekta",
-  hint: "#whoami",
-  webHint: "Escribe #whoami al final de la URL"
-};
-
-(function consoleSignature(){
-  try{
-    const line = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
-    console.log("%c" + line, "color:#18c6ff;font-weight:900");
-    console.log("%cAIRCONEKTA · Firma de desarrollo", "color:#246bff;font-size:14px;font-weight:900");
-    console.log("%c" + WHOAMI.name + "  ·  " + WHOAMI.phonePretty + "  ·  " + WHOAMI.hint, "color:#7c3aed;font-size:12px;font-weight:900");
-    console.log("%c" + WHOAMI.webHint, "color:#5b6b86;font-size:12px;font-weight:800");
-    console.log("%c" + line, "color:#18c6ff;font-weight:900");
-  }catch{}
-})();
-
-function showView(name){
-  const views = document.querySelectorAll("[data-view]");
-  views.forEach(v => v.classList.remove("active"));
-  const el = document.querySelector(`[data-view="${name}"]`);
-  if (el) el.classList.add("active");
-}
-
-function renderWhoami(){
-  const whoName = document.getElementById("whoName");
-  const whoRole = document.getElementById("whoRole");
-  const whoPhonePretty = document.getElementById("whoPhonePretty");
-  const whoWhatsBtn = document.getElementById("whoWhatsBtn");
-  const whoCallBtn = document.getElementById("whoCallBtn");
-  const whoCopyBtn = document.getElementById("whoCopyBtn");
-  const whoBackBtn = document.getElementById("whoBackBtn");
-
-  if (whoName) whoName.textContent = WHOAMI.name;
-  if (whoRole) whoRole.textContent = WHOAMI.role;
-  if (whoPhonePretty) whoPhonePretty.textContent = WHOAMI.phonePretty;
-
-  const waLink =
-    `https://api.whatsapp.com/send?phone=52${WHOAMI.phoneDigits}` +
-    `&text=${encodeURIComponent("Hola 👋 " + WHOAMI.name + ", necesito soporte / info de Airconekta.")}` +
-    `&type=phone_number&app_absent=0`;
-
-  if (whoWhatsBtn) whoWhatsBtn.setAttribute("href", waLink);
-  if (whoCallBtn) whoCallBtn.setAttribute("href", `tel:+52${WHOAMI.phoneDigits}`);
-
-  if (whoCopyBtn) {
-    whoCopyBtn.onclick = async () => {
-      const text =
-        `${WHOAMI.name}\n${WHOAMI.phonePretty}\nAirconekta\nTip: ${location.origin + location.pathname}#whoami`;
-      try{
-        await navigator.clipboard.writeText(text);
-        alert("Datos copiados ✅");
-      }catch{
-        alert("No se pudo copiar (permiso del navegador)");
-      }
-    };
-  }
-
-  if (whoBackBtn) {
-    whoBackBtn.onclick = () => {
-      history.replaceState(null, "", location.pathname + location.search);
-      showView("main");
-    };
-  }
-}
-
-function handleHashRoute(){
-  const h = (location.hash || "").toLowerCase().trim();
-  if (h === "#whoami"){
-    renderWhoami();
-    showView("whoami");
-  } else {
-    showView("main");
-  }
-}
-
-window.addEventListener("hashchange", handleHashRoute, { passive:true });
+// Init hash route (si abre directo con #whoami)
 handleHashRoute();
 </script>
-
 </body>
 </html>
