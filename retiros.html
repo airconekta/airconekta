@@ -5,10 +5,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Airconekta · Retiros (3+)</title>
 
+<!--
+  ===========================================================
+  Firma / Autor (solo visible al depurar o ver código fuente)
+  Jair Elizondo
+  +52 322 243 9782
+  Hint: /#whoami
+  ===========================================================
+-->
+
 <style>
 :root{
   --ink:#0f1a2e; --muted:#5b6b86; --accent:#246bff; --border:#cfe0ff;
+  --card: rgba(255,255,255,.72);
+  --shadow: 0 10px 26px rgba(16,48,96,.10);
 }
+
 body{margin:0;font:16px system-ui;background:#fff;color:var(--ink)}
 .wrap{max-width:1200px;margin:auto;padding:20px}
 .top{position:sticky;top:0;background:#fff;padding-bottom:10px;z-index:5}
@@ -54,11 +66,106 @@ button{
 button:disabled{opacity:.5}
 .ok{color:#1f9d55;font-weight:800}
 .muted{color:var(--muted)}
+
+/* ========================= WHOAMI (solo con #whoami) ========================= */
+[data-view]{ display:none; }
+[data-view].active{ display:block; }
+
+.who-shell{
+  max-width:1100px;
+  margin:0 auto;
+  padding:20px;
+}
+.who-card{
+  margin-top:12px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px;
+  background:var(--card);
+  box-shadow:var(--shadow);
+}
+.who-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.who-brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.who-avatar{
+  width:56px;height:56px;border-radius:16px;
+  border:1px solid var(--border);
+  display:grid;place-items:center;
+  font-weight:1000;
+  background:rgba(36,107,255,.08);
+}
+.who-title{ margin:0; font-size:1.25rem; }
+.who-sub{ margin:4px 0 0; color:var(--muted); font-weight:700; }
+
+.who-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.who-btn{
+  appearance:none;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--ink);
+  padding:10px 12px;
+  border-radius:12px;
+  font-weight:900;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.who-btn.primary{
+  border-color: var(--accent);
+  background: var(--accent);
+  color:#fff;
+}
+.who-grid{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:12px;
+  margin-top:12px;
+}
+.who-k{
+  grid-column: span 6;
+  border:1px solid #eef3ff;
+  border-radius:14px;
+  padding:12px;
+  background:#fff;
+}
+.who-k strong{ display:block; margin-bottom:6px; }
+@media(max-width:860px){
+  .who-k{ grid-column: span 12; }
+  .wrap{ padding:14px; }
+  .who-shell{ padding:14px; }
+}
+
+.who-note{
+  margin-top:12px;
+  border:1px dashed var(--border);
+  border-radius:14px;
+  padding:12px;
+  color:var(--muted);
+  background:rgba(36,107,255,.05);
+}
+
 </style>
 </head>
 
 <body>
-<div class="wrap">
+
+<!-- ===== VISTA NORMAL ===== -->
+<div class="wrap" data-view="main" id="viewMain">
   <div class="top">
     <h2>📡 Airconekta – Retiros (3+)</h2>
     <input id="q" placeholder="Buscar por dirección, barrio, teléfono, plan…">
@@ -82,6 +189,51 @@ button:disabled{opacity:.5}
     <tbody id="tb"></tbody>
   </table>
 </div>
+
+<!-- ===== WHOAMI (solo con #whoami) ===== -->
+<section class="who-shell" data-view="whoami" id="viewWhoami" aria-label="Whoami">
+  <div class="who-card">
+    <div class="who-top">
+      <div class="who-brand">
+        <div class="who-avatar" aria-hidden="true">JE</div>
+        <div>
+          <p class="who-title" id="whoName">Jair Elizondo</p>
+          <p class="who-sub" id="whoRole">Soporte / Instalaciones · Airconekta</p>
+        </div>
+      </div>
+
+      <div class="who-actions">
+        <a class="who-btn primary" id="whoWhatsBtn" href="#" rel="noopener noreferrer">🟢 Abrir WhatsApp</a>
+        <a class="who-btn" id="whoCallBtn" href="#">📞 Llamar</a>
+        <button class="who-btn" type="button" id="whoCopyBtn">📋 Copiar</button>
+        <button class="who-btn" type="button" id="whoBackBtn">← Volver</button>
+      </div>
+    </div>
+
+    <div class="who-grid">
+      <div class="who-k">
+        <strong>📞 Teléfono</strong>
+        <span id="whoPhonePretty">322 243 9782</span>
+      </div>
+      <div class="who-k">
+        <strong>🔎 Ruta</strong>
+        <span class="muted">Se abre solo con <b>#whoami</b></span>
+      </div>
+      <div class="who-k">
+        <strong>🧠 Tip</strong>
+        <span class="muted">Ver consola → aparece firma (solo depuración)</span>
+      </div>
+      <div class="who-k">
+        <strong>🔒 Nota</strong>
+        <span class="muted">No se muestra en el dashboard normal</span>
+      </div>
+    </div>
+
+    <div class="who-note">
+      Si llegaste aquí por accidente: borra <b>#whoami</b> de la URL o presiona “Volver”.
+    </div>
+  </div>
+</section>
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzyys9F3FAGxnJEBCkYXOMH16xMFaouuThHahpa7rjzfTp-YTpY4J95U-n7v0f7l2U4/exec";
@@ -210,9 +362,6 @@ function cycleSort(col){
   applySort(sortState.col, sortState.mode);
   updateArrows();
   render();
-
-  // ✅ si quieres confirmar clicks, descomenta:
-  // console.log("sort:", sortState.col, sortState.mode);
 }
 
 async function mark(row){
@@ -238,6 +387,92 @@ load().catch((e)=>{
   console.error(e);
   statusEl.textContent="ERROR: API_KEY o permisos";
 });
+
+/* =====================
+   Firma + #whoami (NO toca tus funciones)
+   ===================== */
+const WHOAMI = {
+  name: "Jair Elizondo",
+  phonePretty: "322 243 9782",
+  phoneDigits: "3222439782",
+  role: "Soporte / Instalaciones · Airconekta",
+  hint: "#whoami",
+  webHint: "Escribe #whoami al final de la URL"
+};
+
+(function consoleSignature(){
+  try{
+    const line = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
+    console.log("%c" + line, "color:#18c6ff;font-weight:900");
+    console.log("%cAIRCONEKTA · Firma de desarrollo", "color:#246bff;font-size:14px;font-weight:900");
+    console.log("%c" + WHOAMI.name + "  ·  " + WHOAMI.phonePretty + "  ·  " + WHOAMI.hint, "color:#7c3aed;font-size:12px;font-weight:900");
+    console.log("%c" + WHOAMI.webHint, "color:#5b6b86;font-size:12px;font-weight:800");
+    console.log("%c" + line, "color:#18c6ff;font-weight:900");
+  }catch{}
+})();
+
+function showView(name){
+  const views = document.querySelectorAll("[data-view]");
+  views.forEach(v => v.classList.remove("active"));
+  const el = document.querySelector(`[data-view="${name}"]`);
+  if (el) el.classList.add("active");
+}
+
+function renderWhoami(){
+  const whoName = document.getElementById("whoName");
+  const whoRole = document.getElementById("whoRole");
+  const whoPhonePretty = document.getElementById("whoPhonePretty");
+  const whoWhatsBtn = document.getElementById("whoWhatsBtn");
+  const whoCallBtn = document.getElementById("whoCallBtn");
+  const whoCopyBtn = document.getElementById("whoCopyBtn");
+  const whoBackBtn = document.getElementById("whoBackBtn");
+
+  if (whoName) whoName.textContent = WHOAMI.name;
+  if (whoRole) whoRole.textContent = WHOAMI.role;
+  if (whoPhonePretty) whoPhonePretty.textContent = WHOAMI.phonePretty;
+
+  const waLink =
+    `https://api.whatsapp.com/send?phone=52${WHOAMI.phoneDigits}` +
+    `&text=${encodeURIComponent("Hola 👋 " + WHOAMI.name + ", necesito soporte / info de Airconekta.")}` +
+    `&type=phone_number&app_absent=0`;
+
+  if (whoWhatsBtn) whoWhatsBtn.setAttribute("href", waLink);
+  if (whoCallBtn) whoCallBtn.setAttribute("href", `tel:+52${WHOAMI.phoneDigits}`);
+
+  if (whoCopyBtn) {
+    whoCopyBtn.onclick = async () => {
+      const text =
+        `${WHOAMI.name}\n${WHOAMI.phonePretty}\nAirconekta\nTip: ${location.origin + location.pathname}#whoami`;
+      try{
+        await navigator.clipboard.writeText(text);
+        alert("Datos copiados ✅");
+      }catch{
+        alert("No se pudo copiar (permiso del navegador)");
+      }
+    };
+  }
+
+  if (whoBackBtn) {
+    whoBackBtn.onclick = () => {
+      history.replaceState(null, "", location.pathname + location.search);
+      showView("main");
+    };
+  }
+}
+
+function handleHashRoute(){
+  const h = (location.hash || "").toLowerCase().trim();
+  if (h === "#whoami"){
+    renderWhoami();
+    showView("whoami");
+  } else {
+    showView("main");
+  }
+}
+
+window.addEventListener("hashchange", handleHashRoute, { passive:true });
+handleHashRoute();
 </script>
+
 </body>
 </html>
