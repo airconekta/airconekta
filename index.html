@@ -4,13 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Airconekta · Solicitar Instalación</title>
-  <meta name="theme-color" content="#0b1220" />
+  <meta name="theme-color" content="#ffffff" />
   <meta name="color-scheme" content="light">
   <meta name="description" content="Formulario profesional para solicitar instalación y enviar datos vía WhatsApp.">
-
-  <!-- Logos Airconekta (para splash y PWA) -->
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png" />
-  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' rx='56' fill='%23ffffff'/%3E%3Cpath fill='%23246bff' d='M192 76a8 8 0 0 1 8 8v88a8 8 0 0 1-8 8H64a8 8 0 0 1-8-8V84a8 8 0 0 1 8-8h128zm-16 24H80v72h96V100zM92 72h72a4 4 0 0 1 0 8H92a4 4 0 1 1 0-8z'/%3E%3C/svg%3E" />
 
   <!--
     ===========================================================
@@ -33,6 +30,7 @@
       --radius: 18px;
       --shadow: 0 10px 26px rgba(16,48,96,.10);
 
+      /* logos */
       --logo-1024: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png");
       --logo-512: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png");
       --logo-trans: url("https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png");
@@ -56,15 +54,10 @@
       border:1px solid var(--border);
       box-shadow:var(--shadow);
       position:sticky; top:12px; backdrop-filter:saturate(110%);
-      z-index:10;
+      z-index:3;
     }
     .brand{ display:flex; gap:12px; align-items:center; font-weight:800; letter-spacing:.2px; color:var(--ink); }
-    .brand .logo{
-      width:36px; height:36px; border-radius:12px; display:grid; place-items:center;
-      background:#fff; border:1px solid var(--border); color:var(--accent);
-      overflow:hidden;
-    }
-    .brand .logo img{ width:22px; height:22px; object-fit:contain; display:block; }
+    .brand .logo{ width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:#fff; border:1px solid var(--border); color:var(--accent); }
     .brand .logo span{ font-size:18px; }
 
     .card{
@@ -136,7 +129,7 @@
     .welcome{
       position:fixed; inset:0;
       background:#fff;
-      z-index:9000;
+      z-index:9999;
       display:flex;
       flex-direction:column;
     }
@@ -194,11 +187,12 @@
       background:#fff;
       color:var(--ink);
     }
-    /* Ocultar app hasta que elijan colonia */
-    .app-hidden body{ visibility:hidden; }
+
+    /* ✅ Ocultar SOLO la app (no overlays) hasta elegir colonia */
+    .app-hidden .shell{ visibility:hidden; }
     .app-hidden #welcome{ visibility:visible; }
 
-    /* ========================= Splash Screen Airconekta ========================= */
+    /* ========================= Splash Screen (Airconekta) ========================= */
     .splash{
       position:fixed;
       inset:0;
@@ -209,7 +203,7 @@
         radial-gradient(900px 520px at 85% 25%, rgba(24,198,255,.22), transparent 55%),
         radial-gradient(900px 520px at 45% 100%, rgba(124,58,237,.18), transparent 60%),
         linear-gradient(180deg, #070b14, #0b1220);
-      z-index:9999;
+      z-index:10001; /* arriba de welcome */
       transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
     }
     .splash.hide{
@@ -296,17 +290,6 @@
       animation: load 1.1s ease-in-out infinite;
       filter: drop-shadow(0 6px 14px rgba(36,107,255,.20));
     }
-    .sr-only{
-      position:absolute;
-      width:1px;
-      height:1px;
-      padding:0;
-      margin:-1px;
-      overflow:hidden;
-      clip:rect(0,0,0,0);
-      border:0;
-    }
-
     @keyframes load{
       0%{ transform: translateX(-30%); opacity:.65; }
       50%{ transform: translateX(120%); opacity:1; }
@@ -314,115 +297,128 @@
     }
     @keyframes spin{ to{ transform: rotate(360deg);} }
 
-    @media (prefers-reduced-motion: reduce){
-      .splash-logo::before, .splash-bar > i{ animation:none !important; }
-      .splash{ transition:none; }
-    }
-
-    /* ========================= WHOAMI (overlay) ========================= */
+    /* ========================= WHOAMI overlay (por hash) ========================= */
     .whoami{
-      position:fixed;
-      inset:0;
-      z-index:9998;
+      position:fixed; inset:0;
       display:none;
       place-items:center;
       padding:18px;
-      background: rgba(7,11,20,.55);
+      z-index:10002; /* arriba del splash si lo activas */
+      background: rgba(7,11,20,.70);
       backdrop-filter: blur(10px) saturate(120%);
     }
     .whoami.show{ display:grid; }
     .who-card{
-      width:min(92vw, 760px);
-      border-radius: 22px;
+      width:min(94vw, 760px);
       background:#fff;
       border:1px solid rgba(207,224,255,.85);
+      border-radius: 22px;
       box-shadow: 0 18px 60px rgba(0,0,0,.25);
-      overflow:hidden;
+      padding:18px;
     }
-    .who-head{
-      padding:14px 16px;
+    .who-top{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      border-bottom:1px solid rgba(207,224,255,.85);
-      background: rgba(36,107,255,.06);
+      flex-wrap:wrap;
+      margin-bottom:10px;
     }
     .who-title{
       margin:0;
-      font-weight:1000;
-      letter-spacing:.2px;
+      font-size:1.15rem;
+      font-weight:900;
+      color:var(--ink);
     }
-    .who-body{ padding:16px; }
+    .who-tip{
+      margin:0;
+      color:var(--muted);
+      font-size:.95rem;
+      white-space:pre-wrap; /* ✅ respeta saltos/espacios del tip */
+    }
     .who-grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:12px;
+      margin-top:10px;
     }
     @media (max-width:860px){ .who-grid{ grid-template-columns:1fr; } }
-
     .who-box{
-      border:1px solid rgba(207,224,255,.85);
-      border-radius:16px;
+      border:1px solid var(--border);
+      border-radius: 18px;
       padding:12px;
-      background:#fff;
+      background:#f7fbff;
     }
     .who-box strong{ display:block; margin-bottom:4px; }
     .who-actions{
       display:flex;
-      flex-wrap:wrap;
       gap:10px;
+      flex-wrap:wrap;
       margin-top:12px;
+    }
+    .btn-ghost{
+      border-color: var(--border);
+      color: var(--ink);
+      background:#fff;
     }
   </style>
 </head>
+
 <body>
 
-  <!-- Splash Screen Airconekta -->
+  <!-- ✅ Splash screen (Airconekta) -->
   <div class="splash" id="splash" aria-label="Cargando Airconekta">
     <div class="splash-card" role="status" aria-live="polite">
       <div class="splash-logo" aria-hidden="true">
-        <img class="logo-img" alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png" />
+        <img class="logo-img" alt=""
+          src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
       </div>
       <div class="splash-title">AIRCONEKTA</div>
       <p class="splash-sub">Instalaciones · Atención local</p>
       <div class="splash-bar" aria-hidden="true"><i></i></div>
-      <p class="sr-only">Cargando…</p>
     </div>
   </div>
 
-  <!-- WHOAMI overlay (solo con #whoami) -->
+  <!-- ✅ WHOAMI overlay (solo con #whoami) -->
   <section id="whoami" class="whoami" aria-label="Whoami">
-    <div class="who-card" role="dialog" aria-modal="true" aria-labelledby="whoTitle">
-      <div class="who-head">
-        <h2 class="who-title" id="whoTitle">Whoami</h2>
-        <button type="button" class="btn" id="whoClose">Cerrar ✕</button>
+    <div class="who-card">
+      <div class="who-top">
+        <h2 class="who-title">Whoami</h2>
+        <button class="btn btn-ghost" type="button" id="whoClose">← Volver</button>
       </div>
-      <div class="who-body">
-        <div class="who-grid">
-          <div class="who-box">
-            <strong>👤 Nombre</strong>
-            <div id="whoName">Jair Elizondo</div>
-          </div>
-          <div class="who-box">
-            <strong>🧩 Rol</strong>
-            <div id="whoRole">Soporte / Instalaciones · Airconekta</div>
-          </div>
-          <div class="who-box">
-            <strong>📞 Teléfono</strong>
-            <div id="whoPhone">322 243 9782</div>
-          </div>
-          <div class="who-box">
-            <strong>🔗 Tip</strong>
-            <div id="whoTip">Agrega <b>#whoami</b> al final de la URL</div>
-          </div>
-        </div>
 
-        <div class="who-actions">
-          <a class="btn btn-primary" id="whoWa" href="#" rel="noopener noreferrer">🟢 Abrir WhatsApp</a>
-          <a class="btn" id="whoCall" href="#">📞 Llamar</a>
-          <button class="btn" type="button" id="whoCopy">📋 Copiar datos</button>
+      <p class="who-tip" id="whoTip">
+Vista especial (solo con #whoami)
+
+TIP:
+1) Abre DevTools → Console y recarga: verás tu firma.
+2) Ctrl+U: verás la firma en comentarios.
+3) Escribe #whoami al final de la URL para abrir esto.
+      </p>
+
+      <div class="who-grid">
+        <div class="who-box">
+          <strong>👤 Nombre</strong>
+          <div id="whoName"></div>
         </div>
+        <div class="who-box">
+          <strong>📞 Teléfono</strong>
+          <div id="whoPhone"></div>
+        </div>
+        <div class="who-box">
+          <strong>🧩 Rol</strong>
+          <div id="whoRole"></div>
+        </div>
+        <div class="who-box">
+          <strong>🔗 Ruta</strong>
+          <div id="whoRoute"></div>
+        </div>
+      </div>
+
+      <div class="who-actions">
+        <a class="btn btn-primary" id="whoWhats" href="#" rel="noopener noreferrer">🟢 Abrir chat</a>
+        <a class="btn" id="whoCall" href="#">📞 Llamar</a>
+        <button class="btn btn-ghost" type="button" id="whoCopy">📋 Copiar datos</button>
       </div>
     </div>
   </section>
@@ -456,9 +452,7 @@
   <div class="shell">
     <nav class="nav">
       <div class="brand">
-        <div class="logo" aria-hidden="true">
-          <img alt="" src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png">
-        </div>
+        <div class="logo"><span>⚡</span></div>
         <div>Airconekta <span style="opacity:.65;font-weight:600">Instalaciones</span></div>
       </div>
       <div class="inline">
@@ -547,17 +541,18 @@
       phoneDigits: "3222439782",
       role: "Soporte / Instalaciones · Airconekta",
       hint: "#whoami",
-      webHint: "Agrega #whoami al final de la URL"
+      webHint: "Escribe #whoami al final de la URL"
     };
-
-    const LOGO_1024 = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_1024.png";
-    const LOGO_512 = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_512.png";
-    const LOGO_TRANS = "https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png";
 
     const $ = sel => document.querySelector(sel);
     const toast = (msg) => { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); };
 
-    // Firma en consola (solo al depurar)
+    // Año dinámico
+    $('#year').textContent = new Date().getFullYear();
+
+    // =====================
+    // ✅ Firma en consola (solo al depurar)
+    // =====================
     (function consoleSignature(){
       try{
         const line = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
@@ -569,14 +564,13 @@
       }catch{}
     })();
 
-    // Año dinámico
-    $('#year').textContent = new Date().getFullYear();
-
-    // Splash (3s)
+    // =====================
+    // ✅ Splash (2.8s) + tap to dismiss
+    // =====================
     const splash = document.getElementById("splash");
     const hideSplash = () => splash?.classList.add("hide");
     splash?.addEventListener("click", hideSplash, { passive: true });
-    window.addEventListener("load", () => { setTimeout(hideSplash, 3000); });
+    window.addEventListener("load", () => { setTimeout(hideSplash, 2800); });
 
     // ===== Selección de colonia (ultra compatible, sin slide) =====
     const COLONIAS = [
@@ -650,20 +644,22 @@
     })();
 
     // =====================
-    // WHOAMI (hash route) — sin afectar estructura/función
+    // ✅ WHOAMI por hash (overlay, sin romper tu estructura)
     // =====================
-    function showWhoami(){
+    const who = document.getElementById("whoami");
+
+    function renderWhoami(){
       $("#whoName").textContent = WHOAMI.name;
-      $("#whoRole").textContent = WHOAMI.role;
       $("#whoPhone").textContent = WHOAMI.phonePretty;
-      $("#whoTip").innerHTML = `Agrega <b>${WHOAMI.hint}</b> al final de la URL`;
+      $("#whoRole").textContent = WHOAMI.role;
+      $("#whoRoute").textContent = location.origin + location.pathname + "#whoami";
 
       const waLink =
         `https://api.whatsapp.com/send?phone=52${WHOAMI.phoneDigits}` +
         `&text=${encodeURIComponent("Hola 👋 " + WHOAMI.name + ", necesito soporte / info de Airconekta.")}` +
         `&type=phone_number&app_absent=0`;
 
-      $("#whoWa").setAttribute("href", waLink);
+      $("#whoWhats").setAttribute("href", waLink);
       $("#whoCall").setAttribute("href", `tel:+52${WHOAMI.phoneDigits}`);
 
       $("#whoCopy").onclick = async () => {
@@ -681,25 +677,30 @@
       };
 
       $("#whoClose").onclick = () => {
-        $("#whoami").classList.remove("show");
         history.replaceState(null, "", location.pathname + location.search);
+        who.classList.remove("show");
+        toast("Regresando ✅");
       };
-
-      $("#whoami").classList.add("show");
     }
 
-    function handleHash(){
+    function handleHashRoute(){
       const h = (location.hash || "").toLowerCase().trim();
       if (h === "#whoami"){
-        // si está el welcome abierto, lo dejamos (no tocamos tu flujo)
-        // solo mostramos overlay
-        showWhoami();
+        // si splash está visible, lo quitamos para que se vea el whoami
+        hideSplash();
+        renderWhoami();
+        who.classList.add("show");
+        return;
       }
+      who.classList.remove("show");
     }
-    window.addEventListener("hashchange", handleHash, { passive:true });
-    handleHash();
 
+    window.addEventListener("hashchange", handleHashRoute, { passive:true });
+    handleHashRoute();
+
+    // =====================
     // Geolocalización
+    // =====================
     $('#geoBtn').addEventListener('click', () => {
       const s = $('#geoStatus');
       if (!('geolocation' in navigator)) { s.textContent = 'Geolocalización no soportada'; toast('Tu navegador no soporta ubicación'); return; }
@@ -764,18 +765,18 @@
       }
     });
 
-    // ——— PWA: manifest + service worker (mismo flujo, solo mejor icon) ———
+    // ——— PWA: manifest + service worker en claro ———
     const manifest = {
       name: 'Airconekta Instalaciones',
       short_name: 'Airconekta',
       description: 'Formulario PWA para solicitar instalación y enviar datos por WhatsApp.',
       start_url: '.',
       display: 'standalone',
-      background_color: '#0b1220',
-      theme_color: '#0b1220',
+      background_color: '#ffffff',
+      theme_color: '#ffffff',
       icons: [
-        { src: LOGO_512, sizes: '512x512', type: 'image/png' },
-        { src: LOGO_1024, sizes: '1024x1024', type: 'image/png' }
+        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAACENn8fAAAAI0lEQVQYV2NkYGD4z0AEMGGgAQZGBgYGBhA1FIwJQ3EAAEw4AABf1g4p2n3Y3wAAAABJRU5ErkJggg==', sizes: '48x48', type: 'image/png' },
+        { src: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAAB8Hs0fAAAAKUlEQVQ4y2NkoBAwUqifAWEGQwYGBgYwQ2oYg0EwGg0Go0GgYHxGAgA8m0g0pAKg5wAAAABJRU5ErkJggg==', sizes: '72x72', type: 'image/png' }
       ]
     };
     const manBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
@@ -785,7 +786,7 @@
     // Service Worker (cache básico)
     if ('serviceWorker' in navigator) {
       const swCode = `
-        const CACHE = 'airconekta-instalacion-v2';
+        const CACHE = 'airconekta-v1';
         self.addEventListener('install', e => {
           e.waitUntil(caches.open(CACHE).then(c => c.addAll([self.registration.scope])));
           self.skipWaiting();
