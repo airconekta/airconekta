@@ -291,6 +291,125 @@ body.cols-open{ overflow:hidden; }
   clip:rect(0,0,0,0);
   border:0;
 }
+
+/* ========================= WHOAMI (vista especial) ========================= */
+[data-view]{ display:none; }
+[data-view].active{ display:block; }
+
+.card{
+  border:1px solid var(--border);
+  border-radius: 22px;
+  padding:16px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 12px 30px rgba(16,48,96,.08);
+}
+
+.top-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.divider{ height:1px; background:#eef3ff; margin:14px 0; }
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:.9rem;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background: rgba(36,107,255,.06);
+  color:var(--muted);
+  font-weight:900;
+}
+
+.who-wrap{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:14px;
+  margin-top:12px;
+  align-items:stretch;
+}
+@media (max-width:860px){
+  .who-wrap{ grid-template-columns:1fr; }
+}
+.who-card{
+  border:1px solid var(--border);
+  border-radius: 22px;
+  padding:16px;
+  background: rgba(255,255,255,.92);
+  box-shadow: 0 12px 30px rgba(16,48,96,.08);
+}
+.who-hero{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.who-avatar{
+  width:72px;
+  height:72px;
+  border-radius: 22px;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(60px 60px at 30% 20%, rgba(36,107,255,.22), transparent 60%),
+    radial-gradient(60px 60px at 90% 30%, rgba(24,198,255,.16), transparent 55%),
+    radial-gradient(60px 60px at 40% 95%, rgba(124,58,237,.14), transparent 60%),
+    rgba(255,255,255,.92);
+  display:grid;
+  place-items:center;
+  font-weight:1000;
+  letter-spacing:.6px;
+}
+.who-name{ font-size:1.25rem; margin:0; font-weight:1000; }
+.who-role{ margin:2px 0 0; color:var(--muted); font-weight:900; }
+
+.kpoints{
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  gap:10px;
+  margin-top:10px;
+}
+.k{
+  grid-column:span 6;
+  border:1px solid #eef3ff;
+  border-radius: 18px;
+  padding:12px;
+  background: rgba(247,251,255,.92);
+}
+.k strong{ display:block; margin-bottom:4px; font-weight:1000; }
+@media (max-width:860px){ .k{ grid-column:span 12; } }
+
+.who-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+.who-actions a{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:950;
+  border:1px solid rgba(36,107,255,.55);
+  color:var(--ink);
+  background:#fff;
+}
+.who-actions a:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.9); }
+.who-actions a.btn-primary{
+  border:0;
+  color:#fff;
+  background: linear-gradient(135deg, var(--accent), #18c6ff);
+}
+.who-actions a.btn-primary:hover{ box-shadow: var(--ring); }
 </style>
 </head>
 
@@ -300,11 +419,8 @@ body.cols-open{ overflow:hidden; }
 <div class="splash" id="splash" aria-label="Cargando Airconekta">
   <div class="splash-card" role="status" aria-live="polite">
     <div class="splash-logo" aria-hidden="true">
-      <img
-        class="logo-img"
-        alt=""
-        src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png"
-      />
+      <img class="logo-img" alt=""
+        src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png" />
     </div>
     <div class="splash-title">AIRCONEKTA</div>
     <p class="splash-sub">Retiros (3+) · Panel interno</p>
@@ -313,59 +429,134 @@ body.cols-open{ overflow:hidden; }
   </div>
 </div>
 
-<div class="cols-backdrop" id="colsBackdrop" aria-hidden="true"></div>
+<!-- =====================
+     VISTAS
+===================== -->
 
-<div class="cols-sheet" id="colsSheet" role="dialog" aria-modal="true" aria-label="Columnas">
-  <div class="cols-topbar">
-    <div class="cols-title">
-      <h3>Columnas extra</h3>
-      <button class="cols-close" type="button" id="colsCloseBtn">✕</button>
-    </div>
+<!-- Vista normal: panel -->
+<section data-view="panel" id="viewPanel" class="active">
+  <div class="cols-backdrop" id="colsBackdrop" aria-hidden="true"></div>
 
-    <div class="cols-subrow">
-      <div class="cols-count" id="colsCount">Extras visibles: 0</div>
-      <div class="cols-actions">
-        <button type="button" id="colsAllBtn">Todo</button>
-        <button type="button" id="colsNoneBtn">Nada</button>
-        <button type="button" id="colsResetBtn">Restaurar</button>
+  <div class="cols-sheet" id="colsSheet" role="dialog" aria-modal="true" aria-label="Columnas">
+    <div class="cols-topbar">
+      <div class="cols-title">
+        <h3>Columnas extra</h3>
+        <button class="cols-close" type="button" id="colsCloseBtn">✕</button>
+      </div>
+
+      <div class="cols-subrow">
+        <div class="cols-count" id="colsCount">Extras visibles: 0</div>
+        <div class="cols-actions">
+          <button type="button" id="colsAllBtn">Todo</button>
+          <button type="button" id="colsNoneBtn">Nada</button>
+          <button type="button" id="colsResetBtn">Restaurar</button>
+        </div>
+      </div>
+
+      <div class="cols-search">
+        <input id="colsSearch" placeholder="Buscar columna (IP, Router, SN ONU, Coordenadas)…" />
+      </div>
+
+      <div class="note">
+        Cambia al instante: al activar/desactivar una columna se muestra/oculta inmediatamente ✅
       </div>
     </div>
 
-    <div class="cols-search">
-      <input id="colsSearch" placeholder="Buscar columna (IP, Router, SN ONU, Coordenadas)…" />
-    </div>
-
-    <div class="note">
-      Cambia al instante: al activar/desactivar una columna se muestra/oculta inmediatamente ✅
+    <div class="cols-body">
+      <div class="cols-grid" id="colsGrid"></div>
     </div>
   </div>
 
-  <div class="cols-body">
-    <div class="cols-grid" id="colsGrid"></div>
-  </div>
-</div>
+  <div class="wrap">
+    <div class="top">
+      <h2>📡 Airconekta – Retiros (3+)</h2>
+      <input id="q" placeholder="Buscar por dirección, barrio, teléfono, plan…">
 
-<div class="wrap">
-  <div class="top">
-    <h2>📡 Airconekta – Retiros (3+)</h2>
-    <input id="q" placeholder="Buscar por dirección, barrio, teléfono, plan…">
-
-    <div class="controls-row">
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <button class="btn-primary" type="button" id="openColsBtn">⚙️ Columnas</button>
-        <span class="badge">📌 Fijas <small>+ extras</small></span>
+      <div class="controls-row">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button class="btn-primary" type="button" id="openColsBtn">⚙️ Columnas</button>
+          <span class="badge">📌 Fijas <small>+ extras</small></span>
+        </div>
+        <div id="status" class="muted">Cargando…</div>
       </div>
-      <div id="status" class="muted">Cargando…</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr id="theadRow"></tr>
+      </thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== WHOAMI (vista oculta por hash) ===== -->
+<section class="wrap" data-view="whoami" id="viewWhoami" aria-label="Whoami">
+  <div class="card">
+    <div class="top-actions">
+      <div>
+        <h2 style="margin:0">Whoami</h2>
+        <div class="muted" style="margin-top:4px">Vista especial (solo con <b>#whoami</b>).</div>
+      </div>
+      <button class="cols-close" type="button" id="whoBackBtn">← Volver</button>
+    </div>
+
+    <div class="who-wrap">
+      <div class="who-card">
+        <div class="who-hero">
+          <div class="who-avatar" aria-hidden="true">JE</div>
+          <div>
+            <p class="who-name" id="whoName">—</p>
+            <p class="who-role" id="whoRole">—</p>
+          </div>
+          <span class="pill">🧩 Debug route · #whoami</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="kpoints">
+          <div class="k">
+            <strong>📞 Teléfono</strong>
+            <span class="muted" id="whoPhonePretty">—</span>
+          </div>
+          <div class="k">
+            <strong>🟢 WhatsApp</strong>
+            <span class="muted">Toca “Abrir chat” para escribir directo</span>
+          </div>
+          <div class="k">
+            <strong>🧠 Tip</strong>
+            <span class="muted">En consola también aparece tu firma</span>
+          </div>
+          <div class="k">
+            <strong>🔒 Nota</strong>
+            <span class="muted">No aparece en el panel normal, solo aquí</span>
+          </div>
+        </div>
+
+        <div class="who-actions">
+          <a class="btn-primary" id="whoWhatsBtn" href="#" rel="noopener noreferrer">🟢 Abrir chat</a>
+          <a id="whoCallBtn" href="#">📞 Llamar</a>
+          <button type="button" id="whoCopyBtn">📋 Copiar datos</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="note" style="margin-top:0">
+          Si llegaste aquí por accidente: vuelve al panel o borra el hash (<b>#whoami</b>) de la URL.
+        </div>
+      </div>
+
+      <div class="who-card">
+        <h3 style="margin:0 0 8px">🔎 ¿Cómo sé que sí funciona?</h3>
+        <div class="note" style="margin-top:0">
+          <b>1)</b> Abre DevTools → Console y recarga: verás tu firma.<br><br>
+          <b>2)</b> Ver código fuente: verás el bloque de firma en comentarios.<br><br>
+          <b>3)</b> Escribe <b>#whoami</b> al final de la URL: te trae a esta vista.
+        </div>
+      </div>
     </div>
   </div>
-
-  <table>
-    <thead>
-      <tr id="theadRow"></tr>
-    </thead>
-    <tbody id="tb"></tbody>
-  </table>
-</div>
+</section>
 
 <script>
 /* =====================
@@ -375,7 +566,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbz47QCct_OgtFPRm9ucdwNQ
 const API_KEY = "retiros2025x";
 
 /* =====================
-   WHOAMI + FIRMA (debug / #whoami)
+   WHOAMI + FIRMA
 ===================== */
 const WHOAMI = {
   name: "Jair Elizondo",
@@ -386,7 +577,6 @@ const WHOAMI = {
   webHint: "Escribe #whoami al final de la URL"
 };
 
-// Firma en consola (solo al depurar)
 (function consoleSignature(){
   try{
     const line = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
@@ -400,14 +590,68 @@ const WHOAMI = {
 
 /* =====================
    Splash
-   - click para cerrar
-   - fallback a 3s
-   - y lo cerramos al terminar load()
 ===================== */
 const splash = document.getElementById("splash");
 const hideSplash = () => splash?.classList.add("hide");
 splash?.addEventListener("click", hideSplash, { passive:true });
 window.addEventListener("load", ()=> setTimeout(hideSplash, 3000));
+
+/* =====================
+   Router de vistas (#whoami) — OCULTO
+===================== */
+const viewPanel  = document.getElementById("viewPanel");
+const viewWhoami = document.getElementById("viewWhoami");
+
+function showView(name){
+  viewPanel.classList.toggle("active", name === "panel");
+  viewWhoami.classList.toggle("active", name === "whoami");
+}
+
+function renderWhoami(){
+  document.getElementById("whoName").textContent = WHOAMI.name;
+  document.getElementById("whoRole").textContent = WHOAMI.role;
+  document.getElementById("whoPhonePretty").textContent = WHOAMI.phonePretty;
+
+  const waLink =
+    `https://api.whatsapp.com/send?phone=52${WHOAMI.phoneDigits}` +
+    `&text=${encodeURIComponent("Hola 👋 " + WHOAMI.name + ", necesito soporte / info de Airconekta.")}` +
+    `&type=phone_number&app_absent=0`;
+
+  document.getElementById("whoWhatsBtn").setAttribute("href", waLink);
+  document.getElementById("whoCallBtn").setAttribute("href", `tel:+52${WHOAMI.phoneDigits}`);
+
+  document.getElementById("whoCopyBtn").onclick = async () => {
+    const text =
+      `${WHOAMI.name}\n` +
+      `${WHOAMI.phonePretty}\n` +
+      `Airconekta\n` +
+      `Tip: ${location.origin + location.pathname}#whoami`;
+
+    try{
+      await navigator.clipboard.writeText(text);
+      alert("Datos copiados ✅");
+    }catch{
+      alert("No se pudo copiar (permiso del navegador)");
+    }
+  };
+
+  document.getElementById("whoBackBtn").onclick = () => {
+    history.replaceState(null, "", location.pathname + location.search);
+    showView("panel");
+  };
+}
+
+function handleHashRoute(){
+  const h = (location.hash || "").toLowerCase().trim();
+  if (h === "#whoami"){
+    renderWhoami();
+    showView("whoami");
+    return;
+  }
+  showView("panel");
+}
+
+window.addEventListener("hashchange", handleHashRoute, { passive:true });
 
 /* =====================
    TABLA / DATOS
@@ -761,7 +1005,6 @@ async function toggleRetiro(row, action){
 
 /* =====================
    Load
-   - cerramos splash cuando la data ya está lista ✅
 ===================== */
 async function load(){
   statusEl.textContent = "Cargando…";
@@ -784,7 +1027,6 @@ async function load(){
   updateArrows();
   render();
 
-  // ✅ ocultar splash al terminar
   hideSplash();
 }
 
@@ -793,34 +1035,15 @@ q.addEventListener("input", render);
 load().catch((e)=>{
   console.error(e);
   statusEl.textContent="ERROR: API_KEY o permisos";
-  hideSplash(); // si falla, igual quitamos splash
+  hideSplash();
 });
 
 /* =====================
-   WHOAMI (hash route)
-   - abre una vista simple por alert/console (sin tocar UI principal)
-   - ruta: .../#whoami
+   Inicio
 ===================== */
-function handleHashRoute(){
-  const h = (location.hash || "").toLowerCase().trim();
-  if (h !== "#whoami") return;
-
-  // Vista simple: no alteramos el panel; solo mostramos info en toast/alert
-  const msg =
-    `WHOAMI\n\n` +
-    `${WHOAMI.name}\n` +
-    `${WHOAMI.role}\n` +
-    `${WHOAMI.phonePretty}\n\n` +
-    `Tip: Borra #whoami para volver.`;
-
-  try{
-    alert(msg);
-  }catch{
-    console.log(msg);
-  }
-}
-window.addEventListener("hashchange", handleHashRoute, { passive:true });
-handleHashRoute(); // por si entra directo
+(function init(){
+  handleHashRoute(); // si entra directo con #whoami
+})();
 </script>
 
 </body>
