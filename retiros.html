@@ -226,7 +226,7 @@ body.cols-open{ overflow:hidden; }
 /* =====================
    CONFIG
 ===================== */
-const API_URL = "https://script.google.com/macros/s/AKfycbwZWi6g2dO_luT9Fy-tAdYq152Wt-3E9tU1YXpmJ1uHDabrSr1GkadTM0x36-ohqOiu/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbz47QCct_OgtFPRm9ucdwNQkuJRHWj2JEXmOSHppYm7X0zC0gEXqozErQSJl5K0jMVV/exec";
 const API_KEY = "retiros2025x";
 
 /* =====================
@@ -448,7 +448,7 @@ function getFiltered(){
 }
 
 /* =====================
-   Render rows (✅ CORREGIDO)
+   Render rows
    - Comentario normal => permite RETIRAR
    - Comentario con RETIRADO => CANCELAR
 ===================== */
@@ -462,9 +462,6 @@ function render(){
     const c = String(r["Comentario"]||"").trim();
     const markedRet = hasRetirado(c);
 
-    // ✅ NUEVA LÓGICA:
-    // Si tiene RETIRADO => CANCELAR
-    // Si no tiene RETIRADO (aunque tenga comentario) => RETIRAR
     let btnText = markedRet ? "CANCELAR" : "RETIRAR";
     let action  = markedRet ? "CANCELAR" : "RETIRADO";
 
@@ -557,6 +554,7 @@ function cycleSort(col){
 
 /* =====================
    RETIRAR / CANCELAR
+   ✅ FIX: POST sin Content-Type (evita preflight CORS)
 ===================== */
 async function toggleRetiro(row, action){
   if (action === "RETIRADO"){
@@ -568,9 +566,10 @@ async function toggleRetiro(row, action){
   try{
     const res = await fetch(API_URL,{
       method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({key:API_KEY,row,action})
+      // ✅ NO headers aquí
+      body: JSON.stringify({key:API_KEY,row,action})
     });
+
     const j = await res.json().catch(()=>({ok:false,error:"bad_json"}));
 
     if (!j.ok){
