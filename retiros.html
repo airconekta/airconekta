@@ -17,20 +17,21 @@ Hint: #whoami
 <style>
 :root{
   --ink:#0f1a2e; --muted:#5b6b86; --accent:#246bff; --border:#cfe0ff;
-  --card: rgba(255,255,255,.78);
   --shadow: 0 14px 40px rgba(16,48,96,.12);
   --ring: 0 0 0 4px rgba(36,107,255,.16);
+  --glass: rgba(255,255,255,.92);
 }
 
 /* Base */
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
 body{margin:0;font:16px system-ui;background:#fff;color:var(--ink)}
+a{ color:inherit; }
 
-/* Layout original */
+/* Layout */
 .wrap{max-width:1200px;margin:auto;padding:20px}
 .top{position:sticky;top:0;background:#fff;padding-bottom:10px;z-index:5}
-input{width:100%;padding:12px;border:1px solid var(--border);border-radius:12px}
+input{width:100%;padding:12px;border:1px solid var(--border);border-radius:14px}
 
 table{width:100%;border-collapse:collapse;margin-top:12px}
 th,td{border-bottom:1px solid #eef3ff;padding:10px;text-align:left;vertical-align:top}
@@ -41,44 +42,60 @@ th{
   position:sticky; top:0; background:#fff; z-index:2;
 }
 
-/* ✅ estilo "botón" clickeable */
-th.sortable{
-  cursor:pointer;
-  touch-action:manipulation;
-}
-th.sortable:hover{
-  color:var(--ink);
-  background:rgba(36,107,255,.06);
-}
-th.sortable:active{
-  background:rgba(36,107,255,.12);
-}
+/* Sort header clickable */
+th.sortable{ cursor:pointer; touch-action:manipulation; }
+th.sortable:hover{ color:var(--ink); background:rgba(36,107,255,.06); }
+th.sortable:active{ background:rgba(36,107,255,.12); }
 th.sort-active{
   color:var(--ink);
   background:rgba(36,107,255,.06);
   border-bottom:2px solid rgba(36,107,255,.35);
 }
-
-th .arrow{
-  font-size:.85em;
-  margin-left:6px;
-  opacity:.85;
-}
+th .arrow{ font-size:.85em; margin-left:6px; opacity:.85; }
 
 button{
-  border:1px solid var(--accent);background:#fff;color:var(--accent);
-  padding:6px 10px;border-radius:10px;font-weight:800;cursor:pointer
+  border:1px solid rgba(36,107,255,.55);
+  background:#fff;
+  color:var(--ink);
+  padding:9px 12px;
+  border-radius:14px;
+  font-weight:950;
+  cursor:pointer
 }
-button:disabled{opacity:.5}
-.ok{color:#1f9d55;font-weight:800}
-.muted{color:var(--muted)}
+button:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.9); }
+button:disabled{opacity:.55; cursor:not-allowed; box-shadow:none}
+.btn-primary{
+  border:0;
+  color:#fff;
+  background: linear-gradient(135deg, var(--accent), #18c6ff);
+}
+.ok{color:#1f9d55;font-weight:950}
+.muted{color:var(--muted);font-weight:850}
+
+/* Top controls row */
+.controls-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(36,107,255,.18);
+  background: rgba(36,107,255,.06);
+  font-weight:950;
+}
+.badge small{ color:var(--muted); font-weight:900; }
 
 /* ========================= Splash Screen (Airconekta) ========================= */
 .splash{
-  position:fixed;
-  inset:0;
-  display:grid;
-  place-items:center;
+  position:fixed; inset:0; display:grid; place-items:center;
   background:
     radial-gradient(900px 520px at 20% 15%, rgba(36,107,255,.28), transparent 60%),
     radial-gradient(900px 520px at 85% 25%, rgba(24,198,255,.22), transparent 55%),
@@ -87,12 +104,7 @@ button:disabled{opacity:.5}
   z-index:9999;
   transition: opacity .35s ease, transform .35s ease, visibility .35s ease;
 }
-.splash.hide{
-  opacity:0;
-  transform: translateY(-6px);
-  visibility:hidden;
-  pointer-events:none;
-}
+.splash.hide{ opacity:0; transform: translateY(-6px); visibility:hidden; pointer-events:none; }
 .splash-card{
   width:min(92vw, 560px);
   border-radius: 28px;
@@ -105,23 +117,15 @@ button:disabled{opacity:.5}
   backdrop-filter: blur(14px) saturate(120%);
 }
 .splash-logo{
-  width: 88px;
-  height: 88px;
-  margin: 0 auto 10px;
-  border-radius: 26px;
-  display:grid;
-  place-items:center;
+  width: 88px;height: 88px;margin: 0 auto 10px;border-radius: 26px;
+  display:grid;place-items:center;
   background: rgba(255,255,255,.06);
   border: 1px solid rgba(255,255,255,.12);
-  position:relative;
-  overflow:hidden;
+  position:relative; overflow:hidden;
 }
 .splash-logo::before{
-  content:"";
-  position:absolute;
-  inset:-40%;
-  background: conic-gradient(
-    from 0deg,
+  content:""; position:absolute; inset:-40%;
+  background: conic-gradient(from 0deg,
     rgba(36,107,255,.0),
     rgba(36,107,255,.6),
     rgba(24,198,255,.55),
@@ -133,39 +137,24 @@ button:disabled{opacity:.5}
 }
 .splash-logo .logo-img{
   position:relative;
-  width: 62px;
-  height: 62px;
-  border-radius: 22px;
+  width: 62px;height: 62px;border-radius: 22px;
   display:block;
   background: rgba(11,18,32,.92);
   border:1px solid rgba(255,255,255,.12);
   object-fit: contain;
   padding: 10px;
 }
-.splash-title{
-  font-weight: 1000;
-  letter-spacing: .6px;
-  font-size: clamp(2.0rem, 4.2vw, 3.0rem);
-  margin: 8px 0 6px;
-}
-.splash-sub{
-  margin: 0;
-  color: rgba(233,238,252,.78);
-  font-weight: 700;
-}
+.splash-title{ font-weight: 1000; letter-spacing: .6px; font-size: clamp(2.0rem, 4.2vw, 3.0rem); margin: 8px 0 6px; }
+.splash-sub{ margin: 0; color: rgba(233,238,252,.78); font-weight: 850; }
 .splash-bar{
-  height: 10px;
-  margin: 16px auto 0;
-  border-radius: 999px;
+  height: 10px; margin: 16px auto 0; border-radius: 999px;
   width: min(380px, 82%);
   background: rgba(255,255,255,.08);
   border: 1px solid rgba(255,255,255,.10);
   overflow:hidden;
 }
 .splash-bar > i{
-  display:block;
-  height:100%;
-  width: 40%;
+  display:block; height:100%; width: 40%;
   background: linear-gradient(90deg, rgba(36,107,255,.15), rgba(36,107,255,.85), rgba(24,198,255,.85));
   border-radius: 999px;
   animation: load 1.1s ease-in-out infinite;
@@ -185,13 +174,8 @@ button:disabled{opacity:.5}
 /* ========================= WHOAMI modal (hash) ========================= */
 body.whoami-open{ overflow:hidden; }
 .whoami{
-  position:fixed;
-  inset:0;
-  display:none;
-  place-items:center;
-  z-index:9998;
-  padding:18px;
-  background: rgba(7,11,20,.70);
+  position:fixed; inset:0; display:none; place-items:center; z-index:9998;
+  padding:18px; background: rgba(7,11,20,.70);
   backdrop-filter: blur(10px) saturate(120%);
 }
 .whoami.show{ display:grid; }
@@ -204,10 +188,7 @@ body.whoami-open{ overflow:hidden; }
   overflow:hidden;
 }
 .who-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
   padding:16px 16px 12px;
   border-bottom:1px solid rgba(207,224,255,.65);
   background:
@@ -215,48 +196,19 @@ body.whoami-open{ overflow:hidden; }
     radial-gradient(700px 240px at 90% 0%, rgba(24,198,255,.14), transparent 55%),
     #fff;
 }
-.who-title{
-  margin:0;
-  font-size:1.25rem;
-  font-weight:1000;
-}
-.who-sub{
-  margin:2px 0 0;
-  color:var(--muted);
-  font-weight:800;
-  font-size:.95rem;
-}
+.who-title{ margin:0; font-size:1.25rem; font-weight:1000; }
+.who-sub{ margin:2px 0 0; color:var(--muted); font-weight:900; font-size:.95rem; }
 .who-close{
   border:1px solid rgba(36,107,255,.35);
-  background:#fff;
-  color:var(--ink);
-  padding:10px 12px;
-  border-radius:14px;
-  font-weight:1000;
-  cursor:pointer;
+  background:#fff; color:var(--ink);
+  padding:10px 12px; border-radius:14px;
+  font-weight:1000; cursor:pointer;
 }
 .who-close:hover{ box-shadow: var(--ring); }
-.who-body{
-  padding:16px;
-  display:grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap:14px;
-}
-@media (max-width:860px){
-  .who-body{ grid-template-columns:1fr; }
-}
-.who-panel{
-  border:1px solid rgba(207,224,255,.75);
-  border-radius: 20px;
-  padding:14px;
-  background: rgba(255,255,255,.78);
-}
-.who-hero{
-  display:flex;
-  gap:14px;
-  align-items:center;
-  flex-wrap:wrap;
-}
+.who-body{ padding:16px; display:grid; grid-template-columns: 1.1fr .9fr; gap:14px; }
+@media (max-width:860px){ .who-body{ grid-template-columns:1fr; } }
+.who-panel{ border:1px solid rgba(207,224,255,.75); border-radius: 20px; padding:14px; background: rgba(255,255,255,.78); }
+.who-hero{ display:flex; gap:14px; align-items:center; flex-wrap:wrap; }
 .who-avatar{
   width:72px;height:72px;border-radius:22px;
   border:1px solid rgba(207,224,255,.85);
@@ -270,13 +222,7 @@ body.whoami-open{ overflow:hidden; }
 }
 .who-name{ margin:0; font-size:1.15rem; font-weight:1000; }
 .who-role{ margin:2px 0 0; color:var(--muted); font-weight:900; }
-
-.who-grid{
-  display:grid;
-  grid-template-columns:repeat(12,1fr);
-  gap:10px;
-  margin-top:12px;
-}
+.who-grid{ display:grid; grid-template-columns:repeat(12,1fr); gap:10px; margin-top:12px; }
 .who-k{
   grid-column:span 6;
   border:1px solid rgba(207,224,255,.75);
@@ -286,50 +232,199 @@ body.whoami-open{ overflow:hidden; }
 }
 @media (max-width:860px){ .who-k{ grid-column:span 12; } }
 .who-k strong{ display:block; margin-bottom:4px; font-weight:1000; }
-.who-actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
+.who-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
 .wbtn{
-  appearance:none;
-  cursor:pointer;
-  user-select:none;
+  appearance:none; cursor:pointer; user-select:none;
   border:1px solid rgba(36,107,255,.65);
-  color:var(--ink);
-  background:#fff;
-  padding:12px 14px;
-  border-radius: 14px;
-  font-weight: 1000;
-  letter-spacing:.2px;
+  color:var(--ink); background:#fff;
+  padding:12px 14px; border-radius: 14px;
+  font-weight: 1000; letter-spacing:.2px;
   text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  line-height:1;
+  display:inline-flex; align-items:center; gap:8px; line-height:1;
 }
 .wbtn:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.95); }
-.wbtn-primary{
-  color:#fff;
-  border-color: transparent;
-  background: linear-gradient(135deg, var(--accent), #18c6ff);
-}
+.wbtn-primary{ color:#fff; border-color: transparent; background: linear-gradient(135deg, var(--accent), #18c6ff); }
 .who-tip{
-  margin-top:12px;
-  padding:12px;
-  border-radius:16px;
+  margin-top:12px; padding:12px; border-radius:16px;
   border:1px dashed rgba(207,224,255,.95);
   background: rgba(247,251,255,.85);
+  color:var(--muted); font-weight:900;
+}
+
+/* ========================= Column Picker (no-confirm, pro) ========================= */
+body.cols-open{ overflow:hidden; }
+
+.cols-backdrop{
+  position:fixed; inset:0;
+  background: rgba(7,11,20,.55);
+  backdrop-filter: blur(8px) saturate(120%);
+  display:none;
+  z-index:9997;
+}
+.cols-backdrop.show{ display:block; }
+
+.cols-sheet{
+  position:fixed;
+  left:0; right:0; bottom:0;
+  height: min(78vh, 740px);
+  background: var(--glass);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  box-shadow: 0 -24px 90px rgba(0,0,0,.35);
+  transform: translateY(110%);
+  transition: transform .22s ease;
+  z-index:9998;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border:1px solid rgba(207,224,255,.65);
+}
+.cols-sheet.show{ transform: translateY(0); }
+
+@media (min-width: 980px){
+  .cols-sheet{
+    left:auto; right:18px; bottom:18px;
+    width: 520px;
+    height: min(78vh, 760px);
+    border-radius: 24px;
+    box-shadow: 0 30px 90px rgba(0,0,0,.35);
+    transform: translateX(120%);
+  }
+  .cols-sheet.show{ transform: translateX(0); }
+}
+
+.grab{
+  display:block;
+  width:48px;height:5px;
+  border-radius:999px;
+  margin:10px auto 0;
+  background: rgba(91,107,134,.25);
+}
+@media (min-width:980px){ .grab{ display:none; } }
+
+.cols-topbar{
+  padding:14px 14px 12px;
+  border-bottom:1px solid rgba(207,224,255,.7);
+  background:
+    radial-gradient(700px 240px at 10% 0%, rgba(36,107,255,.18), transparent 55%),
+    radial-gradient(700px 240px at 90% 0%, rgba(24,198,255,.14), transparent 55%),
+    #fff;
+}
+.cols-title{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.cols-title h3{ margin:0; font-size:1.05rem; font-weight:1000; }
+.cols-close{
+  border:1px solid rgba(36,107,255,.35);
+  background:#fff;
+  color:var(--ink);
+  border-radius:14px;
+  padding:10px 12px;
+  font-weight:1000;
+}
+.cols-close:hover{ box-shadow: var(--ring); }
+
+.cols-subrow{
+  display:flex; gap:10px; align-items:center; justify-content:space-between;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+.cols-count{ font-weight:1000; color:var(--muted); }
+
+.cols-actions{ display:flex; gap:8px; flex-wrap:wrap; }
+.cols-actions button{
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid rgba(36,107,255,.22);
+  background: rgba(36,107,255,.06);
+}
+.cols-actions button:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.55); }
+
+.cols-search{ margin-top:10px; display:flex; gap:10px; }
+.cols-search input{
+  padding:12px 12px;
+  border-radius:14px;
+  border:1px solid rgba(207,224,255,.9);
+  background: rgba(255,255,255,.92);
+}
+
+.cols-body{ padding:12px 14px 14px; overflow:auto; }
+
+.cols-grid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap:10px;
+}
+@media (min-width:640px){
+  .cols-grid{ grid-template-columns: 1fr 1fr; }
+}
+
+.col-item{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 12px;
+  border-radius:16px;
+  border:1px solid rgba(207,224,255,.75);
+  background: rgba(255,255,255,.85);
+}
+.col-item:hover{ box-shadow: 0 10px 26px rgba(16,48,96,.10); }
+.col-name{
+  font-weight:1000;
+  color:var(--ink);
+  line-height:1.15;
+  word-break:break-word;
+}
+.col-meta{
+  font-size:.85rem;
   color:var(--muted);
-  font-weight:800;
+  font-weight:900;
+}
+
+/* toggle switch */
+.switch{
+  position:relative;
+  width:52px;
+  height:30px;
+  flex:0 0 auto;
+}
+.switch input{ display:none; }
+.slider{
+  position:absolute; inset:0;
+  background: rgba(91,107,134,.22);
+  border:1px solid rgba(207,224,255,.9);
+  border-radius:999px;
+  transition: .16s ease;
+}
+.slider:before{
+  content:"";
+  position:absolute;
+  width:24px; height:24px;
+  left:3px; top:2px;
+  background:#fff;
+  border-radius:999px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.15);
+  transition: .16s ease;
+}
+.switch input:checked + .slider{
+  background: linear-gradient(135deg, var(--accent), #18c6ff);
+  border-color: rgba(36,107,255,.35);
+}
+.switch input:checked + .slider:before{ transform: translateX(22px); }
+
+.note{
+  padding:10px 12px;
+  border-radius:16px;
+  border:1px dashed rgba(207,224,255,.95);
+  background: rgba(247,251,255,.92);
+  color:var(--muted);
+  font-weight:900;
+  margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Splash (Airconekta) -->
+<!-- Splash -->
 <div class="splash" id="splash" aria-label="Cargando Airconekta">
   <div class="splash-card" role="status" aria-live="polite">
     <div class="splash-logo" aria-hidden="true">
@@ -339,13 +434,13 @@ body.whoami-open{ overflow:hidden; }
     <div class="splash-title">AIRCONEKTA</div>
     <p class="splash-sub">Retiros (3+) · Panel interno</p>
     <div class="splash-bar" aria-hidden="true"><i></i></div>
-    <p style="margin:10px 0 0;color:rgba(233,238,252,.72);font-weight:800;font-size:.95rem">
+    <p style="margin:10px 0 0;color:rgba(233,238,252,.72);font-weight:900;font-size:.95rem">
       Toca para entrar
     </p>
   </div>
 </div>
 
-<!-- WHOAMI modal (solo con #whoami) -->
+<!-- WHOAMI modal -->
 <div class="whoami" id="whoami" aria-hidden="true">
   <div class="who-card" role="dialog" aria-modal="true" aria-label="Whoami">
     <div class="who-head">
@@ -408,50 +503,57 @@ body.whoami-open{ overflow:hidden; }
   </div>
 </div>
 
+<!-- Column Picker (instant apply) -->
+<div class="cols-backdrop" id="colsBackdrop" aria-hidden="true"></div>
+
+<div class="cols-sheet" id="colsSheet" role="dialog" aria-modal="true" aria-label="Columnas">
+  <span class="grab"></span>
+  <div class="cols-topbar">
+    <div class="cols-title">
+      <h3>Columnas extra</h3>
+      <button class="cols-close" type="button" id="colsCloseBtn">✕</button>
+    </div>
+
+    <div class="cols-subrow">
+      <div class="cols-count" id="colsCount">Extras visibles: 0</div>
+      <div class="cols-actions">
+        <button type="button" id="colsAllBtn">Todo</button>
+        <button type="button" id="colsNoneBtn">Nada</button>
+        <button type="button" id="colsResetBtn">Restaurar</button>
+      </div>
+    </div>
+
+    <div class="cols-search">
+      <input id="colsSearch" placeholder="Buscar columna (IP, Router, SN ONU, Coordenadas)…" />
+    </div>
+
+    <div class="note">
+      Cambia al instante: al activar/desactivar una columna se muestra/oculta inmediatamente ✅
+    </div>
+  </div>
+
+  <div class="cols-body">
+    <div class="cols-grid" id="colsGrid"></div>
+  </div>
+</div>
+
 <div class="wrap">
   <div class="top">
     <h2>📡 Airconekta – Retiros (3+)</h2>
-
     <input id="q" placeholder="Buscar por dirección, barrio, teléfono, plan…">
 
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px">
-      <button type="button" id="colsBtn">⚙️ Columnas</button>
-
-      <div id="colsMenu" style="display:none; position:relative;">
-        <div id="colsPanel" style="
-          position:absolute; right:0; top:10px;
-          width:min(520px, 92vw);
-          background:#fff; border:1px solid var(--border);
-          border-radius:16px; box-shadow: var(--shadow);
-          padding:12px; z-index:20;
-        ">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
-            <div style="font-weight:1000">Mostrar columnas extra</div>
-            <button type="button" id="colsClose">✕</button>
-          </div>
-
-          <div id="colsList" style="
-            margin-top:10px;
-            display:grid;
-            grid-template-columns:repeat(2,minmax(0,1fr));
-            gap:8px;
-          "></div>
-
-          <div style="margin-top:10px;color:var(--muted);font-weight:800;font-size:.92rem">
-            Tip: lo que elijas se guarda en este navegador.
-          </div>
-        </div>
+    <div class="controls-row">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="btn-primary" type="button" id="openColsBtn">⚙️ Columnas</button>
+        <span class="badge">📌 Fijas <small>+ extras</small></span>
       </div>
-
       <div id="status" class="muted">Cargando…</div>
     </div>
   </div>
 
   <table>
     <thead>
-      <tr id="theadRow">
-        <!-- se renderiza por JS -->
-      </tr>
+      <tr id="theadRow"></tr>
     </thead>
     <tbody id="tb"></tbody>
   </table>
@@ -473,14 +575,13 @@ const WHOAMI = {
   webHint: "Escribe #whoami al final de la URL"
 };
 
-// Firma en consola (solo al depurar)
 (function consoleSignature(){
   try{
     const line = "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━";
     console.log("%c" + line, "color:#18c6ff;font-weight:900");
     console.log("%cAIRCONEKTA · Firma de desarrollo", "color:#246bff;font-size:14px;font-weight:900");
     console.log("%c" + WHOAMI.name + "  ·  " + WHOAMI.phonePretty + "  ·  " + WHOAMI.hint, "color:#7c3aed;font-size:12px;font-weight:900");
-    console.log("%c" + WHOAMI.webHint, "color:#5b6b86;font-size:12px;font-weight:800");
+    console.log("%c" + WHOAMI.webHint, "color:#5b6b86;font-size:12px;font-weight:900");
     console.log("%c" + line, "color:#18c6ff;font-weight:900");
   }catch{}
 })();
@@ -534,19 +635,12 @@ function closeWhoami(){
   document.body.classList.remove("whoami-open");
   whoModal.classList.remove("show");
   whoModal.setAttribute("aria-hidden","true");
-
   if (location.hash) history.replaceState(null, "", location.pathname + location.search);
 }
 
 document.getElementById("whoCloseBtn").addEventListener("click", closeWhoami);
-
-whoModal.addEventListener("click", (e)=>{
-  if (e.target === whoModal) closeWhoami();
-});
-
-window.addEventListener("keydown", (e)=>{
-  if (e.key === "Escape" && whoModal.classList.contains("show")) closeWhoami();
-});
+whoModal.addEventListener("click", (e)=>{ if (e.target === whoModal) closeWhoami(); });
+window.addEventListener("keydown", (e)=>{ if (e.key === "Escape" && whoModal.classList.contains("show")) closeWhoami(); });
 
 function handleHashRoute(){
   const h = (location.hash || "").toLowerCase().trim();
@@ -565,7 +659,7 @@ const theadRow = document.getElementById("theadRow");
 
 let rows = [];
 let rowsOriginal = [];
-let sortState = { col: null, mode: 0 }; // 0 original, 1 asc, 2 desc
+let sortState = { col: null, mode: 0 };
 
 const norm = v => String(v ?? "").toLowerCase().trim();
 
@@ -578,7 +672,7 @@ function toNum(v){
 }
 
 /* =====================
-   Columnas (fijas + extras)
+   Columnas
 ===================== */
 const ALWAYS_COLS = [
   "Dirección",
@@ -591,51 +685,94 @@ const ALWAYS_COLS = [
   "Comentario"
 ];
 
-const STORAGE_KEY = "airconekta_retiros_cols_v1";
-let EXTRA_COLS = []; // se detectan desde rows[0]._extra
+const STORAGE_KEY = "airconekta_retiros_cols_instant_v1";
+let EXTRA_COLS = [];
 let visibleCols = ALWAYS_COLS.slice();
 
-// UI refs
-const colsBtn   = document.getElementById("colsBtn");
-const colsMenu  = document.getElementById("colsMenu");
-const colsClose = document.getElementById("colsClose");
-const colsList  = document.getElementById("colsList");
-
-// cargar preferencia guardada
-(function loadColsPrefs(){
+function loadColsPrefs(){
   try{
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
     if (Array.isArray(saved) && saved.length) visibleCols = saved;
   }catch{}
-})();
-
+  ALWAYS_COLS.forEach(c=>{
+    if (!visibleCols.includes(c)) visibleCols.unshift(c);
+  });
+  visibleCols = visibleCols.filter((c,i,a)=>a.indexOf(c)===i);
+}
 function saveColsPrefs(){
   try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(visibleCols)); }catch{}
 }
+function extrasVisibleCount(){
+  return visibleCols.filter(c => !ALWAYS_COLS.includes(c)).length;
+}
 
-function buildColsPanel(){
-  const allExtras = EXTRA_COLS.slice().sort((a,b)=>a.localeCompare(b,"es"));
+/* =====================
+   Column Picker UI (instant)
+===================== */
+const openColsBtn  = document.getElementById("openColsBtn");
+const colsBackdrop = document.getElementById("colsBackdrop");
+const colsSheet    = document.getElementById("colsSheet");
+const colsCloseBtn = document.getElementById("colsCloseBtn");
+const colsAllBtn   = document.getElementById("colsAllBtn");
+const colsNoneBtn  = document.getElementById("colsNoneBtn");
+const colsResetBtn = document.getElementById("colsResetBtn");
+const colsGrid     = document.getElementById("colsGrid");
+const colsSearch   = document.getElementById("colsSearch");
+const colsCount    = document.getElementById("colsCount");
 
-  if (!allExtras.length){
-    colsList.innerHTML = `
-      <div class="muted" style="grid-column:1/-1;font-weight:900">
-        No hay columnas extra (tu API no envió _extra o no existen columnas opcionales).
+function openCols(){
+  colsSearch.value = "";
+  renderColsGrid();
+  updateColsCount();
+  document.body.classList.add("cols-open");
+  colsBackdrop.classList.add("show");
+  colsSheet.classList.add("show");
+  colsBackdrop.setAttribute("aria-hidden","false");
+}
+function closeCols(){
+  document.body.classList.remove("cols-open");
+  colsBackdrop.classList.remove("show");
+  colsSheet.classList.remove("show");
+  colsBackdrop.setAttribute("aria-hidden","true");
+}
+function updateColsCount(){
+  colsCount.textContent = `Extras visibles: ${extrasVisibleCount()}`;
+}
+
+function renderColsGrid(){
+  const term = norm(colsSearch.value);
+
+  const extras = EXTRA_COLS.slice()
+    .filter(c => c && !ALWAYS_COLS.includes(c))
+    .filter(c => !term || norm(c).includes(term))
+    .sort((a,b)=> a.localeCompare(b,"es"));
+
+  if (!extras.length){
+    colsGrid.innerHTML = `
+      <div class="muted" style="font-weight:1000">
+        No hay columnas extra (tu API no envió _extra o no hay coincidencias).
       </div>
     `;
     return;
   }
 
-  colsList.innerHTML = allExtras.map(col=>{
-    const checked = visibleCols.includes(col);
+  colsGrid.innerHTML = extras.map(col=>{
+    const on = visibleCols.includes(col);
     return `
-      <label style="display:flex;gap:10px;align-items:center;border:1px solid #eef3ff;border-radius:12px;padding:8px">
-        <input type="checkbox" data-col="${String(col).replace(/"/g,'&quot;')}" ${checked ? "checked":""}>
-        <span style="font-weight:900;color:var(--ink)">${col}</span>
-      </label>
+      <div class="col-item">
+        <div>
+          <div class="col-name">${col}</div>
+          <div class="col-meta">${on ? "Visible" : "Oculta"}</div>
+        </div>
+        <label class="switch" title="${on ? "Ocultar" : "Mostrar"}">
+          <input type="checkbox" data-col="${String(col).replace(/"/g,'&quot;')}" ${on ? "checked":""}>
+          <span class="slider"></span>
+        </label>
+      </div>
     `;
   }).join("");
 
-  colsList.querySelectorAll('input[type="checkbox"]').forEach(chk=>{
+  colsGrid.querySelectorAll('input[type="checkbox"]').forEach(chk=>{
     chk.addEventListener("change", ()=>{
       const col = chk.getAttribute("data-col");
 
@@ -645,38 +782,63 @@ function buildColsPanel(){
         visibleCols = visibleCols.filter(c => c !== col);
       }
 
-      // asegurar fijas siempre
+      // fijas siempre
       ALWAYS_COLS.forEach(c=>{
         if (!visibleCols.includes(c)) visibleCols.unshift(c);
       });
-
-      // dedupe preservando orden
       visibleCols = visibleCols.filter((c,i,a)=>a.indexOf(c)===i);
 
       saveColsPrefs();
+      // aplicar al instante
       renderTableHeader();
       render();
+      updateColsCount();
+
+      // meta del card
+      const meta = chk.closest(".col-item")?.querySelector(".col-meta");
+      if (meta) meta.textContent = chk.checked ? "Visible" : "Oculta";
     });
   });
 }
 
-function openCols(){
-  colsMenu.style.display = "block";
-  buildColsPanel();
-}
-function closeCols(){
-  colsMenu.style.display = "none";
-}
+openColsBtn.addEventListener("click", openCols);
+colsCloseBtn.addEventListener("click", closeCols);
+colsBackdrop.addEventListener("click", closeCols);
 
-colsBtn?.addEventListener("click", ()=>{
-  if (colsMenu.style.display === "block") closeCols();
-  else openCols();
+window.addEventListener("keydown", (e)=>{
+  if (e.key === "Escape" && colsSheet.classList.contains("show")) closeCols();
 });
-colsClose?.addEventListener("click", closeCols);
 
-// click fuera para cerrar panel
-document.addEventListener("click", (e)=>{
-  if (!colsMenu.contains(e.target) && e.target !== colsBtn) closeCols();
+colsSearch.addEventListener("input", ()=>{
+  renderColsGrid();
+});
+
+colsAllBtn.addEventListener("click", ()=>{
+  visibleCols = ALWAYS_COLS.concat(EXTRA_COLS.filter(c => !ALWAYS_COLS.includes(c)));
+  visibleCols = visibleCols.filter((c,i,a)=>a.indexOf(c)===i);
+  saveColsPrefs();
+  renderTableHeader();
+  render();
+  renderColsGrid();
+  updateColsCount();
+});
+
+colsNoneBtn.addEventListener("click", ()=>{
+  visibleCols = ALWAYS_COLS.slice();
+  saveColsPrefs();
+  renderTableHeader();
+  render();
+  renderColsGrid();
+  updateColsCount();
+});
+
+colsResetBtn.addEventListener("click", ()=>{
+  visibleCols = ALWAYS_COLS.slice();
+  saveColsPrefs();
+  renderTableHeader();
+  render();
+  renderColsGrid();
+  updateColsCount();
 });
 
 /* =====================
@@ -695,7 +857,6 @@ function renderTableHeader(){
     `;
   }).join("");
 
-  // reenganchar sorting
   document.querySelectorAll("th.sortable").forEach(th=>{
     th.addEventListener("click", ()=>{
       const col = th.getAttribute("data-col");
@@ -737,8 +898,6 @@ function render(){
 
     const tds = cols.map(col=>{
       let v = r[col];
-
-      // buscar en extras si no viene directo
       if ((v === undefined || v === null || v === "") && r._extra && r._extra[col] !== undefined){
         v = r._extra[col];
       }
@@ -773,13 +932,11 @@ function applySort(col, mode){
     return;
   }
 
-  // numéricas (incluye Adeudos)
   const numericCols = new Set(["Plan Precio","Pagos Pendientes","Adeudos"]);
 
   rows.sort((a,b)=>{
     let av = a[col], bv = b[col];
 
-    // intentar extras si no está directo
     if ((av === undefined || av === null || av === "") && a._extra && a._extra[col] !== undefined) av = a._extra[col];
     if ((bv === undefined || bv === null || bv === "") && b._extra && b._extra[col] !== undefined) bv = b._extra[col];
 
@@ -855,11 +1012,8 @@ async function load(){
   const extraObj = sample._extra || {};
   EXTRA_COLS = Object.keys(extraObj || {});
 
-  // asegurar fijas siempre
-  ALWAYS_COLS.forEach(c=>{
-    if (!visibleCols.includes(c)) visibleCols.unshift(c);
-  });
-  visibleCols = visibleCols.filter((c,i,a)=>a.indexOf(c)===i);
+  // preferencias
+  loadColsPrefs();
 
   sortState = { col:null, mode:0 };
 
@@ -868,17 +1022,17 @@ async function load(){
   render();
 }
 
+/* =====================
+   Events init
+===================== */
 q.addEventListener("input", render);
 
-/* =====================
-   Init
-===================== */
 load().catch((e)=>{
   console.error(e);
   statusEl.textContent="ERROR: API_KEY o permisos";
 });
 
-// Init hash route (si abre directo con #whoami)
+// hash route
 handleHashRoute();
 </script>
 
