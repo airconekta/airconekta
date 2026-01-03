@@ -411,22 +411,46 @@ body.whoami-open{ overflow:hidden; }
 <div class="wrap">
   <div class="top">
     <h2>📡 Airconekta – Retiros (3+)</h2>
+
     <input id="q" placeholder="Buscar por dirección, barrio, teléfono, plan…">
-    <div id="status" class="muted">Cargando…</div>
+
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px">
+      <button type="button" id="colsBtn">⚙️ Columnas</button>
+
+      <div id="colsMenu" style="display:none; position:relative;">
+        <div id="colsPanel" style="
+          position:absolute; right:0; top:10px;
+          width:min(520px, 92vw);
+          background:#fff; border:1px solid var(--border);
+          border-radius:16px; box-shadow: var(--shadow);
+          padding:12px; z-index:20;
+        ">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+            <div style="font-weight:1000">Mostrar columnas extra</div>
+            <button type="button" id="colsClose">✕</button>
+          </div>
+
+          <div id="colsList" style="
+            margin-top:10px;
+            display:grid;
+            grid-template-columns:repeat(2,minmax(0,1fr));
+            gap:8px;
+          "></div>
+
+          <div style="margin-top:10px;color:var(--muted);font-weight:800;font-size:.92rem">
+            Tip: lo que elijas se guarda en este navegador.
+          </div>
+        </div>
+      </div>
+
+      <div id="status" class="muted">Cargando…</div>
+    </div>
   </div>
 
   <table>
     <thead>
-      <tr>
-        <th class="sortable" data-col="Dirección">Dirección <span class="arrow" id="a-Dirección"></span></th>
-        <th class="sortable" data-col="Barrio/Localidad">Barrio/Localidad <span class="arrow" id="a-Barrio/Localidad"></span></th>
-        <th class="sortable" data-col="Plan Internet">Plan Internet <span class="arrow" id="a-Plan Internet"></span></th>
-        <th class="sortable" data-col="Telefono">Telefono <span class="arrow" id="a-Telefono"></span></th>
-        <th class="sortable" data-col="Plan Precio">Plan Precio <span class="arrow" id="a-Plan Precio"></span></th>
-        <th class="sortable" data-col="Pagos Pendientes">Pagos Pendientes <span class="arrow" id="a-Pagos Pendientes"></span></th>
-        <th class="sortable" data-col="Adeudos">Adeudos <span class="arrow" id="a-Adeudos"></span></th>
-        <th class="sortable" data-col="Comentario">Comentario <span class="arrow" id="a-Comentario"></span></th>
-        <th>Acción</th>
+      <tr id="theadRow">
+        <!-- se renderiza por JS -->
       </tr>
     </thead>
     <tbody id="tb"></tbody>
@@ -437,7 +461,7 @@ body.whoami-open{ overflow:hidden; }
 /* =====================
    CONFIG + FIRMA
 ===================== */
-const API_URL = "https://script.google.com/macros/s/AKfycbzyys9F3FAGxnJEBCkYXOMH16xMFaouuThHahpa7rjzfTp-YTpY4J95U-n7v0f7l2U4/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwi2ib8Sjzn1lMrpftmqQ3uqJq_vPrGQ5Rfp7YB2woMvyz-b_0JbFNnLpYQO5yVrsfA/exec";
 const API_KEY = "retiros2025x";
 
 const WHOAMI = {
@@ -475,7 +499,6 @@ window.addEventListener("load", () => setTimeout(hideSplash, 3000));
 const whoModal = document.getElementById("whoami");
 
 function openWhoami(){
-  // Render
   document.getElementById("whoName").textContent = WHOAMI.name;
   document.getElementById("whoRole").textContent = WHOAMI.role;
   document.getElementById("whoPhonePretty").textContent = WHOAMI.phonePretty;
@@ -502,7 +525,6 @@ function openWhoami(){
     }
   };
 
-  // Show
   document.body.classList.add("whoami-open");
   whoModal.classList.add("show");
   whoModal.setAttribute("aria-hidden","false");
@@ -513,18 +535,15 @@ function closeWhoami(){
   whoModal.classList.remove("show");
   whoModal.setAttribute("aria-hidden","true");
 
-  // limpiar hash sin recargar
   if (location.hash) history.replaceState(null, "", location.pathname + location.search);
 }
 
 document.getElementById("whoCloseBtn").addEventListener("click", closeWhoami);
 
-// click fuera para cerrar
 whoModal.addEventListener("click", (e)=>{
   if (e.target === whoModal) closeWhoami();
 });
 
-// ESC para cerrar
 window.addEventListener("keydown", (e)=>{
   if (e.key === "Escape" && whoModal.classList.contains("show")) closeWhoami();
 });
@@ -537,11 +556,12 @@ function handleHashRoute(){
 window.addEventListener("hashchange", handleHashRoute, { passive:true });
 
 /* =====================
-   TU CÓDIGO ORIGINAL (sin cambios)
+   TABLA / DATOS
 ===================== */
 const tb = document.getElementById("tb");
 const q  = document.getElementById("q");
 const statusEl = document.getElementById("status");
+const theadRow = document.getElementById("theadRow");
 
 let rows = [];
 let rowsOriginal = [];
@@ -557,23 +577,142 @@ function toNum(v){
   return parseFloat(nums[nums.length-1]) || 0;
 }
 
-async function load(){
-  statusEl.textContent = "Cargando…";
-  const r = await fetch(API_URL + "?key=" + encodeURIComponent(API_KEY));
-  const j = await r.json();
-  if(!j.ok) throw j;
+/* =====================
+   Columnas (fijas + extras)
+===================== */
+const ALWAYS_COLS = [
+  "Dirección",
+  "Barrio/Localidad",
+  "Plan Internet",
+  "Telefono",
+  "Plan Precio",
+  "Pagos Pendientes",
+  "Adeudos",
+  "Comentario"
+];
 
-  rows = (j.rows || []).map((x,i)=> ({...x, _origIndex:i}));
-  rowsOriginal = rows.slice();
+const STORAGE_KEY = "airconekta_retiros_cols_v1";
+let EXTRA_COLS = []; // se detectan desde rows[0]._extra
+let visibleCols = ALWAYS_COLS.slice();
 
-  sortState = { col:null, mode:0 };
-  updateArrows();
-  render();
+// UI refs
+const colsBtn   = document.getElementById("colsBtn");
+const colsMenu  = document.getElementById("colsMenu");
+const colsClose = document.getElementById("colsClose");
+const colsList  = document.getElementById("colsList");
+
+// cargar preferencia guardada
+(function loadColsPrefs(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    if (Array.isArray(saved) && saved.length) visibleCols = saved;
+  }catch{}
+})();
+
+function saveColsPrefs(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(visibleCols)); }catch{}
 }
 
+function buildColsPanel(){
+  const allExtras = EXTRA_COLS.slice().sort((a,b)=>a.localeCompare(b,"es"));
+
+  if (!allExtras.length){
+    colsList.innerHTML = `
+      <div class="muted" style="grid-column:1/-1;font-weight:900">
+        No hay columnas extra (tu API no envió _extra o no existen columnas opcionales).
+      </div>
+    `;
+    return;
+  }
+
+  colsList.innerHTML = allExtras.map(col=>{
+    const checked = visibleCols.includes(col);
+    return `
+      <label style="display:flex;gap:10px;align-items:center;border:1px solid #eef3ff;border-radius:12px;padding:8px">
+        <input type="checkbox" data-col="${String(col).replace(/"/g,'&quot;')}" ${checked ? "checked":""}>
+        <span style="font-weight:900;color:var(--ink)">${col}</span>
+      </label>
+    `;
+  }).join("");
+
+  colsList.querySelectorAll('input[type="checkbox"]').forEach(chk=>{
+    chk.addEventListener("change", ()=>{
+      const col = chk.getAttribute("data-col");
+
+      if (chk.checked){
+        if (!visibleCols.includes(col)) visibleCols.push(col);
+      } else {
+        visibleCols = visibleCols.filter(c => c !== col);
+      }
+
+      // asegurar fijas siempre
+      ALWAYS_COLS.forEach(c=>{
+        if (!visibleCols.includes(c)) visibleCols.unshift(c);
+      });
+
+      // dedupe preservando orden
+      visibleCols = visibleCols.filter((c,i,a)=>a.indexOf(c)===i);
+
+      saveColsPrefs();
+      renderTableHeader();
+      render();
+    });
+  });
+}
+
+function openCols(){
+  colsMenu.style.display = "block";
+  buildColsPanel();
+}
+function closeCols(){
+  colsMenu.style.display = "none";
+}
+
+colsBtn?.addEventListener("click", ()=>{
+  if (colsMenu.style.display === "block") closeCols();
+  else openCols();
+});
+colsClose?.addEventListener("click", closeCols);
+
+// click fuera para cerrar panel
+document.addEventListener("click", (e)=>{
+  if (!colsMenu.contains(e.target) && e.target !== colsBtn) closeCols();
+});
+
+/* =====================
+   Header dinámico
+===================== */
+function renderTableHeader(){
+  const cols = visibleCols.slice();
+  const finalCols = cols.concat(["Acción"]);
+
+  theadRow.innerHTML = finalCols.map(col=>{
+    if (col === "Acción") return `<th>Acción</th>`;
+    return `
+      <th class="sortable" data-col="${col}">
+        ${col} <span class="arrow" id="a-${col}"></span>
+      </th>
+    `;
+  }).join("");
+
+  // reenganchar sorting
+  document.querySelectorAll("th.sortable").forEach(th=>{
+    th.addEventListener("click", ()=>{
+      const col = th.getAttribute("data-col");
+      cycleSort(col);
+    });
+  });
+
+  updateArrows();
+}
+
+/* =====================
+   Filtrado
+===================== */
 function getFiltered(){
   const f = norm(q.value);
   if (!f) return rows.slice();
+
   return rows.filter(r =>
     norm(r["Dirección"]).includes(f) ||
     norm(r["Barrio/Localidad"]).includes(f) ||
@@ -583,43 +722,66 @@ function getFiltered(){
   );
 }
 
+/* =====================
+   Render rows
+===================== */
 function render(){
   const data = getFiltered();
   statusEl.textContent = `Mostrando ${data.length} de ${rows.length}`;
 
+  const cols = visibleCols.slice(); // sin Acción
+
   tb.innerHTML = data.map(r=>{
     const c = String(r["Comentario"]||"").trim();
     const marked = c.length>0;
-    return `
-      <tr>
-        <td>${r["Dirección"]||""}</td>
-        <td>${r["Barrio/Localidad"]||""}</td>
-        <td>${r["Plan Internet"]||""}</td>
-        <td>${r["Telefono"]||""}</td>
-        <td>${r["Plan Precio"]||""}</td>
-        <td>${r["Pagos Pendientes"]||""}</td>
-        <td><b>${r["Adeudos"]||""}</b></td>
-        <td>${marked?`<span class="ok">${c}</span>`:`<span class="muted">—</span>`}</td>
-        <td>
-          <button ${marked?"disabled":""} onclick="mark(${r._row})">
-            ${marked?"Listo":"RETIRADO"}
-          </button>
-        </td>
-      </tr>
+
+    const tds = cols.map(col=>{
+      let v = r[col];
+
+      // buscar en extras si no viene directo
+      if ((v === undefined || v === null || v === "") && r._extra && r._extra[col] !== undefined){
+        v = r._extra[col];
+      }
+
+      if (col === "Adeudos") return `<td><b>${v ?? ""}</b></td>`;
+
+      if (col === "Comentario"){
+        return `<td>${marked?`<span class="ok">${c}</span>`:`<span class="muted">—</span>`}</td>`;
+      }
+
+      return `<td>${v ?? ""}</td>`;
+    }).join("");
+
+    const actionTd = `
+      <td>
+        <button ${marked?"disabled":""} onclick="mark(${r._row})">
+          ${marked?"Listo":"RETIRADO"}
+        </button>
+      </td>
     `;
+
+    return `<tr>${tds}${actionTd}</tr>`;
   }).join("");
 }
 
+/* =====================
+   Sorting
+===================== */
 function applySort(col, mode){
   if (mode === 0){
     rows = rowsOriginal.slice();
     return;
   }
 
+  // numéricas (incluye Adeudos)
   const numericCols = new Set(["Plan Precio","Pagos Pendientes","Adeudos"]);
 
   rows.sort((a,b)=>{
     let av = a[col], bv = b[col];
+
+    // intentar extras si no está directo
+    if ((av === undefined || av === null || av === "") && a._extra && a._extra[col] !== undefined) av = a._extra[col];
+    if ((bv === undefined || bv === null || bv === "") && b._extra && b._extra[col] !== undefined) bv = b._extra[col];
 
     if (numericCols.has(col)){
       av = toNum(av); bv = toNum(bv);
@@ -649,7 +811,6 @@ function updateArrows(){
   const span = document.getElementById("a-" + sortState.col);
   if (!span) return;
 
-  // 0 = original, 1 asc, 2 desc
   span.textContent = sortState.mode === 1 ? "▲" : sortState.mode === 2 ? "▼" : "↺";
 }
 
@@ -664,6 +825,9 @@ function cycleSort(col){
   render();
 }
 
+/* =====================
+   Mark RETIRADO
+===================== */
 async function mark(row){
   if(!confirm("¿Marcar como RETIRADO?")) return;
   await fetch(API_URL,{
@@ -674,15 +838,41 @@ async function mark(row){
   load();
 }
 
+/* =====================
+   Load
+===================== */
+async function load(){
+  statusEl.textContent = "Cargando…";
+  const r = await fetch(API_URL + "?key=" + encodeURIComponent(API_KEY));
+  const j = await r.json();
+  if(!j.ok) throw j;
+
+  rows = (j.rows || []).map((x,i)=> ({...x, _origIndex:i}));
+  rowsOriginal = rows.slice();
+
+  // detectar extras desde la primera fila
+  const sample = rows[0] || {};
+  const extraObj = sample._extra || {};
+  EXTRA_COLS = Object.keys(extraObj || {});
+
+  // asegurar fijas siempre
+  ALWAYS_COLS.forEach(c=>{
+    if (!visibleCols.includes(c)) visibleCols.unshift(c);
+  });
+  visibleCols = visibleCols.filter((c,i,a)=>a.indexOf(c)===i);
+
+  sortState = { col:null, mode:0 };
+
+  renderTableHeader();
+  updateArrows();
+  render();
+}
+
 q.addEventListener("input", render);
 
-document.querySelectorAll("th.sortable").forEach(th=>{
-  th.addEventListener("click", ()=>{
-    const col = th.getAttribute("data-col");
-    cycleSort(col);
-  });
-});
-
+/* =====================
+   Init
+===================== */
 load().catch((e)=>{
   console.error(e);
   statusEl.textContent="ERROR: API_KEY o permisos";
@@ -691,5 +881,6 @@ load().catch((e)=>{
 // Init hash route (si abre directo con #whoami)
 handleHashRoute();
 </script>
+
 </body>
 </html>
