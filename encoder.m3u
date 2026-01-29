@@ -1,27 +1,6 @@
 #EXTM3U
 
 ########################################
-# MAIN STREAM – HLS (RECOMENDADO)
-########################################
-#EXTINF:-1 tvg-id="encoder-main-hls" tvg-name="Encoder Main Stream HLS" group-title="Encoders",Encoder Main Stream HLS
-http://10.100.100.10/0.m3u8
-
-
-########################################
-# MAIN STREAM – MPEG-TS
-########################################
-#EXTINF:-1 tvg-id="encoder-main-ts" tvg-name="Encoder Main Stream TS" group-title="Encoders",Encoder Main Stream TS
-http://10.100.100.10/0.ts
-
-
-########################################
-# MAIN STREAM – RTSP
-########################################
-#EXTINF:-1 tvg-id="encoder-main-rtsp" tvg-name="Encoder Main Stream RTSP" group-title="Encoders",Encoder Main Stream RTSP
-rtsp://10.100.100.10/0
-
-
-########################################
 # SUBSTREAM 1 – FLV
 ########################################
 #EXTINF:-1 tvg-id="encoder-sub1-flv" tvg-name="Encoder Substream 1 FLV" group-title="Encoders",Encoder Substream 1 FLV
