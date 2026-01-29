@@ -1,7 +1,4 @@
 #EXTM3U
 
-########################################
-# SUBSTREAM 1 – FLV
-########################################
-#EXTINF:-1 tvg-id="encoder-sub1-flv" tvg-name="Encoder Substream 1 FLV" group-title="Encoders",Encoder Substream 1 FLV
-http://10.100.100.10/1.flv
+#EXTINF:-1 tvg-id="encoder-main-ts" tvg-name="Encoder Main Stream TS" group-title="Encoders",Encoder Main Stream TS
+http://10.100.100.10/0.ts
