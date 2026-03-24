@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#246bff">
 <meta name="color-scheme" content="light">
-<title>Airconekta · Retiros (3+)</title>
+<title>Airconekta · Si el cliente tiene 3 adeudos retira</title>
 <link rel="preconnect" href="https://script.google.com" crossorigin>
 <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
 
 <!--
-  Panel Retiros (3+): layout fluido, tabla + vista tarjetas ≤767px,
-  columna Acción sticky a la derecha, sticky thead bajo #panelTopBar.
+  Panel: layout fluido, tabla + vista tarjetas ≤767px,
+  columna Acción sticky solo a la derecha (sin sticky top en th — evita bug Chrome).
   ===========================================================
   Firma / Autor (solo visible al depurar o ver código fuente)
   Jair Elizondo
@@ -120,18 +120,25 @@ th,td{
   word-break:break-word;
   overflow-wrap:anywhere;
 }
+/*
+  No usar position:sticky en todos los <th>: con overflow-x en .table-wrap
+  Chrome/WebKit suelen desincronizar thead/tbody (cabeceras “debajo” de filas).
+  La cabecera queda fija al flujo normal arriba de la tabla.
+*/
+thead{
+  position:relative;
+  z-index:1;
+}
 th{
   color:var(--muted);
   user-select:none;
   white-space:nowrap;
-  position:sticky;
-  top:var(--panel-sticky-top);
-  background:#fff;
-  z-index:15;
-  box-shadow:0 1px 0 #eef3ff;
+  background:#f7faff;
   font-weight:800;
   font-size:.88rem;
   letter-spacing:.02em;
+  border-bottom:2px solid #dbe7ff;
+  box-shadow:none;
 }
 td.td-num{
   text-align:right;
@@ -143,7 +150,7 @@ th.sortable:hover{ color:var(--ink); background:rgba(36,107,255,.06); }
 th.sortable:active{ background:rgba(36,107,255,.12); }
 th.sort-active{ color:var(--ink); background:rgba(36,107,255,.06); border-bottom:2px solid rgba(36,107,255,.35); }
 th .arrow{ font-size:.85em; margin-left:6px; opacity:.85; }
-/* Columna Acción pegada a la derecha al desplazar ↔ (no se “corta” fuera de vista) */
+/* Columna Acción: solo sticky horizontal (right), sin top — evita bug de thead */
 th.th-action{
   width:1%;
   min-width:7.5rem;
@@ -151,10 +158,9 @@ th.th-action{
   vertical-align:middle;
   text-align:center;
   position:sticky;
-  top:var(--panel-sticky-top);
   right:0;
-  z-index:18;
-  background:#fff;
+  z-index:5;
+  background:#f7faff;
   background-clip:padding-box;
   box-shadow:-10px 0 18px -8px rgba(15,26,46,.14);
 }
@@ -166,7 +172,7 @@ td.td-action{
   white-space:nowrap;
   position:sticky;
   right:0;
-  z-index:12;
+  z-index:4;
   background:#fff;
   background-clip:padding-box;
   box-shadow:-10px 0 18px -8px rgba(15,26,46,.1);
@@ -655,7 +661,7 @@ body.cols-open{ overflow:hidden; }
         width="58" height="58" decoding="async" fetchpriority="high" />
     </div>
     <div class="splash-title">AIRCONEKTA</div>
-    <p class="splash-sub">Retiros (3+) · Panel interno</p>
+    <p class="splash-sub">Si el cliente tiene 3 adeudos retira</p>
     <div class="splash-bar" aria-hidden="true"><i></i></div>
     <p class="sr-only">Cargando…</p>
   </div>
@@ -702,7 +708,7 @@ body.cols-open{ overflow:hidden; }
 
   <div class="wrap">
     <div class="top" id="panelTopBar">
-      <h2>📡 Airconekta – Retiros (3+)</h2>
+      <h2>📡 Si el cliente tiene 3 adeudos retira</h2>
       <label class="sr-only" for="q">Buscar en la tabla</label>
       <input id="q" type="search" autocomplete="off" placeholder="Buscar por dirección, barrio, teléfono, plan…">
 
@@ -717,7 +723,7 @@ body.cols-open{ overflow:hidden; }
 
     <p class="table-hint">← Desliza para ver todas las columnas →</p>
 
-    <div class="table-wrap" role="region" aria-label="Tabla de retiros (vista amplia)">
+    <div class="table-wrap" role="region" aria-label="Tabla de clientes (vista amplia)">
       <table class="data-table">
         <thead>
           <tr id="theadRow"></tr>
@@ -726,7 +732,7 @@ body.cols-open{ overflow:hidden; }
       </table>
     </div>
 
-    <div id="cardsView" class="cards-view" aria-label="Lista de retiros (vista móvil)"></div>
+    <div id="cardsView" class="cards-view" aria-label="Lista de clientes (vista móvil)"></div>
   </div>
 </section>
 
