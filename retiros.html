@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#246bff">
 <meta name="color-scheme" content="light">
 <title>Airconekta · Retiros (3+)</title>
@@ -23,46 +23,225 @@
   --ink:#0f1a2e; --muted:#5b6b86; --accent:#246bff; --border:#cfe0ff;
   --ring: 0 0 0 4px rgba(36,107,255,.16);
   --glass: rgba(255,255,255,.92);
+  --panel-sticky-top: 0px;
+  --touch-min: 44px;
 }
 *{ box-sizing:border-box; }
+html{
+  scroll-padding-top: calc(var(--panel-sticky-top) + 8px);
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
 html,body{ height:100%; }
-body{margin:0;font:16px system-ui;background:#fff;color:var(--ink)}
-.wrap{max-width:1200px;margin:auto;padding:20px}
-.top{position:sticky;top:0;background:#fff;padding-bottom:10px;z-index:5;box-shadow:0 1px 0 rgba(207,224,255,.6)}
-input{width:100%;padding:12px;border:1px solid var(--border);border-radius:14px}
+body{
+  margin:0;
+  font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",system-ui,sans-serif;
+  background:#fff;
+  color:var(--ink);
+}
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:
+    max(12px, env(safe-area-inset-top, 0px))
+    max(16px, env(safe-area-inset-right, 0px))
+    max(20px, env(safe-area-inset-bottom, 0px))
+    max(16px, env(safe-area-inset-left, 0px));
+}
+.top{
+  position:sticky;
+  top:0;
+  background:#fff;
+  padding-bottom:10px;
+  z-index:20;
+  box-shadow:0 1px 0 rgba(207,224,255,.6);
+}
+.wrap h2{ font-size:clamp(1.15rem, 4vw, 1.5rem); line-height:1.25; margin:.35em 0 .5em; }
+input{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;font:inherit;min-height:var(--touch-min);-webkit-appearance:none;appearance:none}
 input:focus-visible, button:focus-visible, th.sortable:focus-visible, a:focus-visible{
   outline:2px solid var(--accent);
   outline-offset:2px;
 }
+.table-hint{
+  display:none;
+  font-size:.82rem;
+  color:var(--muted);
+  font-weight:850;
+  margin:8px 0 0;
+  padding:0 2px;
+}
+@media (max-width:900px){
+  .table-hint{ display:block; }
+}
+
+/* Tabla escritorio: sin solapar la barra superior sticky */
 .table-wrap{
   overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
-  margin-top:4px;
+  overflow-y:visible;
+  margin-top:8px;
   border-radius:16px;
   border:1px solid #eef3ff;
+  background:#fff;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
 }
-table{width:100%;border-collapse:collapse;margin-top:0;min-width:640px}
-th,td{border-bottom:1px solid #eef3ff;padding:10px;text-align:left;vertical-align:top}
-th{color:var(--muted);user-select:none;white-space:nowrap;position:sticky;top:0;background:#fff;z-index:2;box-shadow:0 1px 0 #eef3ff}
-th.sortable{ cursor:pointer; touch-action:manipulation; }
+@media (min-width:768px){
+  .table-wrap{
+    scrollbar-gutter:stable;
+  }
+}
+table.data-table{
+  width:100%;
+  min-width:0;
+  border-collapse:separate;
+  border-spacing:0;
+  table-layout:auto;
+}
+@media (min-width:768px){
+  table.data-table{ min-width:720px; }
+}
+th,td{
+  border-bottom:1px solid #eef3ff;
+  padding:12px 14px;
+  text-align:left;
+  vertical-align:top;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+}
+th{
+  color:var(--muted);
+  user-select:none;
+  white-space:nowrap;
+  position:sticky;
+  top:var(--panel-sticky-top);
+  background:#fff;
+  z-index:15;
+  box-shadow:0 1px 0 #eef3ff;
+  font-weight:800;
+  font-size:.88rem;
+  letter-spacing:.02em;
+}
+td.td-num{
+  text-align:right;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+td.td-action{
+  vertical-align:middle;
+  white-space:nowrap;
+  width:1%;
+  padding:10px 12px;
+}
+th.sortable{ cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; }
 th.sortable:hover{ color:var(--ink); background:rgba(36,107,255,.06); }
 th.sortable:active{ background:rgba(36,107,255,.12); }
 th.sort-active{ color:var(--ink); background:rgba(36,107,255,.06); border-bottom:2px solid rgba(36,107,255,.35); }
 th .arrow{ font-size:.85em; margin-left:6px; opacity:.85; }
+th.th-action{
+  width:1%;
+  white-space:nowrap;
+  vertical-align:middle;
+  text-align:center;
+}
+td.td-action{ text-align:center; vertical-align:middle; }
+
+/* Móvil: tarjetas en lugar de tabla horizontal */
+@media (max-width:767px){
+  .table-wrap{ display:none; }
+  .table-hint{ display:none; }
+  .cards-view{ display:block; }
+}
+@media (min-width:768px){
+  .cards-view{ display:none; }
+}
+.cards-view{
+  margin-top:10px;
+  display:none;
+}
+.card-row{
+  border:1px solid #eef3ff;
+  border-radius:18px;
+  padding:14px 14px 12px;
+  margin-bottom:12px;
+  background:rgba(255,255,255,.98);
+  box-shadow:0 8px 24px rgba(16,48,96,.06);
+}
+.card-row-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+  padding-bottom:10px;
+  border-bottom:1px solid #eef3ff;
+}
+.card-row-title{
+  font-weight:1000;
+  font-size:1.02rem;
+  line-height:1.3;
+  margin:0;
+  flex:1;
+  min-width:0;
+}
+.card-row-meta{ font-size:.8rem; color:var(--muted); font-weight:850; margin-top:4px; }
+.card-fields{ display:grid; gap:10px; }
+.card-field{
+  display:grid;
+  grid-template-columns:minmax(0,38%) minmax(0,1fr);
+  gap:10px;
+  align-items:start;
+  font-size:.92rem;
+}
+@media (max-width:380px){
+  .card-field{ grid-template-columns:1fr; gap:2px; }
+}
+.cf-lab{
+  color:var(--muted);
+  font-weight:900;
+  font-size:.8rem;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+.cf-val{ font-weight:750; line-height:1.35; min-width:0; }
+.card-row-actions{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px dashed rgba(207,224,255,.9);
+}
+.cards-empty{
+  text-align:center;
+  padding:28px 16px;
+  border:1px dashed var(--border);
+  border-radius:18px;
+  background:rgba(247,251,255,.9);
+}
 
 button{
   border:1px solid rgba(36,107,255,.55);
   background:#fff;
   color:var(--ink);
-  padding:9px 12px;
+  padding:10px 14px;
   border-radius:14px;
   font-weight:950;
-  cursor:pointer
+  font:inherit;
+  cursor:pointer;
+  min-height:var(--touch-min);
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
 }
 button:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.9); }
 button:disabled{opacity:.55; cursor:not-allowed; box-shadow:none}
 .btn-primary{ border:0; color:#fff; background: linear-gradient(135deg, var(--accent), #18c6ff); }
-.btn-action{ font-weight:950; min-height:40px; }
+.btn-action{
+  font-weight:950;
+  min-height:var(--touch-min);
+  padding:10px 16px;
+  width:100%;
+  max-width:220px;
+}
+@media (min-width:768px){
+  .btn-action{ width:auto; max-width:none; }
+}
 .ok{color:#1f9d55;font-weight:950}
 .muted{color:var(--muted);font-weight:850}
 
@@ -151,7 +330,10 @@ body.cols-open{ overflow:hidden; }
   color:var(--muted); font-weight:900;
   margin-top:10px;
 }
-.cols-body{ padding:12px 14px 14px; overflow:auto; }
+.cols-body{
+  padding:12px 14px max(14px, env(safe-area-inset-bottom, 0px));
+  overflow:auto;
+}
 .cols-grid{ display:grid; grid-template-columns:1fr; gap:10px; }
 @media (min-width:640px){ .cols-grid{ grid-template-columns:1fr 1fr; } }
 .col-item{
@@ -411,7 +593,9 @@ body.cols-open{ overflow:hidden; }
 .who-actions a{
   display:inline-flex;
   align-items:center;
+  justify-content:center;
   gap:8px;
+  min-height:var(--touch-min);
   padding:10px 14px;
   border-radius:14px;
   text-decoration:none;
@@ -419,6 +603,8 @@ body.cols-open{ overflow:hidden; }
   border:1px solid rgba(36,107,255,.55);
   color:var(--ink);
   background:#fff;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
 }
 .who-actions a:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.9); }
 .who-actions a.btn-primary{
@@ -487,7 +673,7 @@ body.cols-open{ overflow:hidden; }
   </div>
 
   <div class="wrap">
-    <div class="top">
+    <div class="top" id="panelTopBar">
       <h2>📡 Airconekta – Retiros (3+)</h2>
       <label class="sr-only" for="q">Buscar en la tabla</label>
       <input id="q" type="search" autocomplete="off" placeholder="Buscar por dirección, barrio, teléfono, plan…">
@@ -501,14 +687,18 @@ body.cols-open{ overflow:hidden; }
       </div>
     </div>
 
-    <div class="table-wrap" role="region" aria-label="Tabla de retiros">
-      <table>
+    <p class="table-hint">← Desliza para ver todas las columnas →</p>
+
+    <div class="table-wrap" role="region" aria-label="Tabla de retiros (vista amplia)">
+      <table class="data-table">
         <thead>
           <tr id="theadRow"></tr>
         </thead>
         <tbody id="tb"></tbody>
       </table>
     </div>
+
+    <div id="cardsView" class="cards-view" aria-label="Lista de retiros (vista móvil)"></div>
   </div>
 </section>
 
@@ -730,9 +920,25 @@ function colorBotonEstado(estado){
    TABLA / DATOS
 ===================== */
 const tb = document.getElementById("tb");
+const cardsView = document.getElementById("cardsView");
 const q  = document.getElementById("q");
 const statusEl = document.getElementById("status");
 const theadRow = document.getElementById("theadRow");
+const panelTopBar = document.getElementById("panelTopBar");
+
+const SORT_NUMERIC_COLS = new Set(["Plan Precio","Pagos Pendientes","Adeudos"]);
+
+function syncPanelSticky(){
+  if (!panelTopBar) return;
+  const h = Math.round(panelTopBar.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--panel-sticky-top", h + "px");
+}
+if (panelTopBar && typeof ResizeObserver !== "undefined"){
+  new ResizeObserver(()=> syncPanelSticky()).observe(panelTopBar);
+}
+window.addEventListener("resize", syncPanelSticky, { passive:true });
+window.addEventListener("load", syncPanelSticky, { passive:true });
+if (document.fonts?.ready) document.fonts.ready.then(syncPanelSticky);
 
 let rows = [];
 let rowsOriginal = [];
@@ -912,7 +1118,7 @@ function renderTableHeader(){
   const finalCols = cols.concat(["Acción"]);
 
   theadRow.innerHTML = finalCols.map(col=>{
-    if (col === "Acción") return `<th scope="col">Acción</th>`;
+    if (col === "Acción") return `<th scope="col" class="th-action">Acción</th>`;
     return `
       <th class="sortable" scope="col" tabindex="0" data-col="${escapeAttr(col)}">
         ${escapeHtml(col)} <span class="arrow" aria-hidden="true"></span>
@@ -956,6 +1162,27 @@ function getFiltered(){
 /* =====================
    Render rows
 ===================== */
+function cellInnerHtml(col, r, cFull, markedRet){
+  let v = r[col];
+  if ((v === undefined || v === null || v === "") && r._extra && r._extra[col] !== undefined){
+    v = r._extra[col];
+  }
+  const cell = escapeHtml(v ?? "");
+  if (col === "Adeudos") return `<b>${cell}</b>`;
+  if (col === "Comentario"){
+    const c = String(cFull || "").trim();
+    if (!c) return `<span class="muted">—</span>`;
+    return `<span class="${markedRet ? "ok" : "muted"}">${escapeHtml(c)}</span>`;
+  }
+  if (/^ip$/i.test(String(col || "").trim())){
+    const ip = String(v ?? "").trim();
+    if (isIPv4(ip)){
+      return `<a href="http://${escapeAttr(ip)}" target="_blank" rel="noopener noreferrer">${escapeHtml(ip)}</a>`;
+    }
+  }
+  return cell;
+}
+
 function render(){
   const data = getFiltered();
   statusEl.textContent = `Mostrando ${data.length} de ${rows.length}`;
@@ -965,52 +1192,63 @@ function render(){
   tb.innerHTML = data.map(r=>{
     const c = String(r["Comentario"]||"").trim();
     const markedRet = hasRetirado(c);
-
-    let btnText = markedRet ? "CANCELAR" : "RETIRAR";
-    let action  = markedRet ? "CANCELAR" : "RETIRADO";
+    const btnText = markedRet ? "CANCELAR" : "RETIRAR";
+    const action  = markedRet ? "CANCELAR" : "RETIRADO";
 
     const tds = cols.map(col=>{
-      let v = r[col];
-      if ((v === undefined || v === null || v === "") && r._extra && r._extra[col] !== undefined){
-        v = r._extra[col];
-      }
-
-      const cell = escapeHtml(v ?? "");
-
-      if (col === "Adeudos") return `<td><b>${cell}</b></td>`;
-
-      if (col === "Comentario"){
-        if (!c) return `<td><span class="muted">—</span></td>`;
-        return `<td><span class="${markedRet ? "ok" : "muted"}">${escapeHtml(c)}</span></td>`;
-      }
-
-      // ✅ IP clickable (solo si la columna se llama Ip / IP)
-      if (/^ip$/i.test(String(col || "").trim())){
-        const ip = String(v ?? "").trim();
-        if (isIPv4(ip)){
-          return `<td><a href="http://${escapeAttr(ip)}" target="_blank" rel="noopener noreferrer">${escapeHtml(ip)}</a></td>`;
-        }
-        return `<td>${cell}</td>`;
-      }
-
-      return `<td>${cell}</td>`;
+      const inner = cellInnerHtml(col, r, c, markedRet);
+      const numC = SORT_NUMERIC_COLS.has(col) ? " td-num" : "";
+      return `<td class="td-data${numC}">${inner}</td>`;
     }).join("");
 
- const estado = estadoAntena(c);
-const color = colorBotonEstado(estado);
-
-const actionTd = `
-<td>
+    const estado = estadoAntena(c);
+    const color = colorBotonEstado(estado);
+    const actionTd = `
+<td class="td-action">
   <button type="button" class="btn-action"
     style="background:${color};color:white;border:none"
     onclick="toggleRetiro(${r._row}, '${action}')">
     ${btnText}
   </button>
-</td>
-`;
-
+</td>`;
     return `<tr>${tds}${actionTd}</tr>`;
   }).join("");
+
+  if (cardsView){
+    if (!data.length){
+      cardsView.innerHTML = `<div class="cards-empty muted" style="font-weight:1000">Sin filas con este filtro.</div>`;
+    } else {
+      cardsView.innerHTML = data.map(r=>{
+        const c = String(r["Comentario"]||"").trim();
+        const markedRet = hasRetirado(c);
+        const btnText = markedRet ? "CANCELAR" : "RETIRAR";
+        const action  = markedRet ? "CANCELAR" : "RETIRADO";
+        const dir = escapeHtml(String(r["Dirección"] ?? "").trim()) || "—";
+        const barRaw = String(r["Barrio/Localidad"] ?? "").trim();
+        const bar = barRaw ? escapeHtml(barRaw) : "";
+        const fields = cols.map(col=>{
+          const inner = cellInnerHtml(col, r, c, markedRet);
+          return `<div class="card-field"><span class="cf-lab">${escapeHtml(col)}</span><span class="cf-val">${inner}</span></div>`;
+        }).join("");
+        const estado = estadoAntena(c);
+        const color = colorBotonEstado(estado);
+        return `<article class="card-row">
+  <div class="card-row-head">
+    <div style="min-width:0">
+      <p class="card-row-title">${dir}</p>
+      ${bar ? `<div class="card-row-meta">${bar}</div>` : ""}
+    </div>
+  </div>
+  <div class="card-fields">${fields}</div>
+  <div class="card-row-actions">
+    <button type="button" class="btn-action" style="background:${color};color:white;border:none" onclick="toggleRetiro(${r._row}, '${action}')">${btnText}</button>
+  </div>
+</article>`;
+      }).join("");
+    }
+  }
+
+  queueMicrotask(syncPanelSticky);
 }
 
 /* =====================
@@ -1022,15 +1260,13 @@ function applySort(col, mode){
     return;
   }
 
-  const numericCols = new Set(["Plan Precio","Pagos Pendientes","Adeudos"]);
-
   rows.sort((a,b)=>{
     let av = a[col], bv = b[col];
 
     if ((av === undefined || av === null || av === "") && a._extra && a._extra[col] !== undefined) av = a._extra[col];
     if ((bv === undefined || bv === null || bv === "") && b._extra && b._extra[col] !== undefined) bv = b._extra[col];
 
-    if (numericCols.has(col)){
+    if (SORT_NUMERIC_COLS.has(col)){
       av = toNum(av); bv = toNum(bv);
       return mode === 1 ? (av - bv) : (bv - av);
     }
@@ -1160,6 +1396,7 @@ load().catch((e)=>{
 ===================== */
 (function init(){
   handleHashRoute(); // si entra directo con #whoami
+  syncPanelSticky();
 })();
 </script>
 
