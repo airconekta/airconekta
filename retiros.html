@@ -666,6 +666,25 @@ function isIPv4(s){
 }
 
 /* =====================
+   Estado de antena
+===================== */
+
+function estadoAntena(comentario){
+  const txt = String(comentario || "").toUpperCase();
+
+  if(txt.includes("PING OK")) return "ONLINE";
+  if(txt.includes("ONLINE")) return "ONLINE";
+
+  return "OFFLINE";
+}
+
+function colorBotonEstado(estado){
+  if(estado === "ONLINE") return "#16a34a";
+  if(estado === "OFFLINE") return "#dc2626";
+  return "#246bff";
+}
+  
+/* =====================
    TABLA / DATOS
 ===================== */
 const tb = document.getElementById("tb");
@@ -924,13 +943,18 @@ function render(){
       return `<td>${v ?? ""}</td>`;
     }).join("");
 
-    const actionTd = `
-      <td>
-        <button onclick="toggleRetiro(${r._row}, '${action}')">
-          ${btnText}
-        </button>
-      </td>
-    `;
+ const estado = estadoAntena(c);
+const color = colorBotonEstado(estado);
+
+const actionTd = `
+<td>
+  <button 
+    style="background:${color};color:white;border:none"
+    onclick="toggleRetiro(${r._row}, '${action}')">
+    ${btnText}
+  </button>
+</td>
+`;
 
     return `<tr>${tds}${actionTd}</tr>`;
   }).join("");
@@ -999,16 +1023,34 @@ function cycleSort(col){
    RETIRAR / CANCELAR
 ===================== */
 async function toggleRetiro(row, action){
-  if (action === "RETIRADO"){
-    if(!confirm("¿Marcar como RETIRADO? Se agregará 'RETIRADO' al comentario.")) return;
-  } else if (action === "CANCELAR"){
-    if(!confirm("¿Cancelar RETIRADO? Esto borrará TODO el comentario.")) return;
+
+  let mensaje = "";
+
+  if(action === "RETIRADO"){
+    mensaje = "¿Confirmar RETIRO del equipo?\n\nSe registrará la fecha del retiro.";
   }
 
+  if(action === "CANCELAR"){
+    mensaje = "¿Cancelar retiro? Esto borrará el comentario.";
+  }
+
+  if(!confirm(mensaje)) return;
+
+  const fecha = new Date().toISOString();
+
   try{
+
     const res = await fetch(API_URL,{
       method:"POST",
-      body: JSON.stringify({key:API_KEY,row,action})
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        key:API_KEY,
+        row:row,
+        action:action,
+        fecha_retiro:fecha
+      })
     });
 
     const j = await res.json().catch(()=>({ok:false,error:"bad_json"}));
@@ -1017,7 +1059,9 @@ async function toggleRetiro(row, action){
       alert("ERROR: " + (j.error || "unknown"));
       return;
     }
+
     await load();
+
   }catch(e){
     console.error(e);
     alert("ERROR de red / permisos.");
