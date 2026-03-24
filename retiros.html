@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#246bff">
+<meta name="color-scheme" content="light">
 <title>Airconekta · Retiros (3+)</title>
+<link rel="preconnect" href="https://script.google.com" crossorigin>
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
 
 <!--
   ===========================================================
@@ -24,11 +28,22 @@
 html,body{ height:100%; }
 body{margin:0;font:16px system-ui;background:#fff;color:var(--ink)}
 .wrap{max-width:1200px;margin:auto;padding:20px}
-.top{position:sticky;top:0;background:#fff;padding-bottom:10px;z-index:5}
+.top{position:sticky;top:0;background:#fff;padding-bottom:10px;z-index:5;box-shadow:0 1px 0 rgba(207,224,255,.6)}
 input{width:100%;padding:12px;border:1px solid var(--border);border-radius:14px}
-table{width:100%;border-collapse:collapse;margin-top:12px}
+input:focus-visible, button:focus-visible, th.sortable:focus-visible, a:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.table-wrap{
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  margin-top:4px;
+  border-radius:16px;
+  border:1px solid #eef3ff;
+}
+table{width:100%;border-collapse:collapse;margin-top:0;min-width:640px}
 th,td{border-bottom:1px solid #eef3ff;padding:10px;text-align:left;vertical-align:top}
-th{color:var(--muted);user-select:none;white-space:nowrap;position:sticky;top:0;background:#fff;z-index:2}
+th{color:var(--muted);user-select:none;white-space:nowrap;position:sticky;top:0;background:#fff;z-index:2;box-shadow:0 1px 0 #eef3ff}
 th.sortable{ cursor:pointer; touch-action:manipulation; }
 th.sortable:hover{ color:var(--ink); background:rgba(36,107,255,.06); }
 th.sortable:active{ background:rgba(36,107,255,.12); }
@@ -47,6 +62,7 @@ button{
 button:hover{ box-shadow: var(--ring); border-color: rgba(36,107,255,.9); }
 button:disabled{opacity:.55; cursor:not-allowed; box-shadow:none}
 .btn-primary{ border:0; color:#fff; background: linear-gradient(135deg, var(--accent), #18c6ff); }
+.btn-action{ font-weight:950; min-height:40px; }
 .ok{color:#1f9d55;font-weight:950}
 .muted{color:var(--muted);font-weight:850}
 
@@ -280,6 +296,7 @@ body.cols-open{ overflow:hidden; }
 @media (prefers-reduced-motion: reduce){
   .splash-logo::before, .splash-bar > i{ animation:none !important; }
   .splash{ transition:none; }
+  .cols-sheet{ transition:none; }
 }
 .sr-only{
   position:absolute;
@@ -416,11 +433,12 @@ body.cols-open{ overflow:hidden; }
 <body>
 
 <!-- Splash -->
-<div class="splash" id="splash" aria-label="Cargando Airconekta">
+<div class="splash" id="splash" aria-label="Cargando Airconekta" aria-busy="true">
   <div class="splash-card" role="status" aria-live="polite">
     <div class="splash-logo" aria-hidden="true">
       <img class="logo-img" alt=""
-        src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png" />
+        src="https://raw.githubusercontent.com/airconekta/airconekta/refs/heads/main/airconekta_logo_transparent.png"
+        width="58" height="58" decoding="async" fetchpriority="high" />
     </div>
     <div class="splash-title">AIRCONEKTA</div>
     <p class="splash-sub">Retiros (3+) · Panel interno</p>
@@ -437,11 +455,11 @@ body.cols-open{ overflow:hidden; }
 <section data-view="panel" id="viewPanel" class="active">
   <div class="cols-backdrop" id="colsBackdrop" aria-hidden="true"></div>
 
-  <div class="cols-sheet" id="colsSheet" role="dialog" aria-modal="true" aria-label="Columnas">
+  <div class="cols-sheet" id="colsSheet" role="dialog" aria-modal="true" aria-labelledby="colsSheetTitle">
     <div class="cols-topbar">
       <div class="cols-title">
-        <h3>Columnas extra</h3>
-        <button class="cols-close" type="button" id="colsCloseBtn">✕</button>
+        <h3 id="colsSheetTitle">Columnas extra</h3>
+        <button class="cols-close" type="button" id="colsCloseBtn" aria-label="Cerrar selector de columnas">✕</button>
       </div>
 
       <div class="cols-subrow">
@@ -454,7 +472,8 @@ body.cols-open{ overflow:hidden; }
       </div>
 
       <div class="cols-search">
-        <input id="colsSearch" placeholder="Buscar columna (IP, Router, SN ONU, Coordenadas)…" />
+        <label class="sr-only" for="colsSearch">Buscar columna</label>
+        <input id="colsSearch" type="search" autocomplete="off" placeholder="Buscar columna (IP, Router, SN ONU, Coordenadas)…" />
       </div>
 
       <div class="note">
@@ -470,23 +489,26 @@ body.cols-open{ overflow:hidden; }
   <div class="wrap">
     <div class="top">
       <h2>📡 Airconekta – Retiros (3+)</h2>
-      <input id="q" placeholder="Buscar por dirección, barrio, teléfono, plan…">
+      <label class="sr-only" for="q">Buscar en la tabla</label>
+      <input id="q" type="search" autocomplete="off" placeholder="Buscar por dirección, barrio, teléfono, plan…">
 
       <div class="controls-row">
         <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
           <button class="btn-primary" type="button" id="openColsBtn">⚙️ Columnas</button>
           <span class="badge">📌 Fijas <small>+ extras</small></span>
         </div>
-        <div id="status" class="muted">Cargando…</div>
+        <div id="status" class="muted" role="status" aria-live="polite">Cargando…</div>
       </div>
     </div>
 
-    <table>
-      <thead>
-        <tr id="theadRow"></tr>
-      </thead>
-      <tbody id="tb"></tbody>
-    </table>
+    <div class="table-wrap" role="region" aria-label="Tabla de retiros">
+      <table>
+        <thead>
+          <tr id="theadRow"></tr>
+        </thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -566,6 +588,23 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwm2Hrd2Gq4iM3iDA9e8U1E
 const API_KEY = "retiros2025x";
 
 /* =====================
+   Escape (evita XSS si la hoja trae &lt;script&gt; en celdas)
+===================== */
+function escapeHtml(s){
+  return String(s ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+function escapeAttr(s){
+  return String(s ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/"/g,"&quot;")
+    .replace(/</g,"&lt;");
+}
+
+/* =====================
    WHOAMI + FIRMA
 ===================== */
 const WHOAMI = {
@@ -592,7 +631,10 @@ const WHOAMI = {
    Splash
 ===================== */
 const splash = document.getElementById("splash");
-const hideSplash = () => splash?.classList.add("hide");
+const hideSplash = () => {
+  splash?.classList.add("hide");
+  splash?.setAttribute("aria-busy","false");
+};
 splash?.addEventListener("click", hideSplash, { passive:true });
 window.addEventListener("load", ()=> setTimeout(hideSplash, 3000));
 
@@ -764,6 +806,7 @@ function openCols(){
   colsBackdrop.classList.add("show");
   colsSheet.classList.add("show");
   colsBackdrop.setAttribute("aria-hidden","false");
+  colsSearch.focus();
 }
 function closeCols(){
   document.body.classList.remove("cols-open");
@@ -794,14 +837,15 @@ function renderColsGrid(){
 
   colsGrid.innerHTML = extras.map(col=>{
     const on = visibleCols.includes(col);
+    const safeCol = escapeAttr(col);
     return `
       <div class="col-item">
         <div>
-          <div class="col-name">${col}</div>
+          <div class="col-name">${escapeHtml(col)}</div>
           <div class="col-meta">${on ? "Visible" : "Oculta"}</div>
         </div>
         <label class="switch" title="${on ? "Ocultar" : "Mostrar"}">
-          <input type="checkbox" data-col="${String(col).replace(/"/g,'&quot;')}" ${on ? "checked":""}>
+          <input type="checkbox" data-col="${safeCol}" ${on ? "checked":""}>
           <span class="slider"></span>
         </label>
       </div>
@@ -868,18 +912,25 @@ function renderTableHeader(){
   const finalCols = cols.concat(["Acción"]);
 
   theadRow.innerHTML = finalCols.map(col=>{
-    if (col === "Acción") return `<th>Acción</th>`;
+    if (col === "Acción") return `<th scope="col">Acción</th>`;
     return `
-      <th class="sortable" data-col="${col}">
-        ${col} <span class="arrow" id="a-${col}"></span>
+      <th class="sortable" scope="col" tabindex="0" data-col="${escapeAttr(col)}">
+        ${escapeHtml(col)} <span class="arrow" aria-hidden="true"></span>
       </th>
     `;
   }).join("");
 
   document.querySelectorAll("th.sortable").forEach(th=>{
-    th.addEventListener("click", ()=>{
+    const go = ()=>{
       const col = th.getAttribute("data-col");
       cycleSort(col);
+    };
+    th.addEventListener("click", go);
+    th.addEventListener("keydown", (e)=>{
+      if (e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        go();
+      }
     });
   });
 
@@ -924,23 +975,25 @@ function render(){
         v = r._extra[col];
       }
 
-      if (col === "Adeudos") return `<td><b>${v ?? ""}</b></td>`;
+      const cell = escapeHtml(v ?? "");
+
+      if (col === "Adeudos") return `<td><b>${cell}</b></td>`;
 
       if (col === "Comentario"){
         if (!c) return `<td><span class="muted">—</span></td>`;
-        return `<td><span class="${markedRet ? "ok" : "muted"}">${c}</span></td>`;
+        return `<td><span class="${markedRet ? "ok" : "muted"}">${escapeHtml(c)}</span></td>`;
       }
 
       // ✅ IP clickable (solo si la columna se llama Ip / IP)
       if (/^ip$/i.test(String(col || "").trim())){
         const ip = String(v ?? "").trim();
         if (isIPv4(ip)){
-          return `<td><a href="http://${ip}" target="_blank" rel="noopener noreferrer">${ip}</a></td>`;
+          return `<td><a href="http://${escapeAttr(ip)}" target="_blank" rel="noopener noreferrer">${escapeHtml(ip)}</a></td>`;
         }
-        return `<td>${v ?? ""}</td>`;
+        return `<td>${cell}</td>`;
       }
 
-      return `<td>${v ?? ""}</td>`;
+      return `<td>${cell}</td>`;
     }).join("");
 
  const estado = estadoAntena(c);
@@ -948,7 +1001,7 @@ const color = colorBotonEstado(estado);
 
 const actionTd = `
 <td>
-  <button 
+  <button type="button" class="btn-action"
     style="background:${color};color:white;border:none"
     onclick="toggleRetiro(${r._row}, '${action}')">
     ${btnText}
@@ -992,8 +1045,7 @@ function applySort(col, mode){
 function updateArrows(){
   document.querySelectorAll("th.sortable").forEach(th=>{
     th.classList.remove("sort-active");
-    const col = th.getAttribute("data-col");
-    const span = document.getElementById("a-" + col);
+    const span = th.querySelector(".arrow");
     if (span) span.textContent = "";
   });
 
@@ -1002,7 +1054,7 @@ function updateArrows(){
   const th = document.querySelector(`th.sortable[data-col="${CSS.escape(sortState.col)}"]`);
   if (th) th.classList.add("sort-active");
 
-  const span = document.getElementById("a-" + sortState.col);
+  const span = th?.querySelector(".arrow");
   if (!span) return;
 
   span.textContent = sortState.mode === 1 ? "▲" : sortState.mode === 2 ? "▼" : "↺";
